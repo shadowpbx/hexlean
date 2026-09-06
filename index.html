@@ -236,9 +236,10 @@
 
     .tracks-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      grid-template-columns: 1fr;
+      max-width: 680px;
+      margin: 0 auto 5rem;
       gap: 1.5rem;
-      margin-bottom: 5rem;
     }
 
     .track-card {
@@ -537,51 +538,6 @@
             <a href="/python/playground.html" class="btn-play" title="Open Interactive Python Playground">⚡ Playground</a>
           </div>
         </article>
-
-        <!-- C Systems Track -->
-        <article class="track-card upcoming">
-          <div>
-            <div class="track-header">
-              <span class="track-badge-upcoming">In Development</span>
-              <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);">Systems Track</span>
-            </div>
-            <div class="track-icon">⚡</div>
-            <h3 class="track-title">Learn C Like a Language</h3>
-            <p class="track-desc">
-              Pointers, memory layout, stack vs. heap architectures, POSIX system calls, and writing bare-metal, high-performance systems code from scratch.
-            </p>
-            <div class="track-meta">
-              <span>• WebAssembly Clang Compiler</span>
-              <span>• Zero-Bloat Systems</span>
-            </div>
-          </div>
-          <div class="track-actions">
-            <span class="btn-disabled">Coming Soon</span>
-          </div>
-        </article>
-
-        <!-- Bash Track -->
-        <article class="track-card upcoming">
-          <div>
-            <div class="track-header">
-              <span class="track-badge-upcoming">In Development</span>
-              <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);">POSIX Track</span>
-            </div>
-            <div class="track-icon">🐚</div>
-            <h3 class="track-title">Learn Bash &amp; Shell Scripting</h3>
-            <p class="track-desc">
-              Master the Unix philosophy, process pipes, subshells, automation scripts, defensive programming, and command-line mastery.
-            </p>
-            <div class="track-meta">
-              <span>• Client-Side Shell Virtualization</span>
-              <span>• Production Scripts</span>
-            </div>
-          </div>
-          <div class="track-actions">
-            <span class="btn-disabled">Coming Soon</span>
-          </div>
-        </article>
-
       </div>
     </section>
 

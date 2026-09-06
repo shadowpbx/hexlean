@@ -141,7 +141,30 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.85rem;
+    }
+
+    .nav-author-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.4rem 0.7rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-author-link:hover {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .nav-author-link .ext-arrow {
+      font-size: 0.8rem;
+      color: var(--accent);
     }
 
     .theme-toggle-btn {
@@ -465,6 +488,9 @@
       </a>
 
       <div class="nav-actions">
+        <a href="https://hexdef.com" target="_blank" rel="noopener" class="nav-author-link" title="Visit Tanvir Hussain's Systems Portfolio &amp; Resume at hexdef.com">
+          Tanvir Hussain <span class="ext-arrow">↗</span>
+        </a>
         <button id="theme-btn" class="theme-toggle-btn" aria-label="Toggle theme">
           <span id="theme-icon">🌓</span>
           <span id="theme-text">Theme</span>
@@ -521,7 +547,7 @@
   <footer>
     <div class="wrap footer-content">
       <div>
-        &copy; 2026 <strong>HexLean</strong> &bull; An open technical educational platform authored by <a href="https://hexdef.com" target="_blank" rel="noopener" style="color:var(--text);font-weight:600;text-decoration:none;">Tanvir Hussain</a>.
+        &copy; 2026 <strong>HexLean</strong> &bull; An open technical educational project by <a href="https://hexdef.com" target="_blank" rel="noopener" style="color:var(--text);font-weight:600;text-decoration:none;">Tanvir Hussain</a>.
       </div>
       <div class="footer-links">
         <a href="https://hexdef.com" target="_blank" rel="noopener">hexdef.com</a>

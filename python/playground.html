@@ -1,0 +1,2507 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>Python Playground — Learn Python</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('python_book_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e){}
+    })();
+  </script>
+  <style>
+    :root {
+      --sat: env(safe-area-inset-top, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px);
+      --sar: env(safe-area-inset-right, 0px);
+
+      --code-font-size: 15px;
+      --code-line-height: 1.6;
+
+      --bg: #FFFFFF;
+      --surface: #F8FAFC;
+      --surface2: #F1F5F9;
+      --surface-hover: #E2E8F0;
+      --text: #0F172A;
+      --text-soft: #334155;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --border-light: #F1F5F9;
+      --accent: #0F766E;
+      --accent-strong: #115E59;
+      --accent-soft: #F0FDFA;
+      
+      --editor-bg: #FFFFFF;
+      --editor-gutter-bg: #F8FAFC;
+      --editor-gutter-text: #94A3B8;
+      --editor-text: #0F172A;
+      --editor-border: #E2E8F0;
+      --editor-caret: #0F766E;
+
+      /* Python Syntax Highlighting - Light (VS Code & Modern IDE Standard) */
+      --hl-code-keyword: #AF00DB;
+      --hl-code-built_in_func: #B45309;
+      --hl-code-type: #0D9488;
+      --hl-code-exception: #D97706;
+      --hl-code-string: #A31515;
+      --hl-code-comment: #15803D;
+      --hl-code-number: #0550AE;
+      --hl-code-title: #B45309;
+      --hl-code-literal: #2563EB;
+      --hl-code-operator: #475569;
+      --hl-code-variable: #0284C7;
+      --hl-code-meta: #7C3AED;
+      --hl-code-subst: #0F172A;
+      --hl-code-punct: #64748B;
+
+      --term-bg: #0F172A;
+      --term-header-bg: #1E293B;
+      --term-header-border: #334155;
+      --term-text: #F8FAFC;
+      --term-muted: #94A3B8;
+      --term-input-text: #38BDF8;
+      --term-border: #334155;
+      --term-error: #F87171;
+      --term-success: #34D399;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0B0F19;
+      --surface: #111827;
+      --surface2: #1F2937;
+      --surface-hover: #374151;
+      --text: #F9FAFB;
+      --text-soft: #D1D5DB;
+      --text-muted: #9CA3AF;
+      --border: #1F2937;
+      --border-light: #182234;
+      --accent: #2DD4BF;
+      --accent-strong: #5EEAD4;
+      --accent-soft: rgba(45, 212, 191, 0.12);
+
+      --editor-bg: #0F172A;
+      --editor-gutter-bg: #0B0F19;
+      --editor-gutter-text: #64748B;
+      --editor-text: #F8FAFC;
+      --editor-border: #1E293B;
+      --editor-caret: #2DD4BF;
+
+      /* Python Syntax Highlighting - Dark (VS Code & Modern IDE Standard) */
+      --hl-code-keyword: #C586C0;
+      --hl-code-built_in_func: #DCDCAA;
+      --hl-code-type: #4EC9B0;
+      --hl-code-exception: #FB923C;
+      --hl-code-string: #CE9178;
+      --hl-code-comment: #6A9955;
+      --hl-code-number: #B5CEA8;
+      --hl-code-title: #DCDCAA;
+      --hl-code-literal: #569CD6;
+      --hl-code-operator: #D4D4D4;
+      --hl-code-variable: #38BDF8;
+      --hl-code-meta: #C084FC;
+      --hl-code-subst: #F8FAFC;
+      --hl-code-punct: #94A3B8;
+
+      --term-bg: #030712;
+      --term-header-bg: #0F172A;
+      --term-header-border: #1E293B;
+      --term-text: #F9FAFB;
+      --term-muted: #9CA3AF;
+      --term-input-text: #38BDF8;
+      --term-border: #1E293B;
+      --term-error: #F87171;
+      --term-success: #34D399;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+    }
+
+    #app-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+    }
+
+    /* Top Bar */
+    #topbar {
+      height: calc(52px + var(--sat));
+      padding-top: var(--sat);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: max(1rem, var(--sal));
+      padding-right: max(1rem, var(--sar));
+      z-index: 100;
+      gap: .75rem;
+      flex-shrink: 0;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-icon {
+      width: 26px; height: 26px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #0F766E, #0D9488);
+      color: #FFFFFF;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .85rem;
+    }
+    [data-theme="dark"] .brand-icon {
+      background: linear-gradient(135deg, #2DD4BF, #0F766E);
+      color: #030712;
+    }
+    .brand-title {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -.02em;
+    }
+    .topbar-middle {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      flex: 1;
+      justify-content: center;
+      max-width: 400px;
+    }
+
+    .filename-box {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: .28rem .65rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      transition: all .14s ease;
+    }
+    .filename-box:focus-within {
+      border-color: var(--accent);
+      background: var(--surface);
+      box-shadow: 0 0 0 2px var(--accent-soft), 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+    .filename-svg { color: var(--text-muted); flex-shrink: 0; }
+    .filename-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .85rem;
+      color: var(--text);
+      width: 95px;
+      font-weight: 600;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    /* Font Zoom Controls */
+    .font-zoom-ctrl {
+      display: inline-flex;
+      align-items: center;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      overflow: hidden;
+      height: 32px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    .font-zoom-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-soft);
+      font-family: inherit;
+      font-size: .84rem;
+      font-weight: 700;
+      padding: 0 .48rem;
+      height: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .12s ease, color .12s ease;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .font-zoom-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+    .font-zoom-btn:active {
+      background: var(--surface);
+    }
+    .font-zoom-label {
+      background: var(--surface);
+      border: none;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      color: var(--text);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .78rem;
+      font-weight: 600;
+      padding: 0 .5rem;
+      height: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      -webkit-user-select: none;
+      min-width: 46px;
+      transition: background .12s ease, color .12s ease;
+    }
+    .font-zoom-label:hover {
+      background: var(--surface-hover);
+      color: var(--accent);
+    }
+    .font-zoom-label:active {
+      transform: scale(0.97);
+    }
+
+    /* Topbar Apple HIG Action Button */
+    .topbar-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .42rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .35rem .75rem;
+      font-size: .84rem;
+      font-weight: 600;
+      white-space: nowrap;
+      color: var(--text);
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      transition: all .14s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      -webkit-user-select: none;
+      height: 32px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+    .topbar-action-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--text-muted);
+      color: var(--text);
+      transform: translateY(-0.5px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+    .topbar-action-btn:active {
+      transform: translateY(0.5px);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    [data-theme="dark"] .topbar-action-btn {
+      background: var(--surface2);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #F3F4F6;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    [data-theme="dark"] .topbar-action-btn:hover {
+      background: var(--surface-hover);
+      border-color: rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    /* High-Impact Featured Textbook CTA Button */
+    .textbook-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .42rem;
+      padding: .34rem .78rem;
+      font-size: .84rem;
+      font-weight: 600;
+      white-space: nowrap;
+      color: #FFFFFF !important;
+      background: linear-gradient(135deg, #0F766E 0%, #0D9488 100%);
+      border: 1px solid rgba(15, 118, 110, 0.4);
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(15, 118, 110, 0.28), 0 1px 2px rgba(0, 0, 0, 0.06);
+      transition: all .16s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      height: 32px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+    .textbook-btn:hover {
+      background: linear-gradient(135deg, #115E59 0%, #0F766E 100%);
+      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.4);
+      transform: translateY(-1px);
+    }
+    .textbook-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 3px rgba(15, 118, 110, 0.2);
+    }
+    .textbook-icon {
+      font-size: .88rem;
+      line-height: 1;
+    }
+    [data-theme="dark"] .textbook-btn {
+      background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%);
+      color: #042F2E !important;
+      border-color: rgba(45, 212, 191, 0.5);
+      box-shadow: 0 2px 10px rgba(45, 212, 191, 0.35);
+    }
+    [data-theme="dark"] .textbook-btn:hover {
+      background: linear-gradient(135deg, #5EEAD4 0%, #2DD4BF 100%);
+      box-shadow: 0 4px 16px rgba(45, 212, 191, 0.5);
+    }
+
+    @media (max-width: 640px) {
+      .textbook-btn,
+      .topbar-action-btn {
+        padding: 0 .55rem !important;
+        height: 32px !important;
+        min-width: 34px !important;
+        justify-content: center !important;
+        font-size: .82rem;
+      }
+      .textbook-btn-text,
+      .settings-btn-text {
+        display: none !important;
+      }
+    }
+
+    /* Settings Modal Dialog */
+    .settings-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      visibility: visible;
+      opacity: 1;
+      transition: opacity .15s ease, visibility .15s ease;
+    }
+    .settings-modal[hidden] {
+      display: none !important;
+      visibility: hidden;
+      opacity: 0;
+    }
+    .settings-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .settings-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      z-index: 1001;
+      display: flex;
+      flex-direction: column;
+      animation: modalScaleIn .15s ease-out;
+    }
+    @keyframes modalScaleIn {
+      from { transform: scale(0.96); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .settings-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .85rem 1.2rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+    .settings-title-group {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+    }
+    .settings-icon { font-size: 1.05rem; }
+    .settings-title {
+      margin: 0;
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .settings-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      cursor: pointer;
+      padding: .2rem .4rem;
+      border-radius: 4px;
+      line-height: 1;
+      transition: background .12s, color .12s;
+    }
+    .settings-close-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .settings-card-body {
+      padding: 1.1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      max-height: calc(85vh - 60px);
+      overflow-y: auto;
+    }
+
+    .settings-section {
+      display: flex;
+      flex-direction: column;
+      gap: .55rem;
+    }
+    .settings-label-row {
+      display: flex;
+      flex-direction: column;
+      gap: .15rem;
+    }
+    .settings-section-title {
+      font-size: .84rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .settings-section-desc {
+      font-size: .74rem;
+      color: var(--text-muted);
+    }
+
+    .theme-switch-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .5rem;
+    }
+    .theme-choice-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: .5rem .75rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: .84rem;
+      font-weight: 600;
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: all .14s ease;
+    }
+    .theme-choice-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+      border-color: var(--accent);
+    }
+    .theme-choice-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent-strong);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .font-settings-row {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .font-presets {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    .font-preset-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: .25rem .5rem;
+      font-size: .74rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 600;
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: all .12s;
+    }
+    .font-preset-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+      border-color: var(--accent);
+    }
+    .font-preset-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent-strong);
+    }
+    .preset-tag {
+      font-size: .62rem;
+      opacity: .75;
+    }
+
+    .settings-hint {
+      font-size: .72rem;
+      color: var(--text-muted);
+    }
+
+    .settings-toggle-row {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      cursor: pointer;
+      user-select: none;
+      font-size: .82rem;
+      color: var(--text);
+    }
+    .settings-checkbox {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .danger-zone {
+      border-top: 1px solid var(--border);
+      padding-top: .9rem;
+    }
+    .danger-btn {
+      align-self: flex-start;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .35rem .75rem;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .14s;
+    }
+    .danger-btn:hover {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: #EF4444;
+      color: #EF4444;
+    }
+
+    /* Split Workspace */
+    #workspace {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .pane {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #editor-pane {
+      flex: 1;
+      border-right: 1px solid var(--border);
+      background: var(--editor-bg);
+      min-width: 320px;
+    }
+
+    #terminal-pane {
+      flex: 1;
+      background: var(--term-bg);
+      color: var(--term-text);
+      min-width: 320px;
+    }
+
+    .pane-header {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+
+    #terminal-pane .pane-header {
+      background: var(--term-header-bg);
+      border-bottom: 1px solid var(--term-header-border);
+      color: var(--term-text);
+    }
+
+    .pane-title-group {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      font-size: .86rem;
+      font-weight: 600;
+    }
+
+    .term-dots {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    .dot {
+      width: 9px; height: 9px; border-radius: 50%;
+    }
+    .dot-red { background: #FF5F56; }
+    .dot-yellow { background: #FFBD2E; }
+    .dot-green { background: #27C93F; }
+
+    .pane-actions {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    /* Tactile Apple HIG Pane Header Buttons (.mac-btn) */
+    .mac-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .34rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .24rem .58rem;
+      font-size: .78rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-soft);
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      transition: all .12s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      line-height: 1;
+    }
+    .mac-btn:hover {
+      background: var(--surface2);
+      border-color: var(--text-muted);
+      color: var(--text);
+      transform: translateY(-0.5px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+    .mac-btn:active {
+      transform: translateY(0.5px);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    .btn-svg {
+      flex-shrink: 0;
+      opacity: .85;
+      transition: opacity .12s ease;
+    }
+    .mac-btn:hover .btn-svg {
+      opacity: 1;
+    }
+
+    /* Danger Hover (Clear Buttons) */
+    .mac-btn-danger:hover {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #EF4444;
+    }
+    .mac-btn-danger:hover .btn-svg {
+      stroke: #EF4444;
+    }
+
+    /* Primary Accent (Download Button) */
+    .mac-btn-accent {
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.1) 0%, rgba(13, 148, 136, 0.16) 100%);
+      border: 1px solid rgba(15, 118, 110, 0.35);
+      color: #0F766E;
+      font-weight: 650;
+      box-shadow: 0 1px 3px rgba(15, 118, 110, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+    .mac-btn-accent:hover {
+      background: linear-gradient(135deg, #0F766E 0%, #0D9488 100%);
+      border-color: #0F766E;
+      color: #FFFFFF !important;
+      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.32);
+    }
+    .mac-btn-accent:hover .btn-svg {
+      stroke: #FFFFFF;
+    }
+
+    [data-theme="dark"] .mac-btn {
+      background: var(--surface2);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: #E2E8F0;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    [data-theme="dark"] .mac-btn:hover {
+      background: var(--surface-hover);
+      border-color: rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+    [data-theme="dark"] .mac-btn-accent {
+      background: linear-gradient(135deg, rgba(45, 212, 191, 0.15) 0%, rgba(20, 184, 166, 0.22) 100%);
+      border-color: rgba(45, 212, 191, 0.4);
+      color: #2DD4BF;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+    [data-theme="dark"] .mac-btn-accent:hover {
+      background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%);
+      border-color: #2DD4BF;
+      color: #042F2E !important;
+      box-shadow: 0 2px 10px rgba(45, 212, 191, 0.35);
+    }
+    [data-theme="dark"] .mac-btn-accent:hover .btn-svg {
+      stroke: #042F2E;
+    }
+
+    /* Terminal pane specific header button colors */
+    #terminal-pane .mac-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--term-header-border);
+      color: var(--term-text);
+      box-shadow: none;
+    }
+    #terminal-pane .mac-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #FFFFFF;
+    }
+    #terminal-pane .mac-btn-danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.6);
+      color: #FCA5A5;
+    }
+
+    /* Stepper in Terminal Header */
+    .mac-stepper {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--term-header-border);
+      border-radius: 6px;
+      overflow: hidden;
+      height: 24px;
+    }
+    .mac-stepper-btn {
+      background: transparent;
+      border: none;
+      color: var(--term-muted);
+      font-size: .75rem;
+      font-weight: 700;
+      padding: 0 .42rem;
+      height: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .12s ease;
+      line-height: 1;
+    }
+    .mac-stepper-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+    }
+    .mac-stepper-btn:first-child {
+      border-right: 1px solid var(--term-header-border);
+    }
+
+    .save-status {
+      font-size: .78rem;
+      color: var(--text-muted);
+      font-family: "IBM Plex Mono", monospace;
+      margin-right: .5rem;
+    }
+    .save-status.saved { color: #10B981; }
+
+    /* Editor */
+    .editor-wrapper {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .line-numbers {
+      width: 50px;
+      padding: .9rem 0;
+      background: var(--editor-gutter-bg);
+      border-right: 1px solid var(--editor-border);
+      color: var(--editor-gutter-text);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: var(--code-font-size, 15px);
+      line-height: var(--code-line-height, 1.6);
+      text-align: right;
+      padding-right: .65rem;
+      user-select: none;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .editor-code-container {
+      position: relative;
+      flex: 1;
+      height: 100%;
+      overflow: hidden;
+      background: var(--editor-bg);
+    }
+
+    .highlight-layer,
+    .code-textarea {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: .9rem 1rem;
+      border: none;
+      box-sizing: border-box;
+      font-family: "IBM Plex Mono", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: var(--code-font-size, 15px);
+      line-height: var(--code-line-height, 1.6);
+      letter-spacing: normal;
+      word-spacing: normal;
+      text-rendering: auto;
+      font-feature-settings: normal;
+      tab-size: 4;
+      -moz-tab-size: 4;
+    }
+
+    .highlight-layer {
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      white-space: pre;
+      overflow-wrap: normal;
+      word-break: normal;
+      color: var(--editor-text);
+      background: transparent;
+      user-select: none;
+    }
+
+    .highlight-layer code {
+      display: block;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+      font: inherit;
+      letter-spacing: inherit;
+      word-spacing: inherit;
+      line-height: inherit;
+      white-space: inherit;
+      overflow-wrap: inherit;
+      word-break: inherit;
+    }
+
+    .code-textarea {
+      z-index: 2;
+      background: transparent !important;
+      color: transparent !important;
+      -webkit-text-fill-color: transparent !important;
+      caret-color: var(--editor-caret, var(--text));
+      outline: none;
+      resize: none;
+      white-space: pre;
+      overflow-wrap: normal;
+      overflow-x: auto;
+      overflow-y: auto;
+    }
+
+    .code-textarea::placeholder {
+      color: var(--text-muted) !important;
+      -webkit-text-fill-color: var(--text-muted) !important;
+      opacity: 0.75;
+    }
+
+    .code-textarea::selection {
+      background: rgba(15, 118, 110, 0.28) !important;
+      -webkit-text-fill-color: transparent !important;
+      color: transparent !important;
+    }
+
+    [data-theme="dark"] .code-textarea::selection {
+      background: rgba(45, 212, 191, 0.35) !important;
+      -webkit-text-fill-color: transparent !important;
+      color: transparent !important;
+    }
+
+    .code-textarea::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .code-textarea::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .code-textarea::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    .code-textarea::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Python Syntax Highlighting Tokens (VS Code Standard) */
+    .hljs-keyword { color: var(--hl-code-keyword) !important; font-weight: 600; }
+    .hljs-built_in, .hljs-built_in_func { color: var(--hl-code-built_in_func) !important; }
+    .hljs-type { color: var(--hl-code-type) !important; font-weight: 600; }
+    .hljs-exception { color: var(--hl-code-exception) !important; font-weight: 600; }
+    .hljs-string { color: var(--hl-code-string) !important; }
+    .hljs-comment { color: var(--hl-code-comment) !important; font-style: italic; }
+    .hljs-number { color: var(--hl-code-number) !important; }
+    .hljs-title, .hljs-title.function_ { color: var(--hl-code-title) !important; }
+    .hljs-title.class_ { color: var(--hl-code-type) !important; font-weight: 600; }
+    .hljs-literal { color: var(--hl-code-literal) !important; font-weight: 600; }
+    .hljs-operator { color: var(--hl-code-operator) !important; }
+    .hljs-meta { color: var(--hl-code-meta) !important; font-weight: 600; }
+    .hljs-attr { color: var(--hl-code-built_in_func) !important; }
+    .hljs-subst { color: var(--hl-code-subst) !important; }
+    .hljs-subst-punct { color: var(--hl-code-punct) !important; font-weight: 600; }
+    .hljs-variable, .hljs-variable.language_ { color: var(--hl-code-variable) !important; font-style: italic; }
+    .hljs-params { color: var(--editor-text) !important; }
+
+    /* Terminal Output */
+    .terminal-body {
+      flex: 1;
+      padding: 1rem 1.1rem;
+      overflow-y: auto;
+      font-family: "IBM Plex Mono", Consolas, monospace;
+      font-size: var(--code-font-size, 15px);
+      line-height: var(--code-line-height, 1.6);
+      color: var(--term-text);
+      white-space: pre-wrap;
+      word-break: break-word;
+      user-select: text;
+    }
+
+    .term-line {
+      margin: 0;
+      min-height: 1.4em;
+    }
+    .term-line.system {
+      color: var(--term-muted);
+      font-style: italic;
+    }
+    .term-line.input-echo {
+      color: var(--term-input-text);
+      font-weight: 600;
+    }
+    .term-line.error {
+      color: var(--term-error);
+    }
+    .term-line.success {
+      color: var(--term-success);
+    }
+
+    /* Progress Box */
+    .pyodide-progress-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--term-header-border);
+      border-radius: 8px;
+      padding: .85rem 1rem;
+      margin: .5rem 0;
+      font-family: "Source Sans 3", sans-serif;
+    }
+    .pyodide-progress-title {
+      font-weight: 600;
+      font-size: .88rem;
+      color: #38BDF8;
+      display: flex; align-items: center; gap: .5rem;
+      margin-bottom: .45rem;
+    }
+    .pyodide-progress-track {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: .4rem;
+    }
+    .pyodide-progress-fill {
+      height: 100%;
+      background: #38BDF8;
+      border-radius: 999px;
+      transition: width .2s ease;
+    }
+    .pyodide-progress-meta {
+      display: flex; justify-content: space-between;
+      font-size: .75rem;
+      color: var(--term-muted);
+    }
+
+    /* Bottom Status & Run Bar */
+    #bottom-bar {
+      height: calc(52px + var(--sab));
+      padding-bottom: var(--sab);
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: max(1rem, var(--sal));
+      padding-right: max(1rem, var(--sar));
+      flex-shrink: 0;
+      z-index: 100;
+    }
+
+    .bottom-left {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .run-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: #10B981;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 7px;
+      padding: .48rem 1.15rem;
+      font-size: .95rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+      transition: all .15s ease;
+    }
+    .run-btn:hover {
+      background: #059669;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+      transform: translateY(-1px);
+    }
+    .run-btn:active {
+      transform: translateY(0);
+    }
+    .run-btn.running {
+      background: #0D9488;
+      cursor: wait;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      font-size: .82rem;
+      font-family: "IBM Plex Mono", monospace;
+      color: var(--text-muted);
+    }
+    .status-badge.success { color: #10B981; font-weight: 600; }
+    .status-badge.error { color: #EF4444; font-weight: 600; }
+
+    .bottom-right {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+      font-size: .80rem;
+      color: var(--text-muted);
+    }
+
+    .shortcut-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      color: var(--text-muted);
+      user-select: none;
+    }
+    .shortcut-action {
+      font-weight: 600;
+      color: var(--text-soft);
+      font-size: .76rem;
+      letter-spacing: .01em;
+    }
+    .shortcut-sep {
+      font-size: .72rem;
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 0 .1rem;
+    }
+    .shortcut-plus {
+      font-size: .72rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      opacity: .8;
+    }
+    .kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface2);
+      border: 1px solid #CBD5E1;
+      border-bottom: 2px solid #94A3B8;
+      border-radius: 4px;
+      padding: .12rem .4rem;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: .72rem;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--text-soft);
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.06);
+    }
+    [data-theme="dark"] .kbd {
+      background: #1E293B;
+      border: 1px solid #334155;
+      border-bottom: 2px solid #0F172A;
+      color: #E2E8F0;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Mobile Tab Switcher - Apple HIG Segmented Bar */
+    .mobile-tab-switch {
+      display: none;
+      width: 100%;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      padding: 6px 10px;
+      gap: 8px;
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    [data-theme="light"] .mobile-tab-switch {
+      background: #F1F5F9;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+    [data-theme="dark"] .mobile-tab-switch {
+      background: #090E17;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .tab-btn {
+      flex: 1;
+      height: 38px;
+      padding: 0 10px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all .18s cubic-bezier(0.16, 1, 0.3, 1);
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+      position: relative;
+    }
+    .tab-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Common Tab Elements */
+    .tab-btn .tab-icon-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .tab-btn .tab-label {
+      white-space: nowrap;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .tab-btn .tab-badge {
+      display: inline-flex;
+      align-items: center;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .68rem;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+      line-height: 1.2;
+      flex-shrink: 0;
+      transition: all .16s ease;
+    }
+
+    /* Code Editor Tab - Blueprint Teal Identity */
+    .tab-btn-editor {
+      border-color: rgba(15, 118, 110, 0.18);
+    }
+    .tab-btn-editor .tab-icon-editor {
+      color: #0F766E;
+    }
+    .tab-btn-editor .tab-badge-editor {
+      background: rgba(15, 118, 110, 0.08);
+      color: #0F766E;
+    }
+    [data-theme="dark"] .tab-btn-editor {
+      border-color: rgba(45, 212, 191, 0.15);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    [data-theme="dark"] .tab-btn-editor .tab-icon-editor {
+      color: #2DD4BF;
+    }
+    [data-theme="dark"] .tab-btn-editor .tab-badge-editor {
+      background: rgba(45, 212, 191, 0.12);
+      color: #2DD4BF;
+    }
+
+    /* Code Editor Tab ACTIVE */
+    .tab-btn-editor.active {
+      background: #FFFFFF;
+      color: #0F766E;
+      border-color: rgba(15, 118, 110, 0.4);
+      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.18), 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+    .tab-btn-editor.active .tab-badge-editor {
+      background: #0F766E;
+      color: #FFFFFF;
+    }
+    [data-theme="dark"] .tab-btn-editor.active {
+      background: linear-gradient(135deg, rgba(20, 184, 166, 0.22) 0%, rgba(13, 148, 136, 0.14) 100%);
+      color: #5EEAD4;
+      border-color: rgba(45, 212, 191, 0.55);
+      box-shadow: 0 2px 12px rgba(20, 184, 166, 0.28), inset 0 1px 0 rgba(45, 212, 191, 0.25);
+    }
+    [data-theme="dark"] .tab-btn-editor.active .tab-badge-editor {
+      background: rgba(45, 212, 191, 0.25);
+      color: #5EEAD4;
+      border: 1px solid rgba(45, 212, 191, 0.4);
+    }
+
+    /* Terminal Tab - Obsidian Console & Emerald Phosphor Identity */
+    .tab-btn-term {
+      border-color: rgba(16, 185, 129, 0.18);
+    }
+    .tab-btn-term .tab-icon-term {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .tab-btn-term .term-pulse-led {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      display: inline-block;
+      box-shadow: 0 0 4px rgba(16, 185, 129, 0.7);
+      animation: term-led-pulse 2s ease-in-out infinite;
+    }
+    .tab-btn-term .term-prompt-arrow {
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 700;
+      font-size: .8rem;
+      color: #10B981;
+    }
+    .tab-btn-term .tab-badge-term {
+      background: rgba(16, 185, 129, 0.1);
+      color: #059669;
+    }
+    [data-theme="dark"] .tab-btn-term {
+      border-color: rgba(52, 211, 153, 0.15);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    [data-theme="dark"] .tab-btn-term .tab-badge-term {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+    }
+
+    /* Terminal Tab ACTIVE */
+    .tab-btn-term.active {
+      background: #0F172A;
+      color: #34D399;
+      border-color: #1E293B;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.35), 0 0 10px rgba(52, 211, 153, 0.25);
+    }
+    .tab-btn-term.active .term-prompt-arrow {
+      color: #34D399;
+    }
+    .tab-btn-term.active .tab-badge-term {
+      background: rgba(52, 211, 153, 0.2);
+      color: #34D399;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+    }
+    [data-theme="dark"] .tab-btn-term.active {
+      background: #030712;
+      color: #34D399;
+      border-color: rgba(52, 211, 153, 0.55);
+      box-shadow: 0 2px 14px rgba(5, 150, 105, 0.4), inset 0 1px 0 rgba(52, 211, 153, 0.3);
+    }
+    [data-theme="dark"] .tab-btn-term.active .tab-badge-term {
+      background: rgba(52, 211, 153, 0.25);
+      color: #A7F3D0;
+      border: 1px solid rgba(52, 211, 153, 0.45);
+    }
+
+    @keyframes term-led-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 5px #10B981; }
+      50% { opacity: 0.45; transform: scale(0.85); box-shadow: 0 0 1px #10B981; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tab-btn-term .term-pulse-led { animation: none !important; }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-tab-switch { display: flex; }
+      #workspace { flex-direction: column; }
+      #editor-pane, #terminal-pane {
+        width: 100% !important;
+        height: 100%;
+        display: none;
+      }
+      #editor-pane.active, #terminal-pane.active {
+        display: flex;
+      }
+      .shortcut-hint { display: none; }
+    }
+    @media (max-width: 480px) {
+      .pane-header {
+        padding: 0 .55rem;
+        gap: .35rem;
+      }
+      .pane-title-group {
+        font-size: .8rem;
+        gap: .35rem;
+      }
+      .mac-btn {
+        padding: .26rem .45rem;
+        font-size: .78rem;
+      }
+    }
+    @media (max-width: 440px) {
+      .filename-box { display: none; }
+    }
+    @media (max-width: 360px) {
+      .tab-btn .tab-badge { display: none; }
+    }
+
+    .spinner {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- Settings Modal Dialog -->
+  <div id="settings-modal" class="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
+    <div class="settings-backdrop" id="settings-backdrop"></div>
+    <div class="settings-card">
+      <div class="settings-card-header">
+        <div class="settings-title-group">
+          <span class="settings-icon">⚙️</span>
+          <h2 id="settings-title" class="settings-title">Playground Settings</h2>
+        </div>
+        <button id="settings-close-btn" class="settings-close-btn" type="button" aria-label="Close Settings">✕</button>
+      </div>
+
+      <div class="settings-card-body">
+        <!-- Appearance / Theme -->
+        <div class="settings-section">
+          <div class="settings-label-row">
+            <span class="settings-section-title">Appearance</span>
+            <span class="settings-section-desc">Select workspace theme</span>
+          </div>
+          <div class="theme-switch-group">
+            <button type="button" class="theme-choice-btn" id="theme-light-btn" data-theme-val="light">
+              <span class="theme-choice-icon">☀️</span>
+              <span>Light</span>
+            </button>
+            <button type="button" class="theme-choice-btn" id="theme-dark-btn" data-theme-val="dark">
+              <span class="theme-choice-icon">🌙</span>
+              <span>Dark</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Font Size -->
+        <div class="settings-section">
+          <div class="settings-label-row">
+            <span class="settings-section-title">Editor &amp; Terminal Font Size</span>
+            <span class="settings-section-desc">Scale code and terminal text together (12px – 24px)</span>
+          </div>
+          <div class="font-settings-row">
+            <div class="font-zoom-ctrl">
+              <button type="button" id="font-dec-btn" class="font-zoom-btn" title="Decrease font size" aria-label="Decrease font size">A−</button>
+              <button type="button" id="font-reset-btn" class="font-zoom-label" title="Reset font size to default 15px" aria-label="Reset font size">15px</button>
+              <button type="button" id="font-inc-btn" class="font-zoom-btn" title="Increase font size" aria-label="Increase font size">A+</button>
+            </div>
+            <div class="font-presets">
+              <button type="button" class="font-preset-btn" data-size="13">13px</button>
+              <button type="button" class="font-preset-btn" data-size="15">15px <span class="preset-tag">Def</span></button>
+              <button type="button" class="font-preset-btn" data-size="18">18px</button>
+              <button type="button" class="font-preset-btn" data-size="22">22px</button>
+            </div>
+          </div>
+          <div class="settings-hint">Run: <kbd class="kbd mod-key">Ctrl</kbd><span class="shortcut-plus">+</span><kbd class="kbd">Enter</kbd> or <kbd class="kbd">F5</kbd> · Zoom: <kbd class="kbd mod-key">Ctrl</kbd><span class="shortcut-plus">+</span><kbd class="kbd">+/-</kbd></div>
+        </div>
+
+        <!-- Editor Preferences -->
+        <div class="settings-section">
+          <div class="settings-label-row">
+            <span class="settings-section-title">Editor Preferences</span>
+            <span class="settings-section-desc">Line wrapping configuration</span>
+          </div>
+          <label class="settings-toggle-row">
+            <input type="checkbox" id="wrap-toggle" class="settings-checkbox">
+            <span class="settings-toggle-text">Word wrap long lines in editor</span>
+          </label>
+        </div>
+
+        <!-- Reset Starter Demo -->
+        <div class="settings-section danger-zone">
+          <div class="settings-label-row">
+            <span class="settings-section-title">Reset Code</span>
+            <span class="settings-section-desc">Revert to the original Python Hello World starter script</span>
+          </div>
+          <button type="button" id="restore-starter-btn" class="danger-btn">
+            <span>↺ Restore Starter Script</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="app-container">
+    <header id="topbar">
+      <div class="topbar-left">
+        <a href="index.html" class="brand" title="Return to Textbook">
+          <div class="brand-icon">Py</div>
+          <span class="brand-title">Python Playground</span>
+        </a>
+      </div>
+
+      <div class="topbar-middle">
+        <div class="filename-box" title="Filename used when downloading code">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="filename-svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          <input type="text" id="filename-input" class="filename-input" value="main.py" spellcheck="false" title="Click to rename script file">
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="index.html" class="textbook-btn" title="Return to Learn Python textbook">
+          <span class="textbook-icon">📖</span>
+          <span class="textbook-btn-text">Read Textbook</span>
+        </a>
+        <button id="settings-btn" class="topbar-action-btn" type="button" aria-haspopup="dialog" aria-expanded="false" title="Playground Settings">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="settings-btn-icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          <span class="settings-btn-text">Settings</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="mobile-tab-switch" role="tablist" aria-label="Editor and Terminal Views">
+      <button class="tab-btn tab-btn-editor active" id="tab-editor-btn" role="tab" aria-selected="true" aria-controls="editor-pane" type="button">
+        <span class="tab-icon-wrap tab-icon-editor">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        </span>
+        <span class="tab-label">Code Editor</span>
+        <span class="tab-badge tab-badge-editor">.py</span>
+      </button>
+      <button class="tab-btn tab-btn-term" id="tab-terminal-btn" role="tab" aria-selected="false" aria-controls="terminal-pane" type="button">
+        <span class="tab-icon-wrap tab-icon-term">
+          <span class="term-pulse-led"></span>
+          <span class="term-prompt-arrow">❯</span>
+        </span>
+        <span class="tab-label">Terminal</span>
+        <span class="tab-badge tab-badge-term" id="mobile-term-badge">Ready</span>
+      </button>
+    </div>
+
+    <div id="workspace">
+      <section id="editor-pane" class="pane active">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <span>Python 3.12 Editor</span>
+          </div>
+          <div class="pane-actions">
+            <span class="save-status saved" id="save-status">● Saved</span>
+            <button class="mac-btn" id="copy-btn" type="button" title="Copy code to clipboard">
+              <svg class="btn-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span id="copy-btn-text">Copy</span>
+            </button>
+            <button class="mac-btn mac-btn-danger" id="clear-editor-btn" type="button" title="Clear code editor">
+              <svg class="btn-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              <span>Clear</span>
+            </button>
+            <button class="mac-btn mac-btn-accent" id="export-btn" type="button" title="Download Python script (.py)">
+              <svg class="btn-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>Download .py</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-wrapper">
+          <div class="line-numbers" id="line-numbers">1</div>
+          <div class="editor-code-container" id="editor-code-container">
+            <pre id="highlight-layer" class="highlight-layer" aria-hidden="true"><code id="highlight-code" class="language-python"></code></pre>
+            <textarea id="code-editor" class="code-textarea" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="# Type your Python code here..."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section id="terminal-pane" class="pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <div class="term-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span>❯ Terminal Output</span>
+          </div>
+          <div class="pane-actions">
+            <div class="mac-stepper" title="Adjust terminal font size">
+              <button class="mac-stepper-btn" id="term-font-dec-btn" type="button" title="Decrease font size (Ctrl + -)" aria-label="Decrease font size">A−</button>
+              <button class="mac-stepper-btn" id="term-font-inc-btn" type="button" title="Increase font size (Ctrl + +)" aria-label="Increase font size">A+</button>
+            </div>
+            <button class="mac-btn mac-btn-danger" id="clear-term-btn" type="button" title="Clear terminal output">
+              <svg class="btn-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+              <span>Clear</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="terminal-body" id="terminal-body">
+          <div class="term-line system">Python 3.12 (Pyodide WebAssembly) Ready.</div>
+          <div class="term-line system">Click "▷ Run Script" below or press Ctrl+Enter or F5.</div>
+          <div class="term-line system">----------------------------------------------------</div>
+        </div>
+      </section>
+    </div>
+
+    <footer id="bottom-bar">
+      <div class="bottom-left">
+        <button id="run-btn" class="run-btn" type="button" title="Run code (Ctrl+Enter or F5)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <span>Run Script</span>
+        </button>
+        <span class="status-badge" id="status-badge">Ready</span>
+      </div>
+
+      <div class="bottom-right">
+        <span class="shortcut-hint" title="Execute script (Ctrl+Enter or F5)">
+          <span class="shortcut-action">Run:</span>
+          <kbd class="kbd mod-key">Ctrl</kbd><span class="shortcut-plus">+</span><kbd class="kbd">Enter</kbd>
+          <span class="shortcut-sep">or</span>
+          <kbd class="kbd">F5</kbd>
+        </span>
+        <span class="shortcut-hint" title="Adjust font size (Ctrl + / -)">
+          <span class="shortcut-action">Font:</span>
+          <kbd class="kbd mod-key">Ctrl</kbd><span class="shortcut-plus">+</span><kbd class="kbd">+/-</kbd>
+        </span>
+        <span class="shortcut-hint" title="Indent 4 spaces">
+          <span class="shortcut-action">Indent:</span>
+          <kbd class="kbd">Tab</kbd>
+        </span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+  (function(){
+    // --- Settings Modal & Theme Manager ---
+    var settingsBtn = document.getElementById('settings-btn');
+    var settingsModal = document.getElementById('settings-modal');
+    var settingsCloseBtn = document.getElementById('settings-close-btn');
+    var settingsBackdrop = document.getElementById('settings-backdrop');
+
+    var themeLightBtn = document.getElementById('theme-light-btn');
+    var themeDarkBtn = document.getElementById('theme-dark-btn');
+
+    function openSettings() {
+      if (!settingsModal) return;
+      settingsModal.removeAttribute('hidden');
+      if (settingsBtn) settingsBtn.setAttribute('aria-expanded', 'true');
+      if (settingsCloseBtn) settingsCloseBtn.focus();
+    }
+
+    function closeSettings() {
+      if (!settingsModal) return;
+      settingsModal.setAttribute('hidden', '');
+      if (settingsBtn) {
+        settingsBtn.setAttribute('aria-expanded', 'false');
+        settingsBtn.focus();
+      }
+    }
+
+    if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
+    if (settingsCloseBtn) settingsCloseBtn.addEventListener('click', closeSettings);
+    if (settingsBackdrop) settingsBackdrop.addEventListener('click', closeSettings);
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      try { localStorage.setItem('python_book_theme', theme); } catch(e){}
+      if (themeLightBtn && themeDarkBtn) {
+        if (theme === 'dark') {
+          themeDarkBtn.classList.add('active');
+          themeLightBtn.classList.remove('active');
+        } else {
+          themeLightBtn.classList.add('active');
+          themeDarkBtn.classList.remove('active');
+        }
+      }
+    }
+
+    var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    applyTheme(currentTheme);
+
+    if (themeLightBtn) themeLightBtn.addEventListener('click', function(){ applyTheme('light'); });
+    if (themeDarkBtn) themeDarkBtn.addEventListener('click', function(){ applyTheme('dark'); });
+
+    var templates = {
+      hello_world:
+'# The classic first Python program\n' +
+'print("Hello, World!")\n',
+
+      input_demo: 
+'# Interactive Python Input Demo\n' +
+'name = input("What is your name? ")\n' +
+'print(f"Nice to meet you, {name}!")\n\n' +
+'age_str = input("How old are you? ")\n' +
+'age = int(age_str)\n' +
+'print(f"In 5 years, you will be {age + 5} years old.")\n' +
+'print("Your Python workshop is officially up and running!")',
+
+      guessing_game:
+'# Number Guessing Game with while loop & input()\n' +
+'import random\n\n' +
+'secret = random.randint(1, 20)\n' +
+'attempts = 0\n' +
+'print("--- Number Guessing Game ---")\n' +
+'print("I have picked a secret number between 1 and 20.")\n\n' +
+'while True:\n' +
+'    entry = input("Take a guess (or type \x27q\x27 to quit): ").strip()\n' +
+'    if entry.lower() == "q":\n' +
+'        print(f"Giving up? The secret number was {secret}!")\n' +
+'        break\n' +
+'    try:\n' +
+'        guess = int(entry)\n' +
+'    except ValueError:\n' +
+'        print("Please enter a valid whole number.")\n' +
+'        continue\n\n' +
+'    attempts += 1\n' +
+'    if guess < secret:\n' +
+'        print("Too low! Try higher.")\n' +
+'    elif guess > secret:\n' +
+'        print("Too high! Try lower.")\n' +
+'    else:\n' +
+'        print(f"\\n★ Congratulations! You guessed it in {attempts} tries!")\n' +
+'        break',
+
+      calculator:
+'# Shopping Cart & Receipt Calculator\n' +
+'cart = []\n' +
+'print("--- Campus Bookstore Checkout ---")\n' +
+'print("Enter items one by one. Press Enter on an empty item to finish.\\n")\n\n' +
+'while True:\n' +
+'    item_name = input("Item name: ").strip()\n' +
+'    if not item_name:\n' +
+'        break\n' +
+'    price_str = input(f"Price for \x27{item_name}\x27: $").strip()\n' +
+'    try:\n' +
+'        price = float(price_str)\n' +
+'        cart.append({"name": item_name, "price": price})\n' +
+'    except ValueError:\n' +
+'        print("Invalid price, item skipped.")\n\n' +
+'print("\\n" + "=" * 32)\n' +
+'print("          FINAL RECEIPT         ")\n' +
+'print("=" * 32)\n' +
+'subtotal = 0.0\n' +
+'for item in cart:\n' +
+'    print(f"• {item[\x27name\x27]:<18} ${item[\x27price\x27]:>7.2f}")\n' +
+'    subtotal += item["price"]\n\n' +
+'tax = subtotal * 0.08\n' +
+'total = subtotal + tax\n\n' +
+'print("-" * 32)\n' +
+'print(f"Subtotal:          ${subtotal:>7.2f}")\n' +
+'print(f"Tax (8%):          ${tax:>7.2f}")\n' +
+'print(f"Total:             ${total:>7.2f}")\n' +
+'print("=" * 32)',
+
+      functions:
+'# Functions & Mathematical Algorithms\n' +
+'def factorial(n: int) -> int:\n' +
+'    if n <= 1:\n' +
+'        return 1\n' +
+'    return n * factorial(n - 1)\n\n' +
+'def fibonacci_sequence(count: int) -> list:\n' +
+'    if count <= 0:\n' +
+'        return []\n' +
+'    seq = [0, 1]\n' +
+'    while len(seq) < count:\n' +
+'        seq.append(seq[-1] + seq[-2])\n' +
+'    return seq[:count]\n\n' +
+'user_num = int(input("Enter an integer (e.g. 7): "))\n' +
+'print(f"{user_num}! = {factorial(user_num)}")\n' +
+'print(f"First {user_num} Fibonacci numbers:")\n' +
+'print(fibonacci_sequence(user_num))',
+
+      blank: '# Write your Python 3 code here\n'
+    };
+
+    var editor = document.getElementById('code-editor');
+    var highlightLayer = document.getElementById('highlight-layer');
+    var highlightCodeEl = document.getElementById('highlight-code');
+    var lineNumbers = document.getElementById('line-numbers');
+    var saveStatus = document.getElementById('save-status');
+    var filenameInput = document.getElementById('filename-input');
+    var copyBtn = document.getElementById('copy-btn');
+    var clearEditorBtn = document.getElementById('clear-editor-btn');
+    var exportBtn = document.getElementById('export-btn');
+
+    var STORAGE_CODE_KEY = 'python_playground_code';
+    var STORAGE_FILE_KEY = 'python_playground_filename';
+    var STORAGE_FONT_KEY = 'python_playground_font_size';
+    var STORAGE_WRAP_KEY = 'python_playground_word_wrap';
+
+    // --- Font Size Zoom Controller ---
+    var DEFAULT_FONT_SIZE = 15;
+    var MIN_FONT_SIZE = 12;
+    var MAX_FONT_SIZE = 24;
+    var currentFontSize = DEFAULT_FONT_SIZE;
+
+    var fontDecBtn = document.getElementById('font-dec-btn');
+    var fontResetBtn = document.getElementById('font-reset-btn');
+    var fontIncBtn = document.getElementById('font-inc-btn');
+    var termFontDecBtn = document.getElementById('term-font-dec-btn');
+    var termFontIncBtn = document.getElementById('term-font-inc-btn');
+    var fontPresetBtns = document.querySelectorAll('.font-preset-btn');
+
+    function updateFontPresetUI(size) {
+      if (!fontPresetBtns) return;
+      fontPresetBtns.forEach(function(btn){
+        var sz = parseInt(btn.getAttribute('data-size'), 10);
+        if (sz === size) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    function applyFontSize(size) {
+      if (size < MIN_FONT_SIZE) size = MIN_FONT_SIZE;
+      if (size > MAX_FONT_SIZE) size = MAX_FONT_SIZE;
+      currentFontSize = size;
+      document.documentElement.style.setProperty('--code-font-size', size + 'px');
+      if (fontResetBtn) {
+        fontResetBtn.textContent = size + 'px';
+      }
+      updateFontPresetUI(size);
+      try {
+        localStorage.setItem(STORAGE_FONT_KEY, size.toString());
+      } catch (e) {}
+      if (highlightLayer && editor) {
+        highlightLayer.scrollTop = editor.scrollTop;
+        highlightLayer.scrollLeft = editor.scrollLeft;
+      }
+    }
+
+    try {
+      var savedFont = localStorage.getItem(STORAGE_FONT_KEY);
+      if (savedFont !== null) {
+        var parsedFont = parseInt(savedFont, 10);
+        if (!isNaN(parsedFont) && parsedFont >= MIN_FONT_SIZE && parsedFont <= MAX_FONT_SIZE) {
+          currentFontSize = parsedFont;
+        }
+      }
+    } catch (e) {}
+
+    applyFontSize(currentFontSize);
+
+    if (fontIncBtn) fontIncBtn.addEventListener('click', function(){ applyFontSize(currentFontSize + 1); });
+    if (fontDecBtn) fontDecBtn.addEventListener('click', function(){ applyFontSize(currentFontSize - 1); });
+    if (fontResetBtn) fontResetBtn.addEventListener('click', function(){ applyFontSize(DEFAULT_FONT_SIZE); });
+    if (termFontIncBtn) termFontIncBtn.addEventListener('click', function(){ applyFontSize(currentFontSize + 1); });
+    if (termFontDecBtn) termFontDecBtn.addEventListener('click', function(){ applyFontSize(currentFontSize - 1); });
+
+    fontPresetBtns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var sz = parseInt(btn.getAttribute('data-size'), 10);
+        if (!isNaN(sz)) applyFontSize(sz);
+      });
+    });
+
+    // --- Editor Word Wrap Setting ---
+    var wrapToggle = document.getElementById('wrap-toggle');
+    var isWrapped = false;
+    try { isWrapped = (localStorage.getItem(STORAGE_WRAP_KEY) === 'true'); } catch(e){}
+
+    function setWordWrap(wrap) {
+      isWrapped = !!wrap;
+      if (wrapToggle) wrapToggle.checked = isWrapped;
+      var ws = isWrapped ? 'pre-wrap' : 'pre';
+      var wb = isWrapped ? 'break-word' : 'normal';
+      if (editor) {
+        editor.style.whiteSpace = ws;
+        editor.style.wordBreak = wb;
+      }
+      if (highlightLayer) {
+        highlightLayer.style.whiteSpace = ws;
+        highlightLayer.style.wordBreak = wb;
+      }
+      try { localStorage.setItem(STORAGE_WRAP_KEY, isWrapped ? 'true' : 'false'); } catch(e){}
+      if (typeof updateHighlight === 'function') updateHighlight();
+    }
+    setWordWrap(isWrapped);
+
+    if (wrapToggle) {
+      wrapToggle.addEventListener('change', function(){
+        setWordWrap(wrapToggle.checked);
+      });
+    }
+
+    // --- Restore Starter Script ---
+    var restoreStarterBtn = document.getElementById('restore-starter-btn');
+    if (restoreStarterBtn) {
+      restoreStarterBtn.addEventListener('click', function(){
+        if (confirm("Restore original Hello World starter script? Current editor contents will be replaced.")) {
+          editor.value = templates.hello_world;
+          updateLineNumbers();
+          saveCode();
+          closeSettings();
+        }
+      });
+    }
+
+    // --- Code Persistence & Line Numbers ---
+    var savedCode = null;
+    try { savedCode = localStorage.getItem(STORAGE_CODE_KEY); } catch(e){}
+    var savedFileName = null;
+    try { savedFileName = localStorage.getItem(STORAGE_FILE_KEY); } catch(e){}
+
+    if (savedFileName && filenameInput) {
+      filenameInput.value = savedFileName;
+    }
+
+    // Default to Hello World (upgrade if empty or if saved code is any variation of the old interactive demo)
+    if (savedCode && savedCode.trim().length > 0 && savedCode.indexOf('Interactive Python Input Demo') === -1) {
+      editor.value = savedCode;
+    } else {
+      editor.value = templates.hello_world;
+      try { localStorage.setItem(STORAGE_CODE_KEY, templates.hello_world); } catch(e){}
+    }
+
+    // --- Python Syntax Highlighting Engine ---
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    var PY_KEYWORDS = {
+      'and':1, 'as':1, 'assert':1, 'async':1, 'await':1, 'break':1, 'case':1, 'class':1,
+      'continue':1, 'def':1, 'del':1, 'elif':1, 'else':1, 'except':1, 'finally':1, 'for':1,
+      'from':1, 'global':1, 'if':1, 'import':1, 'in':1, 'is':1, 'lambda':1, 'match':1,
+      'nonlocal':1, 'not':1, 'or':1, 'pass':1, 'raise':1, 'return':1, 'try':1, 'while':1,
+      'with':1, 'yield':1
+    };
+
+    var PY_BUILTIN_TYPES = {
+      'int':1, 'str':1, 'float':1, 'bool':1, 'list':1, 'dict':1, 'tuple':1, 'set':1,
+      'frozenset':1, 'bytes':1, 'bytearray':1, 'complex':1, 'object':1, 'type':1,
+      'classmethod':1, 'staticmethod':1, 'property':1, 'super':1
+    };
+
+    var PY_BUILTIN_FUNCS = {
+      'print':1, 'input':1, 'len':1, 'range':1, 'open':1, 'enumerate':1, 'zip':1, 'map':1,
+      'filter':1, 'sorted':1, 'reversed':1, 'sum':1, 'min':1, 'max':1, 'abs':1, 'round':1,
+      'pow':1, 'all':1, 'any':1, 'bin':1, 'hex':1, 'oct':1, 'chr':1, 'ord':1, 'id':1, 'dir':1,
+      'eval':1, 'exec':1, 'format':1, 'getattr':1, 'setattr':1, 'delattr':1, 'hasattr':1,
+      'hash':1, 'help':1, 'isinstance':1, 'issubclass':1, 'iter':1, 'locals':1, 'globals':1,
+      'vars':1, 'memoryview':1, 'next':1, 'repr':1, 'slice':1, 'breakpoint':1, 'callable':1,
+      'ascii':1, 'compile':1, 'divmod':1
+    };
+
+    var PY_EXCEPTIONS = {
+      'Exception':1, 'ValueError':1, 'TypeError':1, 'KeyError':1, 'IndexError':1,
+      'FileNotFoundError':1, 'ZeroDivisionError':1, 'AttributeError':1, 'StopIteration':1,
+      'RuntimeError':1, 'ImportError':1, 'KeyboardInterrupt':1, 'IOError':1, 'NameError':1,
+      'SyntaxError':1, 'IndentationError':1, 'LookupError':1, 'OSError':1, 'PermissionError':1
+    };
+
+    var PY_LITERALS = { 'True':1, 'False':1, 'None':1 };
+
+    function formatFString(raw) {
+      var res = '';
+      var cur = '';
+      var depth = 0;
+      var expr = '';
+
+      for (var i = 0; i < raw.length; i++) {
+        var ch = raw[i];
+        if (ch === '{' && raw[i+1] === '{') {
+          cur += '{{'; i++;
+        } else if (ch === '}' && raw[i+1] === '}') {
+          cur += '}}'; i++;
+        } else if (ch === '{') {
+          if (depth === 0) {
+            if (cur) res += '<span class="hljs-string">' + escapeHtml(cur) + '</span>';
+            cur = '';
+            res += '<span class="hljs-subst-punct">{</span>';
+            expr = '';
+          } else {
+            expr += '{';
+          }
+          depth++;
+        } else if (ch === '}') {
+          depth--;
+          if (depth === 0) {
+            res += '<span class="hljs-subst">' + selfContainedPythonHighlight(expr) + '</span><span class="hljs-subst-punct">}</span>';
+            expr = '';
+          } else {
+            expr += '}';
+          }
+        } else {
+          if (depth > 0) expr += ch;
+          else cur += ch;
+        }
+      }
+      if (cur) res += '<span class="hljs-string">' + escapeHtml(cur) + '</span>';
+      return res;
+    }
+
+    function selfContainedPythonHighlight(code) {
+      var TOKEN_REGEX = /("""[\s\S]*?"""|'''[\s\S]*?'''|#[^\n]*|(?:\b[frbFRB]{1,3})?(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|@\w+(?:\.\w+)*|\bdef\s+[A-Za-z_]\w*|\bclass\s+[A-Za-z_]\w*|\b0[xX][0-9a-fA-F]+\b|\b0[bB][01]+\b|\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b|==|!=|<=|>=|\+=|-=|\*=|\/\/=|\/=|%=|\*\*|->|\/\/|[=+\-*\/%<>!&|^~]|\b[A-Za-z_]\w*\b)/g;
+
+      var lastIndex = 0;
+      var out = '';
+      var match;
+
+      while ((match = TOKEN_REGEX.exec(code)) !== null) {
+        if (match.index > lastIndex) {
+          out += escapeHtml(code.slice(lastIndex, match.index));
+        }
+        lastIndex = TOKEN_REGEX.lastIndex;
+        var token = match[0];
+
+        if (token.charAt(0) === '#') {
+          out += '<span class="hljs-comment">' + escapeHtml(token) + '</span>';
+        } else if (token.charAt(0) === '"' || token.charAt(0) === "'" || (/^[frbFRB]/.test(token) && (token.indexOf('"') !== -1 || token.indexOf("'") !== -1))) {
+          if (/^[fF]/.test(token) && token.indexOf('{') !== -1) {
+            out += formatFString(token);
+          } else {
+            out += '<span class="hljs-string">' + escapeHtml(token) + '</span>';
+          }
+        } else if (token.charAt(0) === '@') {
+          out += '<span class="hljs-meta">' + escapeHtml(token) + '</span>';
+        } else if (token.indexOf('def ') === 0) {
+          var defParts = token.split(/\s+/);
+          out += '<span class="hljs-keyword">def</span> <span class="hljs-title function_">' + escapeHtml(defParts[1] || '') + '</span>';
+        } else if (token.indexOf('class ') === 0) {
+          var classParts = token.split(/\s+/);
+          out += '<span class="hljs-keyword">class</span> <span class="hljs-title class_">' + escapeHtml(classParts[1] || '') + '</span>';
+        } else if (/^\d/.test(token) || /^0[xXbB]/.test(token)) {
+          out += '<span class="hljs-number">' + escapeHtml(token) + '</span>';
+        } else if (/^[=+\-*\/%<>!&|^~]+$/.test(token) || token === '->') {
+          out += '<span class="hljs-operator">' + escapeHtml(token) + '</span>';
+        } else {
+          if (PY_KEYWORDS[token]) {
+            out += '<span class="hljs-keyword">' + escapeHtml(token) + '</span>';
+          } else if (PY_LITERALS[token]) {
+            out += '<span class="hljs-literal">' + escapeHtml(token) + '</span>';
+          } else if (PY_BUILTIN_TYPES[token]) {
+            out += '<span class="hljs-type">' + escapeHtml(token) + '</span>';
+          } else if (PY_BUILTIN_FUNCS[token]) {
+            out += '<span class="hljs-built_in_func">' + escapeHtml(token) + '</span>';
+          } else if (PY_EXCEPTIONS[token]) {
+            out += '<span class="hljs-exception">' + escapeHtml(token) + '</span>';
+          } else if (token === 'self' || token === 'cls') {
+            out += '<span class="hljs-variable language_">' + escapeHtml(token) + '</span>';
+          } else if (/^\s*\(/.test(code.slice(match.index + token.length))) {
+            out += '<span class="hljs-title function_">' + escapeHtml(token) + '</span>';
+          } else {
+            out += escapeHtml(token);
+          }
+        }
+      }
+
+      if (lastIndex < code.length) {
+        out += escapeHtml(code.slice(lastIndex));
+      }
+
+      return out;
+    }
+
+    function highlightPython(code) {
+      if (window.hljs && typeof window.hljs.highlight === 'function') {
+        try {
+          return window.hljs.highlight(code, { language: 'python' }).value;
+        } catch(e) {}
+      }
+      return selfContainedPythonHighlight(code);
+    }
+
+    function updateHighlight() {
+      if (!highlightCodeEl) return;
+      var val = editor ? editor.value : '';
+      if (!val || val.length === 0) {
+        highlightCodeEl.innerHTML = '';
+        return;
+      }
+      if (val.slice(-1) === '\n') {
+        val += ' ';
+      }
+      highlightCodeEl.innerHTML = highlightPython(val);
+      if (highlightLayer && editor) {
+        highlightLayer.scrollTop = editor.scrollTop;
+        highlightLayer.scrollLeft = editor.scrollLeft;
+      }
+    }
+
+    function updateLineNumbers() {
+      var lines = editor.value.split('\n').length;
+      var numHtml = '';
+      for (var i = 1; i <= lines; i++) {
+        numHtml += i + '<br>';
+      }
+      lineNumbers.innerHTML = numHtml;
+      updateHighlight();
+    }
+
+    function saveCode() {
+      try {
+        localStorage.setItem(STORAGE_CODE_KEY, editor.value);
+        if (filenameInput) localStorage.setItem(STORAGE_FILE_KEY, filenameInput.value);
+        saveStatus.textContent = '● Saved';
+        saveStatus.className = 'save-status saved';
+      } catch(e){}
+    }
+
+    var saveTimer = null;
+    editor.addEventListener('input', function(){
+      updateLineNumbers();
+      saveStatus.textContent = '○ Editing...';
+      saveStatus.className = 'save-status';
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveCode, 400);
+    });
+
+    editor.addEventListener('scroll', function(){
+      lineNumbers.scrollTop = editor.scrollTop;
+      if (highlightLayer) {
+        highlightLayer.scrollTop = editor.scrollTop;
+        highlightLayer.scrollLeft = editor.scrollLeft;
+      }
+    });
+
+    updateLineNumbers();
+
+    editor.addEventListener('keydown', function(e){
+      if (e.key === 'F5' || ((e.ctrlKey || e.metaKey) && e.key === 'Enter')) {
+        e.preventDefault();
+        e.stopPropagation();
+        runPythonCode();
+        return;
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        exportFile();
+        return;
+      }
+
+      var start = this.selectionStart;
+      var end = this.selectionEnd;
+
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        if (!e.shiftKey) {
+          this.setRangeText('    ', start, end, 'end');
+        } else {
+          var before = this.value.substring(0, start);
+          var lineStart = before.lastIndexOf('\n') + 1;
+          var line = this.value.substring(lineStart, start);
+          if (line.startsWith('    ')) {
+            this.setRangeText('', lineStart, lineStart + 4, 'end');
+          } else if (line.startsWith('  ')) {
+            this.setRangeText('', lineStart, lineStart + 2, 'end');
+          }
+        }
+        updateLineNumbers();
+        saveCode();
+        return;
+      }
+
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var before = this.value.substring(0, start);
+        var lineStart = before.lastIndexOf('\n') + 1;
+        var currentLine = before.substring(lineStart);
+        var indentMatch = currentLine.match(/^\s*/);
+        var indent = indentMatch ? indentMatch[0] : '';
+        
+        if (currentLine.trim().endsWith(':')) {
+          indent += '    ';
+        }
+
+        var insertText = '\n' + indent;
+        this.setRangeText(insertText, start, end, 'end');
+        updateLineNumbers();
+        saveCode();
+        return;
+      }
+
+      var pairs = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'" };
+      if (pairs[e.key]) {
+        var closeChar = pairs[e.key];
+        if (start !== end) {
+          e.preventDefault();
+          var selected = this.value.substring(start, end);
+          this.setRangeText(e.key + selected + closeChar, start, end, 'end');
+          this.selectionStart = start + 1;
+          this.selectionEnd = end + 1;
+          updateHighlight();
+          saveCode();
+          return;
+        }
+      }
+    });
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function(){
+        navigator.clipboard.writeText(editor.value).then(function(){
+          var label = document.getElementById('copy-btn-text');
+          if (label) label.textContent = 'Copied!';
+          copyBtn.style.color = '#10B981';
+          copyBtn.style.borderColor = '#10B981';
+          setTimeout(function(){
+            if (label) label.textContent = 'Copy';
+            copyBtn.style.color = '';
+            copyBtn.style.borderColor = '';
+          }, 1800);
+        }).catch(function(){
+          editor.select();
+          document.execCommand('copy');
+          var label = document.getElementById('copy-btn-text');
+          if (label) label.textContent = 'Copied!';
+          setTimeout(function(){
+            if (label) label.textContent = 'Copy';
+          }, 1800);
+        });
+      });
+    }
+
+    if (clearEditorBtn) {
+      clearEditorBtn.addEventListener('click', function(){
+        if (confirm("Clear all code in the editor?")) {
+          editor.value = '';
+          updateLineNumbers();
+          saveCode();
+        }
+      });
+    }
+
+    function exportFile() {
+      var fname = (filenameInput.value || 'main.py').trim();
+      if (!fname.endsWith('.py')) fname += '.py';
+      var blob = new Blob([editor.value], { type: 'text/x-python;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = fname;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    if (exportBtn) exportBtn.addEventListener('click', exportFile);
+
+    var tabEditorBtn = document.getElementById('tab-editor-btn');
+    var tabTerminalBtn = document.getElementById('tab-terminal-btn');
+    var editorPane = document.getElementById('editor-pane');
+    var terminalPane = document.getElementById('terminal-pane');
+    var mobileTermBadge = document.getElementById('mobile-term-badge');
+
+    if (tabEditorBtn && tabTerminalBtn) {
+      tabEditorBtn.addEventListener('click', function(){
+        tabEditorBtn.classList.add('active');
+        tabTerminalBtn.classList.remove('active');
+        tabEditorBtn.setAttribute('aria-selected', 'true');
+        tabTerminalBtn.setAttribute('aria-selected', 'false');
+        editorPane.classList.add('active');
+        terminalPane.classList.remove('active');
+      });
+      tabTerminalBtn.addEventListener('click', function(){
+        tabTerminalBtn.classList.add('active');
+        tabEditorBtn.classList.remove('active');
+        tabTerminalBtn.setAttribute('aria-selected', 'true');
+        tabEditorBtn.setAttribute('aria-selected', 'false');
+        terminalPane.classList.add('active');
+        editorPane.classList.remove('active');
+      });
+    }
+
+    var termBody = document.getElementById('terminal-body');
+    var clearTermBtn = document.getElementById('clear-term-btn');
+    var runBtn = document.getElementById('run-btn');
+    var statusBadge = document.getElementById('status-badge');
+
+    function appendTerm(text, type) {
+      var line = document.createElement('div');
+      line.className = 'term-line ' + (type || '');
+      line.textContent = text;
+      termBody.appendChild(line);
+      termBody.scrollTop = termBody.scrollHeight;
+    }
+
+    if (clearTermBtn) {
+      clearTermBtn.addEventListener('click', function(){
+        termBody.innerHTML = '<div class="term-line system">Terminal cleared. Press Ctrl+Enter or F5 to run.</div>';
+        statusBadge.textContent = 'Ready';
+        statusBadge.className = 'status-badge';
+        if (mobileTermBadge) mobileTermBadge.textContent = 'Ready';
+      });
+    }
+
+    var PyRunner = {
+      instance: null,
+      initPromise: null,
+
+      init: function(onProgress) {
+        if (this.instance) return Promise.resolve(this.instance);
+        if (this.initPromise) return this.initPromise;
+
+        var self = this;
+        var isCached = false;
+        try { isCached = (localStorage.getItem('pyodide_downloaded') === 'true'); }catch(e){}
+
+        if (onProgress) onProgress(15, isCached ? "Loading from disk cache..." : "Connecting to CDN...");
+
+        this.initPromise = new Promise(function(resolve, reject){
+          function loadScript(cb) {
+            if (window.loadPyodide) { cb(); return; }
+            var s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+            s.crossOrigin = 'anonymous';
+            s.onload = cb;
+            s.onerror = function(){
+              reject(new Error("Unable to load Python engine from CDN. Check internet connection."));
+            };
+            document.head.appendChild(s);
+          }
+
+          loadScript(function(){
+            if (onProgress) onProgress(35, isCached ? "Reading WebAssembly core..." : "Downloading Python 3 runtime (~8 MB)...");
+
+            var pct = 35;
+            var timer = setInterval(function(){
+              if (self.instance) { clearInterval(timer); return; }
+              if (pct < 85) {
+                pct += (isCached ? 15 : 4);
+                if (onProgress) onProgress(pct, pct > 65 ? "Mounting standard library..." : "Downloading runtime...");
+              }
+            }, isCached ? 70 : 150);
+
+            loadPyodide().then(function(py){
+              clearInterval(timer);
+              self.instance = py;
+              try { localStorage.setItem('pyodide_downloaded', 'true'); }catch(e){}
+              if (onProgress) onProgress(100, "Python engine ready!");
+              resolve(py);
+            }).catch(function(err){
+              clearInterval(timer);
+              reject(err);
+            });
+          });
+        });
+
+        return this.initPromise;
+      }
+    };
+
+    var isExecuting = false;
+
+    async function runPythonCode() {
+      if (isExecuting) return;
+      isExecuting = true;
+
+      var code = editor.value;
+      if (!code.trim()) {
+        appendTerm("No code to run. Type Python code in the editor.", "system");
+        isExecuting = false;
+        return;
+      }
+
+      if (window.innerWidth <= 768 && tabTerminalBtn) {
+        tabTerminalBtn.click();
+      }
+
+      termBody.innerHTML = '';
+      runBtn.classList.add('running');
+      runBtn.innerHTML = '<svg class="spinner" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="12"></circle></svg><span>Running...</span>';
+      statusBadge.textContent = 'Running...';
+      statusBadge.className = 'status-badge';
+      if (mobileTermBadge) mobileTermBadge.textContent = 'Running';
+
+      var isFirstLoad = !PyRunner.instance;
+      var progressBox = null;
+
+      if (isFirstLoad) {
+        var isCached = false;
+        try { isCached = (localStorage.getItem('pyodide_downloaded') === 'true'); }catch(e){}
+        
+        progressBox = document.createElement('div');
+        progressBox.className = 'pyodide-progress-box';
+        progressBox.innerHTML = 
+          '<div class="pyodide-progress-title">' +
+            '<span>' + (isCached ? 'Loading Python from browser disk cache...' : 'First-time setup: Downloading Python engine (~8 MB)...') + '</span>' +
+          '</div>' +
+          '<div class="pyodide-progress-track"><div class="pyodide-progress-fill" style="width: 15%;"></div></div>' +
+          '<div class="pyodide-progress-meta">' +
+            '<span class="prog-msg">Connecting to CDN...</span>' +
+            '<span class="prog-pct">15%</span>' +
+          '</div>';
+        termBody.appendChild(progressBox);
+        termBody.scrollTop = termBody.scrollHeight;
+      }
+
+      try {
+        var py = await PyRunner.init(function(pct, msg){
+          if (progressBox) {
+            var fill = progressBox.querySelector('.pyodide-progress-fill');
+            var pmsg = progressBox.querySelector('.prog-msg');
+            var ppct = progressBox.querySelector('.prog-pct');
+            if (fill) fill.style.width = pct + '%';
+            if (pmsg) pmsg.textContent = msg;
+            if (ppct) ppct.textContent = pct + '%';
+          }
+        });
+
+        if (progressBox && progressBox.parentNode) {
+          progressBox.parentNode.removeChild(progressBox);
+        }
+
+        var pendingPrompt = "";
+        
+        py.setStdout({
+          raw: function(byte) {
+            var ch = String.fromCharCode(byte);
+            if (ch === '\n') {
+              appendTerm(pendingPrompt, '');
+              pendingPrompt = "";
+            } else {
+              pendingPrompt += ch;
+            }
+          }
+        });
+
+        py.setStderr({
+          batched: function(text) {
+            appendTerm(text, 'error');
+          }
+        });
+
+        py.setStdin({
+          stdin: function() {
+            var promptTitle = pendingPrompt.trim() || "Python Program input():";
+            var entered = window.prompt(promptTitle);
+            if (entered === null) {
+              throw new Error("KeyboardInterrupt: Execution stopped by user.");
+            }
+            appendTerm(pendingPrompt + entered, 'input-echo');
+            pendingPrompt = "";
+            return entered + "\n";
+          }
+        });
+
+        appendTerm("❯ Running " + (filenameInput.value || 'main.py') + " ...", "system");
+        var startTime = performance.now();
+
+        await py.runPythonAsync(code);
+
+        if (pendingPrompt) {
+          appendTerm(pendingPrompt, '');
+          pendingPrompt = "";
+        }
+
+        var duration = Math.max(1, Math.round(performance.now() - startTime));
+        appendTerm("✓ Program finished (" + duration + "ms)", "success");
+        statusBadge.textContent = '✓ ' + duration + 'ms';
+        statusBadge.className = 'status-badge success';
+        if (mobileTermBadge) mobileTermBadge.textContent = duration + 'ms';
+
+      } catch(err) {
+        if (progressBox && progressBox.parentNode) {
+          progressBox.parentNode.removeChild(progressBox);
+        }
+        var msg = err.message || String(err);
+        appendTerm(msg, 'error');
+        statusBadge.textContent = '❌ Error';
+        statusBadge.className = 'status-badge error';
+        if (mobileTermBadge) mobileTermBadge.textContent = 'Error';
+      } finally {
+        isExecuting = false;
+        runBtn.classList.remove('running');
+        runBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg><span>Run Script</span>';
+      }
+    }
+
+    if (runBtn) runBtn.addEventListener('click', runPythonCode);
+
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') {
+        if (settingsModal && !settingsModal.hasAttribute('hidden')) {
+          e.preventDefault();
+          closeSettings();
+          return;
+        }
+      }
+      if (e.key === 'F5' || ((e.ctrlKey || e.metaKey) && e.key === 'Enter')) {
+        e.preventDefault();
+        runPythonCode();
+      } else if ((e.ctrlKey || e.metaKey) && (e.key === '=' || e.key === '+')) {
+        e.preventDefault();
+        applyFontSize(currentFontSize + 1);
+      } else if ((e.ctrlKey || e.metaKey) && (e.key === '-' || e.key === '_')) {
+        e.preventDefault();
+        applyFontSize(currentFontSize - 1);
+      } else if ((e.ctrlKey || e.metaKey) && e.key === '0') {
+        e.preventDefault();
+        applyFontSize(DEFAULT_FONT_SIZE);
+      }
+    });
+
+    try {
+      var isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+      if (isMac) {
+        document.querySelectorAll('.mod-key').forEach(function(el){
+          el.textContent = 'Cmd';
+        });
+      }
+    } catch(e) {}
+
+  })();
+  </script>
+</body>
+</html>

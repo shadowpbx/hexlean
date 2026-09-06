@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>HexLean — Learn Programming Like a Natural Language</title>
+  <meta name="description" content="In-depth, zero-bloat programming language masterclasses with interactive in-browser sandboxes. Learn Python, C, and Bash from first principles.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap">
+  
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('python_book_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e){}
+    })();
+  </script>
+
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --surface: #F8FAFC;
+      --surface2: #F1F5F9;
+      --surface-hover: #E2E8F0;
+      --text: #0F172A;
+      --text-body: #1E293B;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --border-light: #F1F5F9;
+      --accent: #0F766E;
+      --accent-strong: #115E59;
+      --accent-soft: #F0FDFA;
+      --accent-border: #CCFBF1;
+      --card-bg: #FFFFFF;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-sans: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0B0F17;
+      --surface: #111827;
+      --surface2: #1E293B;
+      --surface-hover: #334155;
+      --text: #F8FAFC;
+      --text-body: #E2E8F0;
+      --text-muted: #94A3B8;
+      --border: #1E293B;
+      --border-light: #162032;
+      --accent: #2DD4BF;
+      --accent-strong: #5EEAD4;
+      --accent-soft: rgba(45, 212, 191, 0.08);
+      --accent-border: rgba(45, 212, 191, 0.2);
+      --card-bg: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-body);
+      font-family: var(--font-sans);
+      font-size: 18px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Container */
+    .wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navigation */
+    header {
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      transition: border-color 0.25s ease, background-color 0.25s ease;
+    }
+
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand-icon {
+      font-size: 1.35rem;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+
+    .brand-title {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.45rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .theme-toggle-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.45rem 0.75rem;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 5rem 0 3.5rem;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .hero-lead {
+      font-size: clamp(1.1rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.6;
+    }
+
+    /* Track Cards Grid */
+    .section-title-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .section-meta {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .tracks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 5rem;
+    }
+
+    .track-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow);
+      position: relative;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+
+    .track-card.active {
+      border-top: 4px solid var(--accent);
+    }
+
+    .track-card.active:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent);
+    }
+
+    .track-card.upcoming {
+      border-top: 4px solid var(--text-muted);
+      opacity: 0.85;
+      background: var(--surface);
+    }
+
+    .track-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .track-badge-active {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .track-badge-upcoming {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .track-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      display: inline-block;
+    }
+
+    .track-title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.65rem;
+      line-height: 1.3;
+    }
+
+    .track-desc {
+      font-size: 0.96rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .track-meta {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .track-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn-read {
+      flex: 1;
+      background: var(--accent);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      text-align: center;
+      transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .btn-read:hover {
+      background: var(--accent-strong);
+      transform: translateY(-1px);
+    }
+
+    [data-theme="dark"] .btn-read {
+      color: #0B0F17;
+      background: var(--accent);
+    }
+
+    [data-theme="dark"] .btn-read:hover {
+      background: var(--accent-strong);
+    }
+
+    .btn-play {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-play:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .btn-disabled {
+      flex: 1;
+      background: var(--surface2);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.65rem 1rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      text-align: center;
+      cursor: not-allowed;
+      font-family: var(--font-mono);
+    }
+
+    /* Philosophy / Manifesto Section */
+    .philosophy-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      margin-bottom: 5rem;
+    }
+
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .phil-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .phil-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 1.25rem;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      .footer-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .footer-links a {
+        margin-left: 0;
+        margin-right: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="wrap nav-bar">
+      <a href="/" class="brand">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-title">HexLean</span>
+        <span class="brand-badge">Platform</span>
+      </a>
+
+      <div class="nav-actions">
+        <button id="theme-btn" class="theme-toggle-btn" aria-label="Toggle theme">
+          <span id="theme-icon">🌓</span>
+          <span id="theme-text">Theme</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    
+    <!-- Hero Header -->
+    <section class="hero">
+      <div class="hero-eyebrow">
+        <span>⚡ ZERO BLOAT &bull; IN-BROWSER EXECUTION &bull; FIRST PRINCIPLES</span>
+      </div>
+      <h1 class="hero-title">
+        Learn Programming Like a <em>Natural Language.</em>
+      </h1>
+      <p class="hero-lead">
+        Exhaustive, beautifully typeset language masterclasses paired with instant, client-side WebAssembly sandboxes. No paywalls, no cookie trackers, zero fluff.
+      </p>
+    </section>
+
+    <!-- Master Language Tracks -->
+    <section>
+      <div class="section-title-wrap">
+        <h2 class="section-title">Language Curriculum Tracks</h2>
+        <span class="section-meta">Interactive Books &bull; Live Sandboxes</span>
+      </div>
+
+      <div class="tracks-grid">
+        
+        <!-- Python Track -->
+        <article class="track-card active">
+          <div>
+            <div class="track-header">
+              <span class="track-badge-active">Available Now</span>
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);">70 Chapters</span>
+            </div>
+            <div class="track-icon">🐍</div>
+            <h3 class="track-title">Learn Python Like a Language</h3>
+            <p class="track-desc">
+              From the fundamental alphabet of syntax to advanced OOP, asynchronous architectures, data structures, and idiomatic Pythonic systems.
+            </p>
+            <div class="track-meta">
+              <span>✓ Pyodide In-Browser Sandbox</span>
+              <span>✓ Interactive Exercises</span>
+            </div>
+          </div>
+          <div class="track-actions">
+            <a href="/python/index.html" class="btn-read">📖 Read Textbook</a>
+            <a href="/python/playground.html" class="btn-play" title="Open Interactive Python Playground">⚡ Playground</a>
+          </div>
+        </article>
+
+        <!-- C Systems Track -->
+        <article class="track-card upcoming">
+          <div>
+            <div class="track-header">
+              <span class="track-badge-upcoming">In Development</span>
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);">Systems Track</span>
+            </div>
+            <div class="track-icon">⚡</div>
+            <h3 class="track-title">Learn C Like a Language</h3>
+            <p class="track-desc">
+              Pointers, memory layout, stack vs. heap architectures, POSIX system calls, and writing bare-metal, high-performance systems code from scratch.
+            </p>
+            <div class="track-meta">
+              <span>• WebAssembly Clang Compiler</span>
+              <span>• Zero-Bloat Systems</span>
+            </div>
+          </div>
+          <div class="track-actions">
+            <span class="btn-disabled">Coming Soon</span>
+          </div>
+        </article>
+
+        <!-- Bash Track -->
+        <article class="track-card upcoming">
+          <div>
+            <div class="track-header">
+              <span class="track-badge-upcoming">In Development</span>
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);">POSIX Track</span>
+            </div>
+            <div class="track-icon">🐚</div>
+            <h3 class="track-title">Learn Bash &amp; Shell Scripting</h3>
+            <p class="track-desc">
+              Master the Unix philosophy, process pipes, subshells, automation scripts, defensive programming, and command-line mastery.
+            </p>
+            <div class="track-meta">
+              <span>• Client-Side Shell Virtualization</span>
+              <span>• Production Scripts</span>
+            </div>
+          </div>
+          <div class="track-actions">
+            <span class="btn-disabled">Coming Soon</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- The HexLean Philosophy -->
+    <section class="philosophy-box">
+      <h2 style="font-family:var(--font-serif);font-size:1.5rem;color:var(--text);">The HexLean Architecture</h2>
+      <div class="philosophy-grid">
+        <div class="phil-card">
+          <h3>Pedagogy as Composition</h3>
+          <p>Treat programming languages like human languages: learn the vocabulary, study grammar and idiom, and compose production architectures rather than memorizing trivia.</p>
+        </div>
+        <div class="phil-card">
+          <h3>100% Client-Side Sandboxes</h3>
+          <p>Code execution happens directly inside your web browser using WebAssembly. Instant startup, zero server downtime, and absolute privacy for your code experiments.</p>
+        </div>
+        <div class="phil-card">
+          <h3>Lean Systems Craft</h3>
+          <p>Emphasis on writing clean, readable, dependency-minimal code that stands the test of time across changing technological frameworks.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap footer-content">
+      <div>
+        &copy; 2026 <strong>HexLean</strong> &bull; An open technical educational platform authored by <a href="https://hexdef.com" target="_blank" rel="noopener" style="color:var(--text);font-weight:600;text-decoration:none;">Tanvir Hussain</a>.
+      </div>
+      <div class="footer-links">
+        <a href="/python/index.html">Python Book</a>
+        <a href="/python/playground.html">Playground</a>
+        <a href="https://hexdef.com" target="_blank" rel="noopener">hexdef.com</a>
+        <a href="https://github.com/shadowpbx" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle matching the Python Book engine
+    const themeBtn = document.getElementById('theme-btn');
+    const themeIcon = document.getElementById('theme-icon');
+    
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('python_book_theme', theme);
+      themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+
+    const currentTheme = localStorage.getItem('python_book_theme') || 'light';
+    applyTheme(currentTheme);
+
+    themeBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      applyTheme(isDark ? 'light' : 'dark');
+    });
+  </script>
+</body>
+</html>

@@ -541,25 +541,6 @@
       </div>
     </section>
 
-    <!-- The HexLean Philosophy -->
-    <section class="philosophy-box">
-      <h2 style="font-family:var(--font-serif);font-size:1.5rem;color:var(--text);">The HexLean Architecture</h2>
-      <div class="philosophy-grid">
-        <div class="phil-card">
-          <h3>Pedagogy as Composition</h3>
-          <p>Treat programming languages like human languages: learn the vocabulary, study grammar and idiom, and compose production architectures rather than memorizing trivia.</p>
-        </div>
-        <div class="phil-card">
-          <h3>100% Client-Side Sandboxes</h3>
-          <p>Code execution happens directly inside your web browser using WebAssembly. Instant startup, zero server downtime, and absolute privacy for your code experiments.</p>
-        </div>
-        <div class="phil-card">
-          <h3>Lean Systems Craft</h3>
-          <p>Emphasis on writing clean, readable, dependency-minimal code that stands the test of time across changing technological frameworks.</p>
-        </div>
-      </div>
-    </section>
-
   </main>
 
   <footer>
@@ -594,6 +575,15 @@
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       applyTheme(isDark ? 'light' : 'dark');
     });
+
+    // Localhost Dev Environment Marker
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      document.title = '[8080 • HEXLEAN] ' + document.title;
+      const devBadge = document.createElement('div');
+      devBadge.innerHTML = '● :8080 // HEXLEAN';
+      devBadge.style.cssText = 'position:fixed;bottom:14px;right:14px;z-index:999999;background:rgba(15,118,110,0.92);color:#ffffff;font-family:IBM Plex Mono,monospace;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,0.25);pointer-events:none;letter-spacing:0.06em;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.25);';
+      document.body.appendChild(devBadge);
+    }
   </script>
 </body>
 </html>

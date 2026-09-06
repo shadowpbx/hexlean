@@ -275,66 +275,49 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
+      margin-bottom: 0.35rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
-    .track-badge-active {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--accent);
-      background: var(--accent-soft);
-      border: 1px solid var(--accent-border);
-      padding: 0.2rem 0.55rem;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .track-badge-upcoming {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      padding: 0.2rem 0.55rem;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .track-identity {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
 
     .track-icon {
-      font-size: 2rem;
-      margin-bottom: 0.75rem;
-      display: inline-block;
+      font-size: 2.3rem;
+      line-height: 1;
     }
 
     .track-title {
       font-family: var(--font-serif);
-      font-size: 1.4rem;
+      font-size: 2.25rem;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 0.65rem;
-      line-height: 1.3;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
     }
 
-    .track-desc {
-      font-size: 0.96rem;
+    .track-sub {
+      font-size: 1.05rem;
       color: var(--text-muted);
-      line-height: 1.6;
       margin-bottom: 1.5rem;
-      flex-grow: 1;
+      font-weight: 400;
     }
 
-    .track-meta {
+    .track-badge-active {
       font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-bottom: 1.25rem;
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
     }
 
     .track-actions {
@@ -520,17 +503,13 @@
         <article class="track-card active">
           <div>
             <div class="track-header">
-              <span class="track-badge-active">70 CHAPTERS &bull; COMPLETE TEXTBOOK</span>
+              <div class="track-identity">
+                <span class="track-icon">🐍</span>
+                <h3 class="track-title">Python</h3>
+              </div>
+              <span class="track-badge-active">[ 70 CHAPTERS ]</span>
             </div>
-            <div class="track-icon">🐍</div>
-            <h3 class="track-title">Learn Python Like a Language</h3>
-            <p class="track-desc">
-              From the fundamental alphabet of syntax to advanced OOP, asynchronous architectures, data structures, and idiomatic Pythonic systems.
-            </p>
-            <div class="track-meta">
-              <span>✓ Pyodide In-Browser Sandbox</span>
-              <span>✓ Interactive Exercises</span>
-            </div>
+            <div class="track-sub">Syntax, OOP &amp; Systems Architecture</div>
           </div>
           <div class="track-actions">
             <a href="/python/index.html" class="btn-read">📖 Read Textbook</a>

@@ -144,27 +144,38 @@
       gap: 0.85rem;
     }
 
-    .nav-author-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      padding: 0.4rem 0.7rem;
+    .nav-curator-link {
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 8px;
+      padding: 0.42rem 0.8rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 0.35rem;
-      transition: all 0.2s ease;
+      gap: 0.45rem;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: var(--shadow-sm);
     }
 
-    .nav-author-link:hover {
+    .nav-curator-link:hover {
+      border-color: var(--accent);
       color: var(--accent);
-      background: var(--accent-soft);
+      background: var(--surface2);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     }
 
-    .nav-author-link .ext-arrow {
+    .nav-curator-link .ext-arrow {
       font-size: 0.8rem;
       color: var(--accent);
+      transition: transform 0.2s ease;
+    }
+
+    .nav-curator-link:hover .ext-arrow {
+      transform: translate(2px, -2px);
     }
 
     .theme-toggle-btn {
@@ -488,7 +499,7 @@
       </a>
 
       <div class="nav-actions">
-        <a href="https://hexdef.com" target="_blank" rel="noopener" class="nav-author-link" title="Visit Tanvir Hussain's Systems Portfolio &amp; Resume at hexdef.com">
+        <a href="https://hexdef.com" target="_blank" rel="noopener" class="nav-curator-link" title="Visit Tanvir Hussain's Systems Portfolio &amp; Resume at hexdef.com">
           Tanvir Hussain <span class="ext-arrow">↗</span>
         </a>
         <button id="theme-btn" class="theme-toggle-btn" aria-label="Toggle theme">
@@ -547,7 +558,7 @@
   <footer>
     <div class="wrap footer-content">
       <div>
-        &copy; 2026 <strong>HexLean</strong> &bull; An open technical educational project by <a href="https://hexdef.com" target="_blank" rel="noopener" style="color:var(--text);font-weight:600;text-decoration:none;">Tanvir Hussain</a>.
+        &copy; 2026 <strong>HexLean</strong> &bull; An open technical educational project curated by <a href="https://hexdef.com" target="_blank" rel="noopener" style="color:var(--text);font-weight:600;text-decoration:none;">Tanvir Hussain</a>.
       </div>
       <div class="footer-links">
         <a href="https://hexdef.com" target="_blank" rel="noopener">hexdef.com</a>

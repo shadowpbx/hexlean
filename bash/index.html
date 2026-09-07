@@ -1357,31 +1357,51 @@
       font-style: italic;
     }
 
-    /* Structured Section Boxes */
+    /* Styled Subsections */
     .subsection {
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: 10px;
-      padding: 1.35rem 1.45rem;
-      margin: 2.2rem 0;
+      margin: 2rem 0;
     }
     .subsection h3 {
-      margin-top: 0;
-      margin-bottom: .85rem;
-      font-size: 1.15rem;
+      font-size: 1.25rem;
+      margin-top: 2rem;
+      margin-bottom: .65rem;
+      color: var(--text);
+      font-weight: 600;
+      font-family: "Fraunces", Georgia, serif;
+    }
+    .subsection--matters h3 {
+      color: var(--text);
+      font-style: normal;
+      font-weight: 600;
     }
     .subsection--mistakes {
-      border-color: var(--warn-border);
       background: var(--warn-soft);
+      border-left: 4px solid var(--warn);
+      border-radius: 0 8px 8px 0;
+      padding: 1.2rem 1.4rem;
+      margin: 2.2rem 0;
+      box-shadow: 0 1px 4px var(--shadow);
     }
-    .subsection--mistakes h3 { color: var(--warn); }
+    .subsection--mistakes h3 { color: var(--warn) !important; margin-top: 0; }
     .subsection--recap {
-      border-color: var(--border);
-      background: var(--surface2);
-    }
-    .subsection--matters {
-      border-left: 4px solid var(--accent);
       background: var(--surface);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 1.2rem 1.4rem;
+      margin: 2.2rem 0;
+      box-shadow: 0 1px 4px var(--shadow);
+    }
+    .subsection--recap h3 { color: var(--accent) !important; margin-top: 0; }
+
+    [data-theme="dark"] .subsection h3,
+    [data-theme="dark"] .subsection--matters h3 {
+      color: #FFFFFF !important;
+    }
+    [data-theme="dark"] .subsection--mistakes p,
+    [data-theme="dark"] .subsection--mistakes li,
+    [data-theme="dark"] .subsection--recap p,
+    [data-theme="dark"] .subsection--recap li {
+      color: #FFFFFF !important;
     }
 
     /* Inline Code */

@@ -214,41 +214,90 @@
       font-weight: 300;
       margin: 0 .15rem;
     }
-    .topbar-curator-link {
+    /* HexDef Brand Ecosystem Pill */
+    .topbar-hexdef-pill {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: .38rem;
-      background: var(--surface2);
-      border: 1px solid var(--border);
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.28);
       border-radius: 8px;
-      padding: .35rem .75rem;
+      padding: 0 .65rem;
       font-size: .84rem;
       font-weight: 600;
       white-space: nowrap;
-      color: var(--text) !important;
+      color: #047857 !important;
       text-decoration: none;
       height: 32px;
       box-sizing: border-box;
       flex-shrink: 0;
-      transition: all .16s ease;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 1px 2px rgba(16, 185, 129, 0.05);
     }
-    .topbar-curator-link:hover {
-      border-color: var(--accent);
-      color: var(--accent) !important;
-      background: var(--surface-hover);
+
+    .hexdef-shield-icon {
+      stroke: #059669;
+      fill: rgba(52, 211, 153, 0.22);
+      filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.35));
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+
+    .hexdef-ext-arrow {
+      stroke: currentColor;
+      opacity: 0.7;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .topbar-hexdef-pill:hover {
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(16, 185, 129, 0.55);
+      color: #065f46 !important;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.22);
       transform: translateY(-0.5px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       text-decoration: none;
     }
-    .topbar-curator-link .ext-arrow {
-      font-size: .8rem;
-      color: var(--accent);
-      transition: transform .16s ease;
+
+    .topbar-hexdef-pill:hover .hexdef-shield-icon {
+      stroke: #047857;
+      fill: rgba(52, 211, 153, 0.45);
+      filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.65));
+      transform: scale(1.18);
     }
-    .topbar-curator-link:hover .ext-arrow {
+
+    .topbar-hexdef-pill:hover .hexdef-ext-arrow {
+      opacity: 1;
       transform: translate(2px, -2px);
+    }
+
+    [data-theme="dark"] .topbar-hexdef-pill {
+      background: rgba(52, 211, 153, 0.09);
+      border-color: rgba(52, 211, 153, 0.32);
+      color: #6ee7b7 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    [data-theme="dark"] .hexdef-shield-icon {
+      stroke: #34d399;
+      fill: rgba(52, 211, 153, 0.35);
+      filter: drop-shadow(0 0 3px rgba(52, 211, 153, 0.55));
+    }
+
+    [data-theme="dark"] .topbar-hexdef-pill:hover {
+      background: rgba(52, 211, 153, 0.18);
+      border-color: rgba(52, 211, 153, 0.65);
+      color: #a7f3d0 !important;
+      box-shadow: 0 0 16px rgba(52, 211, 153, 0.32);
+    }
+
+    [data-theme="dark"] .topbar-hexdef-pill:hover .hexdef-shield-icon {
+      stroke: #6ee7b7;
+      fill: rgba(110, 231, 183, 0.5);
+      filter: drop-shadow(0 0 7px rgba(52, 211, 153, 0.85));
+      transform: scale(1.2);
     }
     .topbar-middle {
       display: flex;
@@ -458,15 +507,13 @@
       .textbook-btn { padding: 0 .6rem !important; }
       .settings-btn-text { display: none; }
       .topbar-action-btn { width: 32px; min-width: 32px; padding: 0 !important; }
-      .topbar-curator-link .curator-name { display: none; }
-      .topbar-curator-link::before { content: "Tanvir"; }
-      .topbar-curator-link { padding: 0 .55rem !important; font-size: .82rem; }
+      .topbar-hexdef-pill { padding: 0 .55rem !important; font-size: .82rem; }
     }
     @media (max-width: 768px) {
       .topbar-middle { display: none !important; }
       .textbook-btn,
       .topbar-action-btn,
-      .topbar-curator-link {
+      .topbar-hexdef-pill {
         padding: 0 .55rem !important;
         height: 32px !important;
         min-width: 32px !important;
@@ -475,7 +522,8 @@
       }
       .textbook-btn-text,
       .settings-btn-text,
-      .topbar-curator-link .curator-name {
+      .topbar-hexdef-pill .hexdef-pill-label,
+      .topbar-hexdef-pill .hexdef-ext-arrow {
         display: none !important;
       }
     }
@@ -1601,9 +1649,15 @@
           <span class="textbook-icon">📖</span>
           <span class="textbook-btn-text">Read Textbook</span>
         </a>
-        <a href="https://hexdef.com" target="_blank" rel="noopener" class="topbar-curator-link" title="Visit Tanvir Hussain's Systems Portfolio &amp; Resume at hexdef.com">
-          <span class="curator-name">Tanvir Hussain</span>
-          <span class="ext-arrow">↗</span>
+        <a href="https://hexdef.com" target="_blank" rel="noopener" class="topbar-hexdef-pill" title="Curated by Tanvir Hussain • Visit HexDef Systems Architecture &amp; Security (hexdef.com)">
+          <svg class="hexdef-shield-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span class="hexdef-pill-label">HexDef</span>
+          <svg class="hexdef-ext-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
         </a>
         <button id="settings-btn" class="topbar-action-btn" type="button" aria-haspopup="dialog" aria-expanded="false" title="Playground Settings">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="settings-btn-icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>

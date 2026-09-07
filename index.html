@@ -406,13 +406,31 @@
     .track-identity {
       display: flex;
       align-items: center;
-      gap: 0.65rem;
+      gap: 0.75rem;
     }
 
     .track-icon {
-      font-size: 1.85rem;
-      line-height: 1;
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
+
+    .track-icon svg {
+      width: 34px;
+      height: 34px;
+      display: block;
+    }
+
+    /* Official Bash Logo Theme Styling */
+    [data-theme="dark"] .bash-chassis { fill: #475569; }
+    [data-theme="dark"] .bash-screen { fill: #0B1120; }
+    [data-theme="light"] .bash-chassis { fill: #2B3539; }
+    [data-theme="light"] .bash-screen { fill: #111827; }
+    :root:not([data-theme="dark"]) .bash-chassis { fill: #2B3539; }
+    :root:not([data-theme="dark"]) .bash-screen { fill: #111827; }
 
     .track-title {
       font-family: var(--font-serif);
@@ -700,7 +718,22 @@
           <div>
             <div class="track-header">
               <div class="track-identity">
-                <span class="track-icon">🐍</span>
+                <span class="track-icon" title="Python">
+                  <svg viewBox="0 0 128 128" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="py-grad-a" x1="70.25" y1="1237.48" x2="170.66" y2="1151.09" gradientTransform="matrix(.563 0 0 -.568 -29.215 707.817)" gradientUnits="userSpaceOnUse">
+                        <stop offset="0" stop-color="#5A9FD4"/>
+                        <stop offset="1" stop-color="#306998"/>
+                      </linearGradient>
+                      <linearGradient id="py-grad-b" x1="209.47" y1="1098.81" x2="173.62" y2="1149.54" gradientTransform="matrix(.563 0 0 -.568 -29.215 707.817)" gradientUnits="userSpaceOnUse">
+                        <stop offset="0" stop-color="#FFD43B"/>
+                        <stop offset="1" stop-color="#FFE873"/>
+                      </linearGradient>
+                    </defs>
+                    <path fill="url(#py-grad-a)" d="M63.39 1.99c-4.22.02-8.25.38-11.8 1.01-10.45 1.85-12.35 5.71-12.35 12.84v9.41h24.69v3.14H29.98c-7.18 0-13.46 4.31-15.43 12.52-2.27 9.4-2.37 15.27 0 25.1 1.76 7.31 5.95 12.52 13.12 12.52h8.49V67.23c0-8.15 7.05-15.34 15.43-15.34h24.66c6.87 0 12.35-5.65 12.35-12.55V15.83c0-6.69-5.65-11.72-12.35-12.84-4.24-.7-8.64-1.02-12.86-1zM50.04 9.56a4.69 4.69 0 1 1 0 9.38 4.69 4.69 0 0 1 0-9.38z" transform="translate(0 10.26)"/>
+                    <path fill="url(#py-grad-b)" d="M91.68 28.38v10.97c0 8.5-7.2 15.65-15.42 15.65H51.59c-6.76 0-12.35 5.78-12.35 12.55v23.51c0 6.69 5.82 10.63 12.35 12.55 7.82 2.3 15.31 2.71 24.66 0 6.22-1.8 12.35-5.42 12.35-12.55V86.1H63.94v-3.14h37.01c7.18 0 9.85-5 12.35-12.52 2.58-7.73 2.47-15.17 0-25.1-1.77-7.14-5.16-12.52-12.35-12.52h-9.27zM77.81 87.93a4.69 4.69 0 1 1 0 9.38 4.69 4.69 0 0 1 0-9.38z" transform="translate(0 10.26)"/>
+                  </svg>
+                </span>
                 <h3 class="track-title">Python</h3>
               </div>
               <span class="track-badge-active">[ 70 CHAPTERS ]</span>
@@ -724,7 +757,14 @@
           <div>
             <div class="track-header">
               <div class="track-identity">
-                <span class="track-icon">🐚</span>
+                <span class="track-icon" title="Bash">
+                  <svg class="bash-svg" viewBox="0 0 138.43 158.2" aria-hidden="true">
+                    <path class="bash-chassis" d="M128.79,32.3,78.85,2.65a18.81,18.81,0,0,0-19.27,0L9.63,32.3A19.92,19.92,0,0,0,0,49.46v59.29A19.92,19.92,0,0,0,9.63,125.9l49.94,29.64a18.82,18.82,0,0,0,19.27,0l49.94-29.64a19.92,19.92,0,0,0,9.64-17.16V49.46A19.92,19.92,0,0,0,128.79,32.3Z"/>
+                    <path class="bash-screen" d="M127,35.34c-1.66-3.53-5.39-4.5-9.74-2L77.72,74C71.83,77.43,67.49,81.3,67.48,88.4v58.22c0,4.25,1.71,7,4.35,7.81L127,125.9a19.92,19.92,0,0,0,9.64-17.16V49.46A16.33,16.33,0,0,0,127,35.34Z"/>
+                    <path d="M115.7,114.48l-12.44,7.44a.91.91,0,0,0-.57.81V126c0,.4.27.56.6.37l12.63-7.68a1,1,0,0,0,.38-1v-2.87C116.29,114.45,116,114.29,115.7,114.48Z" fill="#10B981"/>
+                    <path d="M89.22,87.09c.4-.2.73,0,.74.57L90,92a8,8,0,0,1,4.78-.58c.31.08.44.5.32,1l-.95,3.81a1.64,1.64,0,0,1-.43.76,1,1,0,0,1-.25.18.57.57,0,0,1-.37.06,6.34,6.34,0,0,0-4.61.74,5.79,5.79,0,0,0-3.41,5.13c0,2,1,2.55,4.49,2.61,4.61.08,6.61,2.09,6.66,6.74a16.53,16.53,0,0,1-6.12,12.47l.08,4.26a1.56,1.56,0,0,1-.73,1.3l-2.52,1.45c-.4.2-.73,0-.74-.56l0-4.19c-2.16.9-4.35,1.11-5.75.55-.26-.1-.38-.49-.27-.94l.91-3.85a1.61,1.61,0,0,1,.45-.8,1,1,0,0,1,.24-.17.5.5,0,0,1,.41,0,7,7,0,0,0,5.29-.67,6.92,6.92,0,0,0,3.91-6c0-2.16-1.19-3.06-4-3.08-3.63,0-7-.7-7.07-6a15.5,15.5,0,0,1,5.86-11.86L86,90a1.55,1.55,0,0,1,.73-1.32Z" fill="#FFFFFF"/>
+                  </svg>
+                </span>
                 <h3 class="track-title">Bash</h3>
               </div>
               <span class="track-badge-active">[ 66 CHAPTERS ]</span>
@@ -748,7 +788,14 @@
           <div>
             <div class="track-header">
               <div class="track-identity">
-                <span class="track-icon">⚙️</span>
+                <span class="track-icon" title="C">
+                  <svg viewBox="0 0 38 42" aria-hidden="true">
+                    <path fill="#004482" fill-rule="evenodd" d="m 17.903,0.286 c 0.679,-0.381 1.515,-0.381 2.193,0 C 23.451,2.169 33.547,7.837 36.903,9.72 37.582,10.1 38,10.8 38,11.566 v 18.867 c 0,0.762 -0.418,1.466 -1.097,1.847 -3.355,1.883 -13.451,7.551 -16.807,9.434 -0.679,0.381 -1.515,0.381 -2.193,0 -3.355,-1.883 -13.451,-7.551 -16.807,-9.434 -0.678,-0.381 -1.096,-1.084 -1.096,-1.846 V 11.566 c 0,-0.762 0.418,-1.466 1.097,-1.847 3.354,-1.883 13.452,-7.551 16.806,-9.434 z"/>
+                    <path fill="#659AD2" fill-rule="evenodd" d="m 0.304,31.404 c -0.266,-0.356 -0.304,-0.694 -0.304,-1.149 V 11.496 c 0,-0.758 0.417,-1.458 1.094,-1.836 3.343,-1.872 13.405,-7.507 16.748,-9.38 0.677,-0.379 1.594,-0.371 2.271,0.008 3.343,1.872 13.371,7.459 16.714,9.331 0.27,0.152 0.476,0.335 0.66,0.576 z"/>
+                    <path fill="#ffffff" fill-rule="evenodd" d="m 19,7 c 7.727,0 14,6.273 14,14 0,7.727 -6.273,14 -14,14 -7.727,0 -14,-6.273 -14,-14 0,-7.727 6.273,-14 14,-14 z m 0,7 c 3.863,0 7,3.136 7,7 0,3.863 -3.137,7 -7,7 -3.863,0 -7,-3.137 -7,-7 0,-3.864 3.136,-7 7,-7 z"/>
+                    <path fill="#00599C" fill-rule="evenodd" d="m 37.485,10.205 c 0.516,0.483 0.506,1.211 0.506,1.784 0,3.795 -0.032,14.589 0.009,18.384 0.004,0.396 -0.127,0.813 -0.323,1.127 l -19.084,-10.5 z"/>
+                  </svg>
+                </span>
                 <h3 class="track-title">C</h3>
               </div>
               <span class="track-badge-active">[ 70 CHAPTERS ]</span>
@@ -772,7 +819,25 @@
           <div>
             <div class="track-header">
               <div class="track-identity">
-                <span class="track-icon">⚡</span>
+                <span class="track-icon" title="PowerShell">
+                  <svg viewBox="0 0 128 128" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="ps-glow" x1="96.3" x2="25.5" y1="35.1" y2="98.4" gradientTransform="matrix(1 0 0 -1 0 128)" gradientUnits="userSpaceOnUse">
+                        <stop offset="0" stop-color="#a9c8ff" stop-opacity="0.6"/>
+                        <stop offset="1" stop-color="#c7e6ff" stop-opacity="0.2"/>
+                      </linearGradient>
+                      <linearGradient id="ps-bg" x1="25.3" x2="94.6" y1="98.3" y2="36.8" gradientTransform="matrix(1 0 0 -1 0 128)" gradientUnits="userSpaceOnUse">
+                        <stop offset="0" stop-color="#2B5BA8"/>
+                        <stop offset="0.5" stop-color="#1E417A"/>
+                        <stop offset="1" stop-color="#0F244A"/>
+                      </linearGradient>
+                    </defs>
+                    <path fill="url(#ps-glow)" fill-rule="evenodd" d="M7.2 110.5c-1.7 0-3.1-.7-4.1-1.9-1-1.2-1.3-2.9-.9-4.6l18.6-80.5c.8-3.4 4-6 7.4-6h92.6c1.7 0 3.1.7 4.1 1.9 1 1.2 1.3 2.9.9 4.6l-18.6 80.5c-.8 3.4-4 6-7.4 6H7.2z"/>
+                    <path fill="url(#ps-bg)" fill-rule="evenodd" d="M120.3 18.5H28.5c-2.9 0-5.7 2.3-6.4 5.2L3.7 104.3c-.7 2.9 1.1 5.2 4 5.2h91.8c2.9 0 5.7-2.3 6.4-5.2l18.4-80.5c.7-2.9-1.1-5.3-4-5.3z"/>
+                    <path fill="#162F58" fill-rule="evenodd" d="M64.2 88.3h22.3c2.6 0 4.7 2.2 4.7 4.9s-2.1 4.9-4.7 4.9H64.2c-2.6 0-4.7-2.2-4.7-4.9s2.1-4.9 4.7-4.9zM78.7 66.5c-.4.8-1.2 1.6-2.6 2.6L34.6 98.9c-2.3 1.6-5.5 1-7.3-1.4-1.7-2.4-1.3-5.7.9-7.3l37.4-27.1v-.6l-23.5-25c-1.9-2-1.7-5.3.4-7.4 2.2-2 5.5-2 7.4 0l28.2 30c1.7 1.9 1.8 4.5.6 6.4z" opacity="0.6"/>
+                    <path fill="#FFFFFF" fill-rule="evenodd" d="M77.6 65.5c-.4.8-1.2 1.6-2.6 2.6L33.6 97.9c-2.3 1.6-5.5 1-7.3-1.4-1.7-2.4-1.3-5.7.9-7.3l37.4-27.1v-.6l-23.5-25c-1.9-2-1.7-5.3.4-7.4 2.2-2 5.5-2 7.4 0l28.2 30c1.7 1.8 1.8 4.4.5 6.4zM63.5 87.8h22.3c2.6 0 4.7 2.1 4.7 4.6 0 2.6-2.1 4.6-4.7 4.6H63.5c-2.6 0-4.7-2.1-4.7-4.6 0-2.6 2.1-4.6 4.7-4.6z"/>
+                  </svg>
+                </span>
                 <h3 class="track-title">PowerShell</h3>
               </div>
               <span class="track-badge-active">[ 75 CHAPTERS ]</span>

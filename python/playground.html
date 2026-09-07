@@ -167,18 +167,13 @@
       color: inherit;
     }
     .brand-icon {
-      width: 26px; height: 26px;
-      border-radius: 6px;
-      background: linear-gradient(135deg, #0F766E, #0D9488);
-      color: #FFFFFF;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: .85rem;
+      width: 22px; height: 22px;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
-    [data-theme="dark"] .brand-icon {
-      background: linear-gradient(135deg, #2DD4BF, #0F766E);
-      color: #030712;
+    .brand-icon svg {
+      width: 20px; height: 20px;
+      display: block;
     }
     .brand-title {
       font-family: "Fraunces", Georgia, serif;
@@ -1632,8 +1627,23 @@
         </a>
         <span class="topbar-sep">/</span>
         <a href="index.html" class="brand" title="Return to Textbook">
-          <div class="brand-icon">Py</div>
-          <span class="brand-title">Playground</span>
+          <span class="brand-icon">
+            <svg viewBox="0 0 128 128" aria-hidden="true">
+              <defs>
+                <linearGradient id="py-grad-a-pg" x1="70.25" y1="1237.48" x2="170.66" y2="1151.09" gradientTransform="matrix(.563 0 0 -.568 -29.215 707.817)" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#5A9FD4"/>
+                  <stop offset="1" stop-color="#306998"/>
+                </linearGradient>
+                <linearGradient id="py-grad-b-pg" x1="209.47" y1="1098.81" x2="173.62" y2="1149.54" gradientTransform="matrix(.563 0 0 -.568 -29.215 707.817)" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stop-color="#FFD43B"/>
+                  <stop offset="1" stop-color="#FFE873"/>
+                </linearGradient>
+              </defs>
+              <path fill="url(#py-grad-a-pg)" d="M63.39 1.99c-4.22.02-8.25.38-11.8 1.01-10.45 1.85-12.35 5.71-12.35 12.84v9.41h24.69v3.14H29.98c-7.18 0-13.46 4.31-15.43 12.52-2.27 9.4-2.37 15.27 0 25.1 1.76 7.31 5.95 12.52 13.12 12.52h8.49V67.23c0-8.15 7.05-15.34 15.43-15.34h24.66c6.87 0 12.35-5.65 12.35-12.55V15.83c0-6.69-5.65-11.72-12.35-12.84-4.24-.7-8.64-1.02-12.86-1zM50.04 9.56a4.69 4.69 0 1 1 0 9.38 4.69 4.69 0 0 1 0-9.38z" transform="translate(0 10.26)"/>
+              <path fill="url(#py-grad-b-pg)" d="M91.68 28.38v10.97c0 8.5-7.2 15.65-15.42 15.65H51.59c-6.76 0-12.35 5.78-12.35 12.55v23.51c0 6.69 5.82 10.63 12.35 12.55 7.82 2.3 15.31 2.71 24.66 0 6.22-1.8 12.35-5.42 12.35-12.55V86.1H63.94v-3.14h37.01c7.18 0 9.85-5 12.35-12.52 2.58-7.73 2.47-15.17 0-25.1-1.77-7.14-5.16-12.52-12.35-12.52h-9.27zM77.81 87.93a4.69 4.69 0 1 1 0 9.38 4.69 4.69 0 0 1 0-9.38z" transform="translate(0 10.26)"/>
+            </svg>
+          </span>
+          <span class="brand-title" style="font-size: 1.05rem;">Python Playground</span>
         </a>
       </div>
 

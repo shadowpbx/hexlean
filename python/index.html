@@ -597,10 +597,13 @@
       transform: translateY(0);
       box-shadow: 0 1px 3px rgba(15, 118, 110, 0.2);
     }
-    .playground-bolt-icon {
-      font-size: .88rem;
-      line-height: 1;
-      filter: drop-shadow(0 0 3px rgba(253, 224, 71, 0.6));
+    .playground-icon {
+      width: 13.5px;
+      height: 13.5px;
+      stroke: currentColor;
+      flex-shrink: 0;
+      display: inline-block;
+      vertical-align: middle;
     }
     .playground-tag {
       font-size: .62rem;
@@ -2086,7 +2089,10 @@
     </div>
     <div class="topbar-right">
       <a href="playground.html" class="playground-btn" target="_blank" rel="noopener" title="Open interactive Python Playground (IDE)">
-        <span class="playground-bolt-icon">⚡</span>
+        <svg class="playground-icon" width="13.5" height="13.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="4 17 10 12 4 7"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
+        </svg>
         <span class="playground-btn-text">Playground</span>
         <span class="playground-tag">IDE</span>
       </a>
@@ -2210,7 +2216,7 @@
   <!-- Mobile Bottom Bar -->
   <div id="mobile-bar">
     <button class="mob-btn" id="mob-toc">☰ Chapters</button>
-    <a href="playground.html" target="_blank" rel="noopener" class="mob-btn" style="text-decoration:none;display:flex;align-items:center;justify-content:center;color:var(--accent-strong);font-weight:700;">⚡ IDE</a>
+    <a href="playground.html" target="_blank" rel="noopener" class="mob-btn" style="text-decoration:none;display:flex;align-items:center;justify-content:center;color:var(--accent-strong);font-weight:700;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin-right:4px;"><polyline points="4 17 10 12 4 7"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>IDE</a>
     <button class="mob-btn" id="mob-search">🔍 Search</button>
     <button class="mob-btn" id="mob-prev">‹ Prev</button>
     <span class="mob-progress" id="mob-prog-text">1 / 70</span>

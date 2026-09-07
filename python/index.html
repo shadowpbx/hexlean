@@ -310,7 +310,14 @@
       -webkit-backdrop-filter: blur(12px);
     }
 
-    .topbar-left { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      min-width: 0;
+      flex-shrink: 1;
+      overflow: hidden;
+    }
     .hamburger-btn {
       display: none;
       background: none;
@@ -322,16 +329,27 @@
       cursor: pointer;
       align-items: center; justify-content: center;
       transition: background .15s;
+      flex-shrink: 0;
     }
     .hamburger-btn:hover { background: var(--surface); }
 
-    .brand { display: flex; align-items: baseline; gap: .5rem; text-decoration: none; }
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: .5rem;
+      text-decoration: none;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
     .brand-title {
       font-family: "Fraunces", serif;
       font-weight: 600;
       font-size: 1.05rem;
       color: var(--text);
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .brand-subtitle {
       font-size: .82rem;
@@ -714,6 +732,9 @@
       color: #2DD4BF;
       box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.22);
     }
+    @media (max-width: 960px) {
+      .playground-btn { display: none !important; }
+    }
     @media (max-width: 768px) {
       .topbar-curator-link .curator-name { display: none; }
       .topbar-curator-link::before { content: "Tanvir"; }
@@ -723,11 +744,11 @@
       .search-btn { padding: .35rem .5rem; }
       .settings-btn-text, .settings-chevron { display: none; }
       .reader-settings-btn { padding: .34rem .58rem; }
-      .playground-tag { display: none; }
-      .playground-btn { padding: .32rem .55rem; font-size: .8rem; }
       .topbar-curator-link { padding: .32rem .5rem; font-size: .8rem; }
     }
-    @media (max-width: 440px) {
+    @media (max-width: 480px) {
+      .topbar-curator-link::before { display: none; }
+      .topbar-curator-link { padding: .3rem .45rem; }
       .topbar-platform-title { display: none; }
     }
 

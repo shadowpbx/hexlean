@@ -314,9 +314,7 @@
       display: flex;
       align-items: center;
       gap: .5rem;
-      min-width: 0;
-      flex-shrink: 1;
-      overflow: hidden;
+      flex-shrink: 0;
     }
     .hamburger-btn {
       display: none;
@@ -338,9 +336,8 @@
       align-items: baseline;
       gap: .5rem;
       text-decoration: none;
-      min-width: 0;
-      overflow: hidden;
       white-space: nowrap;
+      flex-shrink: 0;
     }
     .brand-title {
       font-family: "Fraunces", serif;
@@ -348,8 +345,7 @@
       font-size: 1.05rem;
       color: var(--text);
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      flex-shrink: 0;
     }
     .brand-subtitle {
       font-size: .82rem;
@@ -733,20 +729,22 @@
       box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.22);
     }
     @media (max-width: 960px) {
-      .playground-btn { display: none !important; }
-    }
-    @media (max-width: 768px) {
-      .topbar-curator-link .curator-name { display: none; }
-      .topbar-curator-link::before { content: "Tanvir"; }
-    }
-    @media (max-width: 600px) {
       .search-btn-text, .search-shortcut-badge { display: none; }
-      .search-btn { padding: .35rem .5rem; }
+      .search-btn { padding: .35rem .55rem; }
       .settings-btn-text, .settings-chevron { display: none; }
       .reader-settings-btn { padding: .34rem .58rem; }
-      .topbar-curator-link { padding: .32rem .5rem; font-size: .8rem; }
+      .topbar-curator-link .curator-name { display: none; }
+      .topbar-curator-link::before { content: "Tanvir"; }
+      .topbar-curator-link { padding: .32rem .55rem; font-size: .82rem; }
+      .playground-tag { display: none; }
+      .playground-btn-text { display: none; }
+      .playground-btn::after { content: "IDE"; font-size: .78rem; font-weight: 700; margin-left: .2rem; }
+      .playground-btn { padding: .32rem .55rem; font-size: .82rem; }
     }
-    @media (max-width: 480px) {
+    @media (max-width: 540px) {
+      .playground-btn { display: none !important; }
+    }
+    @media (max-width: 440px) {
       .topbar-curator-link::before { display: none; }
       .topbar-curator-link { padding: .3rem .45rem; }
       .topbar-platform-title { display: none; }
@@ -2001,8 +1999,8 @@
       }
       #sidebar.open { transform: translateX(0); }
       .hamburger-btn { display: flex; }
-      #mobile-bar { display: flex; }
-      #main-viewport { padding: 1.5rem 1rem calc(6rem + var(--sab)); }
+      #mobile-bar { display: none !important; }
+      #main-viewport { padding: 1.5rem 1rem calc(2.5rem + var(--sab)); }
       .chapter-nav-cards { grid-template-columns: 1fr; gap: .85rem; }
       .nav-card.next { text-align: left; }
     }

@@ -1505,6 +1505,256 @@
     }
     .copy-icon { flex-shrink: 0; }
 
+    /* Code Header Right Group */
+    .code-header-right {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+    }
+
+    /* Bash Runner Button */
+    .code-run-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 6px;
+      padding: .28rem .65rem;
+      font-size: .74rem;
+      font-family: "Source Sans 3", sans-serif;
+      font-weight: 600;
+      color: #059669;
+      cursor: pointer;
+      transition: all .15s ease;
+      user-select: none;
+    }
+    .code-run-btn:hover {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: #059669;
+      color: #047857;
+      transform: translateY(-1px);
+    }
+    .code-run-btn.running {
+      opacity: 0.85;
+      cursor: wait;
+      pointer-events: none;
+    }
+    [data-theme="dark"] .code-run-btn,
+    [data-code-card="dark"] .code-run-btn {
+      background: rgba(45, 212, 191, 0.14);
+      border-color: rgba(45, 212, 191, 0.4);
+      color: #2DD4BF;
+    }
+    [data-theme="dark"] .code-run-btn:hover,
+    [data-code-card="dark"] .code-run-btn:hover {
+      background: rgba(45, 212, 191, 0.26);
+      border-color: #5EEAD4;
+      color: #FFFFFF;
+    }
+
+    /* Reset Code Button */
+    .code-reset-btn {
+      display: none;
+      align-items: center;
+      gap: .25rem;
+      background: transparent;
+      border: 1px dashed var(--code-card-copy-border);
+      border-radius: 6px;
+      padding: .25rem .5rem;
+      font-size: .7rem;
+      font-family: inherit;
+      color: var(--code-card-lang);
+      cursor: pointer;
+      transition: all .15s ease;
+    }
+    .code-reset-btn:hover {
+      border-style: solid;
+      color: var(--code-card-copy-text);
+      background: var(--code-card-copy-hover-bg);
+    }
+    .code-reset-btn.visible {
+      display: inline-flex;
+    }
+
+    /* Interactive Output Drawer / Shelf */
+    .code-output-shelf {
+      display: none;
+      border-top: 1px solid var(--code-card-border);
+      background: var(--code-card-header-bg);
+      font-family: "IBM Plex Mono", monospace;
+      animation: shelfSlideDown .2s ease-out;
+    }
+    .code-output-shelf.open {
+      display: block;
+    }
+    @keyframes shelfSlideDown {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .code-output-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .4rem 1rem;
+      background: rgba(0, 0, 0, 0.03);
+      border-bottom: 1px solid var(--code-card-border);
+      font-size: .72rem;
+      font-family: "Source Sans 3", sans-serif;
+      font-weight: 600;
+      color: var(--code-card-lang);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    [data-theme="dark"] .code-output-header,
+    [data-code-card="dark"] .code-output-header {
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    .code-output-header-left {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+    }
+    .output-status-badge {
+      font-size: .68rem;
+      font-weight: 600;
+      padding: .12rem .4rem;
+      border-radius: 4px;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .output-status-badge.success {
+      background: rgba(16, 185, 129, 0.15);
+      color: #059669;
+    }
+    .output-status-badge.error {
+      background: rgba(239, 68, 68, 0.15);
+      color: #DC2626;
+    }
+    [data-theme="dark"] .output-status-badge.success,
+    [data-code-card="dark"] .output-status-badge.success {
+      background: rgba(45, 212, 191, 0.2);
+      color: #5EEAD4;
+    }
+    [data-theme="dark"] .output-status-badge.error,
+    [data-code-card="dark"] .output-status-badge.error {
+      background: rgba(248, 113, 113, 0.2);
+      color: #F87171;
+    }
+
+    .code-output-clear {
+      background: none;
+      border: none;
+      color: var(--code-card-lang);
+      font-size: .72rem;
+      font-family: inherit;
+      cursor: pointer;
+      padding: .15rem .35rem;
+      border-radius: 4px;
+      transition: all .15s;
+    }
+    .code-output-clear:hover {
+      color: var(--code-card-copy-text);
+      background: var(--code-card-copy-hover-bg);
+    }
+
+    .code-output-body {
+      padding: .85rem 1.2rem;
+      font-size: .86rem;
+      line-height: 1.55;
+      overflow-x: auto;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+
+    .code-output-text {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      color: var(--code-card-text);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .86rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .code-output-text.error {
+      color: #DC2626 !important;
+    }
+    [data-theme="dark"] .code-output-text.error,
+    [data-code-card="dark"] .code-output-text.error {
+      color: #F87171 !important;
+    }
+    .code-output-text.empty {
+      color: var(--code-card-lang);
+      font-style: italic;
+    }
+
+    /* First-time Setup Progress Box */
+    .bash-progress-box {
+      padding: .4rem 0;
+      font-family: "Source Sans 3", sans-serif;
+    }
+    .bash-progress-title {
+      font-weight: 600;
+      font-size: .82rem;
+      color: var(--code-card-text);
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      margin-bottom: .45rem;
+    }
+    .bash-progress-track {
+      width: 100%;
+      height: 7px;
+      background: var(--code-card-border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: .45rem;
+    }
+    .bash-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #10B981, #06B6D4);
+      border-radius: 4px;
+      transition: width .2s ease;
+    }
+    [data-theme="dark"] .bash-progress-fill,
+    [data-code-card="dark"] .bash-progress-fill {
+      background: linear-gradient(90deg, #2DD4BF, #38BDF8);
+    }
+    .bash-progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .74rem;
+      color: var(--code-card-lang);
+    }
+    .bash-progress-hint {
+      font-size: .72rem;
+      color: var(--code-card-lang);
+      margin-top: .35rem;
+      opacity: 0.85;
+      font-style: italic;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+    .spinner-icon {
+      animation: spin 0.8s linear infinite;
+      flex-shrink: 0;
+    }
+    .run-icon {
+      flex-shrink: 0;
+    }
+
+    pre > code[contenteditable="true"] {
+      outline: none;
+      cursor: text;
+    }
+
     pre {
       margin: 0;
       padding: 1.15rem 1.3rem;
@@ -1647,6 +1897,8 @@
   </style>
 </head>
 <body>
+  <!-- Headless WebAssembly Bash Runtime Terminal Sink -->
+  <div id="terminal" style="position: fixed; left: -9999px; top: -9999px; width: 600px; height: 400px; opacity: 0; pointer-events: none; z-index: -999;" aria-hidden="true"></div>
 
   <!-- Top Progress Bar -->
   <div id="progress-line"><div id="progress-fill"></div></div>
@@ -3427,6 +3679,222 @@ return He}()
     var chapterPane = document.getElementById('chapter-pane');
     var progressFill = document.getElementById('progress-fill');
 
+    // =========================================================================
+    // In-Browser WebAssembly Bash 5.2 Runtime Manager (100% Client-Side)
+    // =========================================================================
+    var BashEngine = {
+      initPromise: null,
+      statusCallback: null,
+      isReady: false,
+      executionQueue: Promise.resolve(),
+
+      notify: function(pct, msg) {
+        if (this.statusCallback) {
+          this.statusCallback(pct, msg);
+        }
+      },
+
+      init: function(onProgress) {
+        if (this.isReady) {
+          return Promise.resolve(true);
+        }
+        if (this.initPromise) {
+          if (onProgress) this.statusCallback = onProgress;
+          return this.initPromise;
+        }
+
+        var self = this;
+        this.statusCallback = onProgress;
+
+        var isCached = false;
+        try { isCached = (localStorage.getItem('websh_wasm_cached') === 'true'); }catch(e){}
+
+        this.notify(15, isCached ? "Loading Bash engine from browser cache..." : "Initializing WebAssembly Bash runtime...");
+
+        this.initPromise = new Promise(async function(resolve, reject) {
+          try {
+            // Ensure hidden headless terminal container exists in DOM
+            var termContainer = document.getElementById('terminal');
+            if (!termContainer) {
+              termContainer = document.createElement('div');
+              termContainer.id = 'terminal';
+              termContainer.style.cssText = 'position:fixed;left:-9999px;top:-9999px;width:600px;height:400px;opacity:0;pointer-events:none;z-index:-999;';
+              termContainer.setAttribute('aria-hidden', 'true');
+              document.body.appendChild(termContainer);
+            }
+
+            // Helper to load external scripts sequentially
+            function loadScript(src) {
+              return new Promise(function(res, rej) {
+                var existing = document.querySelector('script[src="' + src + '"]');
+                if (existing) {
+                  if (existing.getAttribute('data-loaded') === 'true') return res();
+                  existing.addEventListener('load', function(){ res(); });
+                  existing.addEventListener('error', function(e){ rej(e); });
+                  return;
+                }
+                var s = document.createElement('script');
+                s.src = src;
+                s.onload = function() { s.setAttribute('data-loaded', 'true'); res(); };
+                s.onerror = function() { rej(new Error('Failed to load ' + src)); };
+                document.head.appendChild(s);
+              });
+            }
+
+            self.notify(28, "Loading runtime shims (jsfs, vnet, wasm_exec)...");
+
+            var vendorBase = './vendor/websh/';
+            await loadScript(vendorBase + 'jsfs.js');
+            await loadScript(vendorBase + 'vnet.js');
+            await loadScript(vendorBase + 'wasm_exec.js');
+
+            self.notify(48, isCached ? "Reading WebAssembly core from cache..." : "Loading Bash 5.2 WebAssembly (~3.5 MB)...");
+
+            var wasmPath = vendorBase + 'main.wasm';
+            var res = await fetch(wasmPath);
+            if (!res.ok) throw new Error('HTTP ' + res.status + ': Failed to fetch ' + wasmPath);
+
+            self.notify(72, "Instantiating WebAssembly module...");
+
+            var go = new Go();
+            var wasmInstance;
+            if (typeof WebAssembly.instantiateStreaming === 'function') {
+              try {
+                var streamRes = await WebAssembly.instantiateStreaming(res.clone(), go.importObject);
+                wasmInstance = streamRes.instance;
+              } catch (streamErr) {
+                var buf = await res.arrayBuffer();
+                var mod = await WebAssembly.instantiate(buf, go.importObject);
+                wasmInstance = mod.instance;
+              }
+            } else {
+              var buf = await res.arrayBuffer();
+              var mod = await WebAssembly.instantiate(buf, go.importObject);
+              wasmInstance = mod.instance;
+            }
+
+            self.notify(88, "Booting shell and mounting virtual filesystem...");
+
+            // Run Go WebAssembly Runtime
+            go.run(wasmInstance);
+            try { localStorage.setItem('websh_wasm_cached', 'true'); }catch(e){}
+
+            // Wait for terminal textarea to be created and mounted by xterm-go
+            var checkCount = 0;
+            var checkInterval = setInterval(function() {
+              checkCount++;
+              var ta = document.querySelector('#terminal textarea') || document.querySelector('.xterm-helper-textarea');
+              if (ta || checkCount > 60) {
+                clearInterval(checkInterval);
+                if (!ta) {
+                  reject(new Error("WebAssembly Bash terminal textarea timed out during boot"));
+                  return;
+                }
+                self.isReady = true;
+                self.notify(100, "Bash engine ready!");
+                // Short settle delay for shell prompt
+                setTimeout(function() { resolve(true); }, 350);
+              }
+            }, 100);
+
+          } catch(err) {
+            console.error("BashEngine boot error:", err);
+            self.initPromise = null;
+            reject(err);
+          }
+        });
+
+        return this.initPromise;
+      },
+
+      run: function(code, onProgress) {
+        var self = this;
+        return (this.executionQueue = this.executionQueue.then(function() {
+          return self._execute(code, onProgress);
+        }));
+      },
+
+      _execute: async function(code, onProgress) {
+        await this.init(onProgress);
+
+        var ta = document.querySelector('#terminal textarea') || document.querySelector('.xterm-helper-textarea');
+        if (!ta) {
+          throw new Error("Bash execution terminal not available");
+        }
+
+        var startTime = performance.now();
+
+        return new Promise(function(resolve) {
+          var DONE_TOKEN = '___HEXLEAN_DONE_' + Date.now() + '_' + Math.floor(Math.random() * 1000000) + '___';
+          var done = false;
+
+          var timer = setTimeout(function() {
+            if (!done) {
+              done = true;
+              var elapsed = Math.round(performance.now() - startTime);
+              resolve({
+                stdout: '',
+                stderr: 'Execution timed out (exceeded 10 seconds limit)',
+                executionTime: elapsed,
+                exitCode: -1,
+                error: true
+              });
+            }
+          }, 10000);
+
+          // Intercept clipboard writeText via pbcopy
+          Object.defineProperty(navigator, 'clipboard', {
+            value: {
+              writeText: function(raw) {
+                if (done) return Promise.resolve();
+                if (raw && raw.indexOf(DONE_TOKEN) !== -1) {
+                  done = true;
+                  clearTimeout(timer);
+                  var elapsed = Math.round(performance.now() - startTime);
+
+                  var exitCode = 0;
+                  var exitMatch = raw.match(/___HEXLEAN_EXIT_(-?\d+)___/);
+                  if (exitMatch) {
+                    exitCode = parseInt(exitMatch[1], 10);
+                  }
+
+                  var clean = raw.split('___HEXLEAN_EXIT_')[0].trimEnd();
+
+                  resolve({
+                    stdout: clean,
+                    executionTime: elapsed,
+                    exitCode: exitCode,
+                    error: exitCode !== 0
+                  });
+                }
+                return Promise.resolve();
+              },
+              readText: function() { return Promise.resolve(''); }
+            },
+            configurable: true,
+            writable: true
+          });
+
+          ta.focus();
+
+          // Encode script in base64 to ensure 100% preservation of all quotes, newlines, variables & syntax
+          var cleanCode = code.trim();
+          var utf8Bytes = encodeURIComponent(cleanCode).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+            return String.fromCharCode('0x' + p1);
+          });
+          var b64 = btoa(utf8Bytes);
+
+          // Subshell execution capturing output and exit code
+          var payload = 'echo "' + b64 + '" | base64 -d > /tmp/_run.sh && { ( . /tmp/_run.sh ); echo "___HEXLEAN_EXIT_$?___"; echo "' + DONE_TOKEN + '"; } 2>&1 | pbcopy; rm -f /tmp/_run.sh\n';
+
+          var dt = new DataTransfer();
+          dt.setData('text/plain', payload);
+          var ev = new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true });
+          ta.dispatchEvent(ev);
+        });
+      }
+    };
+
     function renderChapter(id){
       var chap = chapterMap[id];
       if(!chap) chap = chapters[0];
@@ -3498,7 +3966,10 @@ return He}()
       groupSubsections(bodyDiv);
       chapterPane.appendChild(bodyDiv);
 
-      // Enhanced Code Block Cards
+      // Enhanced Code Block Cards with Runner & Output Shelf
+      var playIconSvg = '<svg class="run-icon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+      var spinnerIconSvg = '<svg class="spinner-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="12"></circle></svg>';
+      var resetIconSvg = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>';
       var copyIconSvg = '<svg class="copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
       var checkIconSvg = '<svg class="copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
 
@@ -3510,23 +3981,31 @@ return He}()
 
         var initialCode = (codeEl || pre).textContent;
         var firstLine = initialCode.trim().split('\n')[0].trim();
-        var isTerminalCmd = /^(\$ |# |bash |sh |chmod |curl |jq |grep |sed |awk |cat |echo |find |mkdir |cd |git |man |which |source |\.\/)/i.test(firstLine);
+        var isTerminalCmd = /^(\$ )/i.test(firstLine);
 
         var lang = 'BASH';
+        var isRunnable = false;
+
         if (explicitLang === 'bash' || explicitLang === 'sh' || explicitLang === 'shell') {
           if (isTerminalCmd) {
             lang = 'TERMINAL';
+            isRunnable = false;
           } else {
             lang = 'BASH';
+            isRunnable = true;
           }
         } else if (explicitLang === 'json') {
           lang = 'JSON';
+          isRunnable = false;
         } else if (explicitLang) {
           lang = explicitLang.toUpperCase();
+          isRunnable = false;
         } else if (isTerminalCmd) {
           lang = 'TERMINAL';
+          isRunnable = false;
         } else {
           lang = 'OUTPUT';
+          isRunnable = false;
         }
 
         if(window.hljs && codeEl) {
@@ -3553,6 +4032,44 @@ return He}()
 
         var right = document.createElement('div');
         right.className = 'code-header-right';
+
+        var resetBtn = null;
+        var runBtn = null;
+        var shelf = null;
+
+        if (isRunnable) {
+          codeEl.setAttribute('contenteditable', 'true');
+          codeEl.setAttribute('spellcheck', 'false');
+
+          resetBtn = document.createElement('button');
+          resetBtn.className = 'code-reset-btn';
+          resetBtn.type = 'button';
+          resetBtn.title = 'Reset code to original textbook example';
+          resetBtn.innerHTML = resetIconSvg + '<span>Reset</span>';
+
+          resetBtn.addEventListener('click', function(){
+            codeEl.textContent = initialCode;
+            if(window.hljs) hljs.highlightElement(codeEl);
+            resetBtn.classList.remove('visible');
+          });
+          right.appendChild(resetBtn);
+
+          codeEl.addEventListener('input', function(){
+            if (codeEl.textContent !== initialCode) {
+              resetBtn.classList.add('visible');
+            } else {
+              resetBtn.classList.remove('visible');
+            }
+          });
+
+          runBtn = document.createElement('button');
+          runBtn.className = 'code-run-btn';
+          runBtn.type = 'button';
+          runBtn.title = 'Run code in browser (WebAssembly Bash 5.2)';
+          runBtn.innerHTML = playIconSvg + '<span>Run</span>';
+
+          right.appendChild(runBtn);
+        }
 
         var copyBtn = document.createElement('button');
         copyBtn.className = 'code-copy-btn';
@@ -3584,6 +4101,112 @@ return He}()
         pre.parentNode.insertBefore(card, pre);
         card.appendChild(cardHeader);
         card.appendChild(pre);
+
+        if (isRunnable) {
+          shelf = document.createElement('div');
+          shelf.className = 'code-output-shelf';
+
+          var shelfHeader = document.createElement('div');
+          shelfHeader.className = 'code-output-header';
+          shelfHeader.innerHTML = 
+            '<div class="code-output-header-left">' +
+              '<span>❯ Terminal Output</span>' +
+              '<span class="output-status-badge"></span>' +
+            '</div>' +
+            '<button class="code-output-clear" type="button">Clear</button>';
+          shelf.appendChild(shelfHeader);
+
+          var shelfBody = document.createElement('div');
+          shelfBody.className = 'code-output-body';
+          shelf.appendChild(shelfBody);
+
+          var badge = shelfHeader.querySelector('.output-status-badge');
+          var clearBtn = shelfHeader.querySelector('.code-output-clear');
+
+          clearBtn.addEventListener('click', function(){
+            shelf.classList.remove('open');
+            shelfBody.innerHTML = '';
+            badge.textContent = '';
+            badge.className = 'output-status-badge';
+          });
+
+          runBtn.addEventListener('click', async function(){
+            shelf.classList.add('open');
+            runBtn.classList.add('running');
+            runBtn.innerHTML = spinnerIconSvg + '<span>Running...</span>';
+
+            var isInitial = !BashEngine.isReady;
+            if (isInitial) {
+              var cached = false;
+              try { cached = (localStorage.getItem('websh_wasm_cached') === 'true'); }catch(e){}
+              shelfBody.innerHTML = 
+                '<div class="bash-progress-box">' +
+                  '<div class="bash-progress-title">' +
+                    spinnerIconSvg +
+                    '<span>' + (cached ? 'Loading Bash engine from browser cache...' : 'First-time setup: Initializing local Bash engine (~3.5 MB)...') + '</span>' +
+                  '</div>' +
+                  '<div class="bash-progress-track"><div class="bash-progress-fill" style="width: 15%;"></div></div>' +
+                  '<div class="bash-progress-meta">' +
+                    '<span class="bash-status-msg">Starting WebAssembly runtime...</span>' +
+                    '<span class="bash-status-pct">15%</span>' +
+                  '</div>' +
+                  '<div class="bash-progress-hint">' +
+                    (cached ? 'Reading cached WebAssembly from disk...' : 'Zero backend servers • Runs 100% in your browser • Instant on subsequent runs.') +
+                  '</div>' +
+                '</div>';
+            }
+
+            var progressFill = shelfBody.querySelector('.bash-progress-fill');
+            var statusMsg = shelfBody.querySelector('.bash-status-msg');
+            var statusPct = shelfBody.querySelector('.bash-status-pct');
+
+            var codeToRun = (codeEl || pre).innerText || (codeEl || pre).textContent;
+
+            try {
+              var r = await BashEngine.run(codeToRun, function(pct, msg){
+                if (progressFill) progressFill.style.width = pct + '%';
+                if (statusMsg) statusMsg.textContent = msg;
+                if (statusPct) statusPct.textContent = pct + '%';
+              });
+
+              runBtn.classList.remove('running');
+              runBtn.innerHTML = playIconSvg + '<span>Run</span>';
+
+              if (r.error) {
+                var errLabel = (r.exitCode && r.exitCode !== -1) ? ('❌ Exit ' + r.exitCode + ' (' + r.executionTime + 'ms)') : ('❌ Error (' + r.executionTime + 'ms)');
+                badge.textContent = errLabel;
+                badge.className = 'output-status-badge error';
+                var errText = r.stdout || r.stderr || 'Command failed with non-zero exit code ' + r.exitCode;
+                shelfBody.innerHTML = '<pre class="code-output-text error">' + escapeHtml(errText) + '</pre>';
+              } else {
+                badge.textContent = '✓ ' + r.executionTime + 'ms';
+                badge.className = 'output-status-badge success';
+
+                var outText = '';
+                if (r.stdout && r.stdout.trim()) {
+                  outText = r.stdout;
+                  if (r.stderr && r.stderr.trim()) {
+                    outText += '\n' + r.stderr;
+                  }
+                } else if (r.stderr && r.stderr.trim()) {
+                  outText = r.stderr;
+                } else {
+                  outText = '(Program executed successfully with no printed output)';
+                }
+
+                shelfBody.innerHTML = '<pre class="code-output-text' + (outText.startsWith('(') ? ' empty' : '') + '">' + escapeHtml(outText) + '</pre>';
+              }
+            } catch(e) {
+              runBtn.classList.remove('running');
+              runBtn.innerHTML = playIconSvg + '<span>Run</span>';
+              badge.textContent = '❌ Failed';
+              badge.className = 'output-status-badge error';
+              shelfBody.innerHTML = '<pre class="code-output-text error">' + escapeHtml(e.message || String(e)) + '</pre>';
+            }
+          });
+
+          card.appendChild(shelf);
+        }
       });
 
       function fallbackCopy(text, cb){
@@ -4087,6 +4710,15 @@ return He}()
         toggleSettings(false);
       }
     });
+
+    // Background pre-warm for WebAssembly Bash Engine
+    setTimeout(function() {
+      if (typeof requestIdleCallback === 'function') {
+        requestIdleCallback(function() { BashEngine.init().catch(function(){}); });
+      } else {
+        setTimeout(function() { BashEngine.init().catch(function(){}); }, 2500);
+      }
+    }, 1200);
 
   })();
   </script>

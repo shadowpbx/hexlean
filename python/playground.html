@@ -184,6 +184,70 @@
       font-size: 1.15rem;
       letter-spacing: -.02em;
     }
+    .topbar-platform-link {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 1.15rem;
+      letter-spacing: -.02em;
+      transition: color .15s ease;
+      white-space: nowrap;
+    }
+    .topbar-platform-link:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .topbar-platform-icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .topbar-sep {
+      color: var(--border);
+      font-size: 1.05rem;
+      user-select: none;
+      font-weight: 300;
+      margin: 0 .15rem;
+    }
+    .topbar-curator-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .38rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .35rem .75rem;
+      font-size: .84rem;
+      font-weight: 600;
+      white-space: nowrap;
+      color: var(--text) !important;
+      text-decoration: none;
+      height: 32px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      transition: all .16s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    .topbar-curator-link:hover {
+      border-color: var(--accent);
+      color: var(--accent) !important;
+      background: var(--surface-hover);
+      transform: translateY(-0.5px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      text-decoration: none;
+    }
+    .topbar-curator-link .ext-arrow {
+      font-size: .8rem;
+      color: var(--accent);
+      transition: transform .16s ease;
+    }
+    .topbar-curator-link:hover .ext-arrow {
+      transform: translate(2px, -2px);
+    }
     .topbar-middle {
       display: flex;
       align-items: center;
@@ -387,7 +451,8 @@
 
     @media (max-width: 640px) {
       .textbook-btn,
-      .topbar-action-btn {
+      .topbar-action-btn,
+      .topbar-curator-link {
         padding: 0 .55rem !important;
         height: 32px !important;
         min-width: 34px !important;
@@ -395,7 +460,8 @@
         font-size: .82rem;
       }
       .textbook-btn-text,
-      .settings-btn-text {
+      .settings-btn-text,
+      .topbar-curator-link .curator-name {
         display: none !important;
       }
     }
@@ -1386,6 +1452,7 @@
       .shortcut-hint { display: none; }
     }
     @media (max-width: 480px) {
+      .topbar-platform-title { display: none; }
       .pane-header {
         padding: 0 .55rem;
         gap: .35rem;
@@ -1496,9 +1563,14 @@
   <div id="app-container">
     <header id="topbar">
       <div class="topbar-left">
+        <a href="/" class="topbar-platform-link" title="HexLean Platform Home">
+          <span class="topbar-platform-icon">⚡</span>
+          <span class="topbar-platform-title">HexLean</span>
+        </a>
+        <span class="topbar-sep">/</span>
         <a href="index.html" class="brand" title="Return to Textbook">
           <div class="brand-icon">Py</div>
-          <span class="brand-title">Python Playground</span>
+          <span class="brand-title">Playground</span>
         </a>
       </div>
 
@@ -1513,6 +1585,10 @@
         <a href="index.html" class="textbook-btn" title="Return to Learn Python textbook">
           <span class="textbook-icon">📖</span>
           <span class="textbook-btn-text">Read Textbook</span>
+        </a>
+        <a href="https://hexdef.com" target="_blank" rel="noopener" class="topbar-curator-link" title="Visit Tanvir Hussain's Systems Portfolio &amp; Resume at hexdef.com">
+          <span class="curator-name">Tanvir Hussain</span>
+          <span class="ext-arrow">↗</span>
         </a>
         <button id="settings-btn" class="topbar-action-btn" type="button" aria-haspopup="dialog" aria-expanded="false" title="Playground Settings">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="settings-btn-icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>

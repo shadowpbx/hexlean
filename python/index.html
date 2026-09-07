@@ -340,6 +340,69 @@
       white-space: nowrap;
     }
 
+    .topbar-platform-link {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      font-family: "Fraunces", serif;
+      font-size: 1.05rem;
+      letter-spacing: -.01em;
+      transition: color .15s ease;
+      white-space: nowrap;
+    }
+    .topbar-platform-link:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .topbar-platform-icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .topbar-sep {
+      color: var(--border);
+      font-size: 1rem;
+      user-select: none;
+      font-weight: 300;
+      margin: 0 0.15rem;
+    }
+
+    .topbar-curator-link {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: .35rem .65rem;
+      font-size: .84rem;
+      font-weight: 600;
+      color: var(--text) !important;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      white-space: nowrap;
+      transition: all .15s ease;
+      user-select: none;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    .topbar-curator-link:hover {
+      border-color: var(--accent);
+      color: var(--accent) !important;
+      background: var(--surface2);
+      transform: translateY(-0.5px);
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+    .topbar-curator-link .ext-arrow {
+      font-size: .8rem;
+      color: var(--accent);
+      transition: transform .15s ease;
+    }
+    .topbar-curator-link:hover .ext-arrow {
+      transform: translate(2px, -2px);
+    }
+
     .topbar-right { display: flex; align-items: center; gap: .5rem; }
     
     .btn-icon {
@@ -651,6 +714,10 @@
       color: #2DD4BF;
       box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.22);
     }
+    @media (max-width: 768px) {
+      .topbar-curator-link .curator-name { display: none; }
+      .topbar-curator-link::before { content: "Tanvir"; }
+    }
     @media (max-width: 600px) {
       .search-btn-text, .search-shortcut-badge { display: none; }
       .search-btn { padding: .35rem .5rem; }
@@ -658,6 +725,10 @@
       .reader-settings-btn { padding: .34rem .58rem; }
       .playground-tag { display: none; }
       .playground-btn { padding: .32rem .55rem; font-size: .8rem; }
+      .topbar-curator-link { padding: .32rem .5rem; font-size: .8rem; }
+    }
+    @media (max-width: 440px) {
+      .topbar-platform-title { display: none; }
     }
 
     /* Search Command Palette Modal */
@@ -1824,6 +1895,47 @@
       color: var(--accent);
     }
 
+    /* Reader Chapter Footer */
+    .reader-footer {
+      margin-top: 3.5rem;
+      padding: 2.25rem 0 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+    .reader-footer-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .reader-footer-copy strong {
+      color: var(--text);
+    }
+    .reader-footer-copy a {
+      color: var(--text);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .reader-footer-copy a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    .reader-footer-links {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .reader-footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .reader-footer-links a:hover {
+      text-decoration: underline;
+    }
+
     /* Mobile Bottom Navigation Bar */
     #mobile-bar {
       display: none;
@@ -1884,8 +1996,13 @@
   <header id="topbar">
     <div class="topbar-left">
       <button id="hamburger-btn" class="hamburger-btn" aria-label="Toggle Table of Contents">☰</button>
-      <a href="#0.1" class="brand">
-        <span class="brand-title">Learn Python</span>
+      <a href="/" class="topbar-platform-link" title="HexLean Platform Home">
+        <span class="topbar-platform-icon">⚡</span>
+        <span class="topbar-platform-title">HexLean</span>
+      </a>
+      <span class="topbar-sep">/</span>
+      <a href="#0.1" class="brand" title="Textbook Table of Contents">
+        <span class="brand-title">Python</span>
         <span class="brand-subtitle">— alphabet to novel</span>
       </a>
     </div>
@@ -1894,6 +2011,10 @@
         <span class="playground-bolt-icon">⚡</span>
         <span class="playground-btn-text">Playground</span>
         <span class="playground-tag">IDE</span>
+      </a>
+      <a href="https://hexdef.com" target="_blank" rel="noopener" class="topbar-curator-link" title="Visit Tanvir Hussain's Systems Portfolio &amp; Resume at hexdef.com">
+        <span class="curator-name">Tanvir Hussain</span>
+        <span class="ext-arrow">↗</span>
       </a>
       <button id="search-btn" class="btn-icon search-btn" aria-label="Search textbook" title="Search all 70 chapters (Ctrl+K or /)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -4130,6 +4251,23 @@ return He}()
         });
       }
       chapterPane.appendChild(navCards);
+
+      // Reader Chapter Footer
+      var readerFooter = document.createElement('footer');
+      readerFooter.className = 'reader-footer';
+      readerFooter.innerHTML = 
+        '<div class="reader-footer-wrap">' +
+          '<div class="reader-footer-copy">' +
+            '&copy; 2026 <strong>HexLean</strong> &bull; An open technical educational project curated by <a href="https://hexdef.com" target="_blank" rel="noopener">Tanvir Hussain</a>.' +
+          '</div>' +
+          '<div class="reader-footer-links">' +
+            '<a href="/">Platform Home</a>' +
+            '<a href="playground.html" target="_blank" rel="noopener">Playground</a>' +
+            '<a href="https://hexdef.com" target="_blank" rel="noopener">hexdef.com</a>' +
+            '<a href="https://github.com/shadowpbx/hexlean" target="_blank" rel="noopener">GitHub</a>' +
+          '</div>' +
+        '</div>';
+      chapterPane.appendChild(readerFooter);
 
       // Auto-mark completed when reaching the bottom of chapter
       if (window.IntersectionObserver) {

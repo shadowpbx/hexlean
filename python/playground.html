@@ -412,16 +412,16 @@
       align-items: center;
       justify-content: center;
       gap: .42rem;
-      padding: 0 .75rem;
+      padding: .34rem .78rem;
       font-size: .84rem;
       font-weight: 600;
       white-space: nowrap;
-      color: #0F766E !important;
-      background: rgba(15, 118, 110, 0.08);
-      border: 1px solid rgba(15, 118, 110, 0.28);
+      color: #FFFFFF !important;
+      background: linear-gradient(135deg, #0F766E 0%, #0D9488 100%);
+      border: 1px solid rgba(15, 118, 110, 0.4);
       border-radius: 8px;
       text-decoration: none;
-      box-shadow: 0 1px 2px rgba(15, 118, 110, 0.06);
+      box-shadow: 0 2px 6px rgba(15, 118, 110, 0.28), 0 1px 2px rgba(0, 0, 0, 0.06);
       transition: all .16s ease;
       user-select: none;
       -webkit-user-select: none;
@@ -430,31 +430,27 @@
       flex-shrink: 0;
     }
     .textbook-btn:hover {
-      background: rgba(15, 118, 110, 0.15);
-      border-color: #0F766E;
-      color: #0F766E !important;
-      transform: translateY(-0.5px);
-      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.15);
+      background: linear-gradient(135deg, #115E59 0%, #0F766E 100%);
+      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.4);
+      transform: translateY(-1px);
     }
     .textbook-btn:active {
       transform: translateY(0);
-      box-shadow: 0 1px 2px rgba(15, 118, 110, 0.1);
+      box-shadow: 0 1px 3px rgba(15, 118, 110, 0.2);
     }
     .textbook-icon {
       font-size: .88rem;
       line-height: 1;
     }
     [data-theme="dark"] .textbook-btn {
-      background: rgba(45, 212, 191, 0.10);
-      color: #2DD4BF !important;
-      border-color: rgba(45, 212, 191, 0.30);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%);
+      color: #042F2E !important;
+      border-color: rgba(45, 212, 191, 0.5);
+      box-shadow: 0 2px 10px rgba(45, 212, 191, 0.35);
     }
     [data-theme="dark"] .textbook-btn:hover {
-      background: rgba(45, 212, 191, 0.18);
-      border-color: #2DD4BF;
-      box-shadow: 0 0 12px rgba(45, 212, 191, 0.22);
-      transform: translateY(-0.5px);
+      background: linear-gradient(135deg, #5EEAD4 0%, #2DD4BF 100%);
+      box-shadow: 0 4px 16px rgba(45, 212, 191, 0.5);
     }
 
     @media (max-width: 960px) {

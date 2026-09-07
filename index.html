@@ -12,7 +12,8 @@
   <script>
     (function(){
       try {
-        var t = localStorage.getItem('python_book_theme') || 'light';
+        var p = new URLSearchParams(window.location.search).get('theme');
+        var t = (p === 'dark' || p === 'light') ? p : (localStorage.getItem('python_book_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
         document.documentElement.setAttribute('data-theme', t);
       } catch(e){}
     })();
@@ -348,8 +349,8 @@
 
     .tracks-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      max-width: 680px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      max-width: 880px;
       margin: 0 auto 5rem;
       gap: 1.5rem;
     }
@@ -686,6 +687,22 @@
             </a>
           </div>
         </article>
+
+        <!-- Bash Track -->
+        <article class="track-card active">
+          <div>
+            <div class="track-header">
+              <div class="track-identity">
+                <span class="track-icon">🐚</span>
+                <h3 class="track-title">Bash</h3>
+              </div>
+              <span class="track-badge-active">[ 66 CHAPTERS ]</span>
+            </div>
+          </div>
+          <div class="track-actions">
+            <a href="/bash/index.html" class="btn-read">📖 Read Textbook</a>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -712,7 +729,8 @@
       localStorage.setItem('python_book_theme', theme);
     }
 
-    const currentTheme = localStorage.getItem('python_book_theme') || 'light';
+    const pTheme = new URLSearchParams(window.location.search).get('theme');
+    const currentTheme = (pTheme === 'dark' || pTheme === 'light') ? pTheme : (localStorage.getItem('python_book_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
     applyTheme(currentTheme);
 
     themeBtn.addEventListener('click', () => {

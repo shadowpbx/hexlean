@@ -2441,42 +2441,65 @@
         var isCached = false;
         try { isCached = (localStorage.getItem('pyodide_downloaded') === 'true'); }catch(e){}
 
-        if (onProgress) onProgress(15, isCached ? "Loading from disk cache..." : "Connecting to CDN...");
+        if (onProgress) onProgress(15, isCached ? "Loading from disk cache..." : "Initializing local Python engine...");
 
         this.initPromise = new Promise(function(resolve, reject){
+          var vendorUrl = new URL('vendor/pyodide/', window.location.href).href;
+
           function loadScript(cb) {
             if (window.loadPyodide) { cb(); return; }
             var s = document.createElement('script');
-            s.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+            s.src = vendorUrl + 'pyodide.js';
             s.crossOrigin = 'anonymous';
             s.onload = cb;
             s.onerror = function(){
-              reject(new Error("Unable to load Python engine from CDN. Check internet connection."));
+              // Graceful fallback to CDN if local vendor files cannot be reached
+              var sFallback = document.createElement('script');
+              sFallback.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+              sFallback.crossOrigin = 'anonymous';
+              sFallback.onload = cb;
+              sFallback.onerror = function(){
+                reject(new Error("Unable to load Python engine. Check network or local assets."));
+              };
+              document.head.appendChild(sFallback);
             };
             document.head.appendChild(s);
           }
 
           loadScript(function(){
-            if (onProgress) onProgress(35, isCached ? "Reading WebAssembly core..." : "Downloading Python 3 runtime (~8 MB)...");
+            if (onProgress) onProgress(35, isCached ? "Reading WebAssembly core..." : "Loading Python 3 WebAssembly (~10 MB)...");
 
             var pct = 35;
             var timer = setInterval(function(){
               if (self.instance) { clearInterval(timer); return; }
               if (pct < 85) {
                 pct += (isCached ? 15 : 4);
-                if (onProgress) onProgress(pct, pct > 65 ? "Mounting standard library..." : "Downloading runtime...");
+                if (onProgress) onProgress(pct, pct > 65 ? "Mounting standard library..." : "Initializing WebAssembly runtime...");
               }
             }, isCached ? 70 : 150);
 
-            loadPyodide().then(function(py){
+            loadPyodide({
+              indexURL: vendorUrl
+            }).then(function(py){
               clearInterval(timer);
               self.instance = py;
               try { localStorage.setItem('pyodide_downloaded', 'true'); }catch(e){}
               if (onProgress) onProgress(100, "Python engine ready!");
               resolve(py);
             }).catch(function(err){
-              clearInterval(timer);
-              reject(err);
+              // If local indexURL fails, attempt fallback to CDN indexURL
+              loadPyodide({
+                indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/'
+              }).then(function(py){
+                clearInterval(timer);
+                self.instance = py;
+                try { localStorage.setItem('pyodide_downloaded', 'true'); }catch(e){}
+                if (onProgress) onProgress(100, "Python engine ready (via fallback)!");
+                resolve(py);
+              }).catch(function(err2){
+                clearInterval(timer);
+                reject(err2);
+              });
             });
           });
         });
@@ -2524,7 +2547,7 @@
           '</div>' +
           '<div class="pyodide-progress-track"><div class="pyodide-progress-fill" style="width: 15%;"></div></div>' +
           '<div class="pyodide-progress-meta">' +
-            '<span class="prog-msg">Connecting to CDN...</span>' +
+            '<span class="prog-msg">Initializing local Python engine...</span>' +
             '<span class="prog-pct">15%</span>' +
           '</div>';
         termBody.appendChild(progressBox);

@@ -3957,26 +3957,36 @@ return He}()
         var isCached = false;
         try { isCached = (localStorage.getItem('pyodide_downloaded') === 'true'); }catch(e){}
 
-        this.notify(15, isCached ? "Loading Python engine from browser disk cache..." : "Connecting to CDN...");
+        this.notify(15, isCached ? "Loading Python engine from browser disk cache..." : "Initializing local Python engine...");
 
         this.initPromise = new Promise(function(resolve, reject) {
+          var vendorUrl = new URL('vendor/pyodide/', window.location.href).href;
+
           function loadScript(callback) {
             if (window.loadPyodide) {
               callback();
               return;
             }
             var script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+            script.src = vendorUrl + 'pyodide.js';
             script.crossOrigin = 'anonymous';
             script.onload = function() { callback(); };
             script.onerror = function() {
-              reject(new Error("Unable to download Python engine from CDN. Please check your internet connection."));
+              // Graceful fallback to CDN if local vendor files cannot be reached
+              var sFallback = document.createElement('script');
+              sFallback.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+              sFallback.crossOrigin = 'anonymous';
+              sFallback.onload = function() { callback(); };
+              sFallback.onerror = function() {
+                reject(new Error("Unable to download Python engine. Please check your internet connection."));
+              };
+              document.head.appendChild(sFallback);
             };
             document.head.appendChild(script);
           }
 
           loadScript(function() {
-            self.notify(35, isCached ? "Reading WebAssembly core from local disk cache..." : "Downloading Python 3 runtime (~8 MB)...");
+            self.notify(35, isCached ? "Reading WebAssembly core from local disk cache..." : "Loading Python 3 WebAssembly (~10 MB)...");
 
             var currentPct = 35;
             var progressTimer = setInterval(function() {
@@ -3991,12 +4001,13 @@ return He}()
                 } else if (currentPct >= 80) {
                   self.notify(currentPct, "Initializing Python environment...");
                 } else {
-                  self.notify(currentPct, isCached ? "Initializing runtime..." : "Downloading Python 3 runtime (~8 MB)...");
+                  self.notify(currentPct, isCached ? "Initializing runtime..." : "Loading WebAssembly runtime...");
                 }
               }
             }, isCached ? 75 : 160);
 
             loadPyodide({
+              indexURL: vendorUrl,
               stdout: function(text) {
                 if (self.currentStdout) self.currentStdout(text);
               },
@@ -4010,8 +4021,25 @@ return He}()
               self.notify(100, "Python engine ready!");
               resolve(py);
             }).catch(function(err) {
-              clearInterval(progressTimer);
-              reject(err);
+              // If local indexURL fails, attempt fallback to CDN indexURL
+              loadPyodide({
+                indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/',
+                stdout: function(text) {
+                  if (self.currentStdout) self.currentStdout(text);
+                },
+                stderr: function(text) {
+                  if (self.currentStderr) self.currentStderr(text);
+                }
+              }).then(function(py) {
+                clearInterval(progressTimer);
+                self.instance = py;
+                try { localStorage.setItem('pyodide_downloaded', 'true'); }catch(e){}
+                self.notify(100, "Python engine ready (via fallback)!");
+                resolve(py);
+              }).catch(function(err2) {
+                clearInterval(progressTimer);
+                reject(err2);
+              });
             });
           });
         });

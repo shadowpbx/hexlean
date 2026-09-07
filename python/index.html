@@ -571,16 +571,16 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: .38rem;
+      gap: .42rem;
       padding: 0 .72rem;
       font-size: .84rem;
       font-weight: 600;
-      color: #FFFFFF !important;
-      background: linear-gradient(135deg, #0F766E 0%, #0D9488 100%);
-      border: 1px solid rgba(15, 118, 110, 0.4);
+      color: #0F766E !important;
+      background: rgba(15, 118, 110, 0.08);
+      border: 1px solid rgba(15, 118, 110, 0.28);
       border-radius: 8px;
       text-decoration: none;
-      box-shadow: 0 2px 6px rgba(15, 118, 110, 0.28), 0 1px 2px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 1px 2px rgba(15, 118, 110, 0.06);
       transition: all .16s ease;
       user-select: none;
       -webkit-user-select: none;
@@ -589,13 +589,15 @@
       flex-shrink: 0;
     }
     .playground-btn:hover {
-      background: linear-gradient(135deg, #115E59 0%, #0F766E 100%);
-      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.4);
-      transform: translateY(-1px);
+      background: rgba(15, 118, 110, 0.15);
+      border-color: #0F766E;
+      color: #0F766E !important;
+      transform: translateY(-0.5px);
+      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.15);
     }
     .playground-btn:active {
       transform: translateY(0);
-      box-shadow: 0 1px 3px rgba(15, 118, 110, 0.2);
+      box-shadow: 0 1px 2px rgba(15, 118, 110, 0.1);
     }
     .playground-icon {
       width: 14px;
@@ -606,32 +608,18 @@
       vertical-align: middle;
       margin-right: 1px;
     }
-    .playground-tag {
-      font-size: .62rem;
-      font-family: "IBM Plex Mono", monospace;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      padding: .1rem .35rem;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.24);
-      color: #FFFFFF;
-      line-height: 1;
-    }
 
     [data-theme="dark"] .playground-btn {
-      background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%);
-      color: #042F2E !important;
-      border-color: rgba(45, 212, 191, 0.5);
-      box-shadow: 0 2px 10px rgba(45, 212, 191, 0.35);
+      background: rgba(45, 212, 191, 0.10);
+      color: #2DD4BF !important;
+      border-color: rgba(45, 212, 191, 0.30);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
     [data-theme="dark"] .playground-btn:hover {
-      background: linear-gradient(135deg, #5EEAD4 0%, #2DD4BF 100%);
-      box-shadow: 0 4px 16px rgba(45, 212, 191, 0.5);
-    }
-    [data-theme="dark"] .playground-tag {
-      background: rgba(4, 47, 46, 0.25);
-      color: #042F2E;
+      background: rgba(45, 212, 191, 0.18);
+      border-color: #2DD4BF;
+      box-shadow: 0 0 12px rgba(45, 212, 191, 0.22);
+      transform: translateY(-0.5px);
     }
 
     /* Search Button & Badge */
@@ -762,7 +750,6 @@
       .topbar-curator-link .curator-name { display: none; }
       .topbar-curator-link::before { content: "Tanvir"; }
       .topbar-curator-link { padding: 0 .55rem; font-size: .82rem; }
-      .playground-tag { display: none; }
     }
     @media (max-width: 1060px) {
       .search-btn-text, .search-shortcut-badge { display: none; }
@@ -2092,7 +2079,6 @@
       <a href="playground.html" class="playground-btn" target="_blank" rel="noopener" title="Open interactive Python Playground (IDE)">
         <svg class="playground-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
         <span class="playground-btn-text">Playground</span>
-        <span class="playground-tag">IDE</span>
       </a>
       <a href="https://hexdef.com" target="_blank" rel="noopener" class="topbar-curator-link" title="Visit Tanvir Hussain's Systems Portfolio &amp; Resume at hexdef.com">
         <span class="curator-name">Tanvir Hussain</span>

@@ -753,15 +753,18 @@
       color: #2DD4BF;
       box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.22);
     }
-    @media (max-width: 960px) {
-      .search-btn-text, .search-shortcut-badge { display: none; }
-      .search-btn { width: 32px; min-width: 32px; padding: 0; }
-      .settings-btn-text, .settings-chevron { display: none; }
-      .reader-settings-btn { width: 32px; min-width: 32px; padding: 0; }
+    @media (max-width: 1200px) {
+      .brand-subtitle { display: none; }
       .topbar-curator-link .curator-name { display: none; }
       .topbar-curator-link::before { content: "Tanvir"; }
       .topbar-curator-link { padding: 0 .55rem; font-size: .82rem; }
       .playground-tag { display: none; }
+    }
+    @media (max-width: 1060px) {
+      .search-btn-text, .search-shortcut-badge { display: none; }
+      .search-btn { width: 32px; min-width: 32px; padding: 0; }
+      .settings-btn-text, .settings-chevron { display: none; }
+      .reader-settings-btn { width: 32px; min-width: 32px; padding: 0; }
       .playground-btn-text { display: none; }
       .playground-btn::after { content: "IDE"; font-size: .78rem; font-weight: 700; margin-left: .2rem; }
       .playground-btn { padding: 0 .55rem; font-size: .82rem; }

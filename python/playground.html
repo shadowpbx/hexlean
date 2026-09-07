@@ -453,6 +453,15 @@
       box-shadow: 0 4px 16px rgba(45, 212, 191, 0.5);
     }
 
+    @media (max-width: 960px) {
+      .textbook-btn-text { display: none; }
+      .textbook-btn { padding: 0 .6rem !important; }
+      .settings-btn-text { display: none; }
+      .topbar-action-btn { width: 32px; min-width: 32px; padding: 0 !important; }
+      .topbar-curator-link .curator-name { display: none; }
+      .topbar-curator-link::before { content: "Tanvir"; }
+      .topbar-curator-link { padding: 0 .55rem !important; font-size: .82rem; }
+    }
     @media (max-width: 768px) {
       .topbar-middle { display: none !important; }
       .textbook-btn,
@@ -460,7 +469,7 @@
       .topbar-curator-link {
         padding: 0 .55rem !important;
         height: 32px !important;
-        min-width: 34px !important;
+        min-width: 32px !important;
         justify-content: center !important;
         font-size: .82rem;
       }

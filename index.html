@@ -141,22 +141,28 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
+      gap: 0.6rem;
+      flex-shrink: 0;
     }
 
     .nav-curator-link {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 0.42rem 0.8rem;
+      padding: 0 0.75rem;
       font-size: 0.84rem;
       font-weight: 600;
       color: var(--text);
       text-decoration: none;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      justify-content: center;
+      gap: 0.4rem;
+      height: 32px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      white-space: nowrap;
+      transition: all 0.16s ease;
       box-shadow: var(--shadow-sm);
     }
 
@@ -164,38 +170,68 @@
       border-color: var(--accent);
       color: var(--accent);
       background: var(--surface2);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      transform: translateY(-0.5px);
     }
 
     .nav-curator-link .ext-arrow {
       font-size: 0.8rem;
       color: var(--accent);
       transition: transform 0.2s ease;
+      line-height: 1;
     }
 
     .nav-curator-link:hover .ext-arrow {
       transform: translate(2px, -2px);
     }
 
+    .nav-curator-name-short {
+      display: none;
+    }
+
     .theme-toggle-btn {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 0.45rem 0.75rem;
+      width: 32px;
+      height: 32px;
+      padding: 0;
       cursor: pointer;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
       color: var(--text-muted);
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      transition: all 0.2s ease;
+      justify-content: center;
+      transition: all 0.16s ease;
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+      box-sizing: border-box;
     }
 
     .theme-toggle-btn:hover {
       color: var(--text);
       border-color: var(--accent);
+      background: var(--surface2);
+      transform: translateY(-0.5px);
+    }
+
+    .theme-toggle-btn:active {
+      transform: translateY(0);
+    }
+
+    .theme-icon-sun {
+      display: none;
+    }
+
+    .theme-icon-moon {
+      display: block;
+    }
+
+    [data-theme="dark"] .theme-icon-sun {
+      display: block;
+      color: #FBBF24;
+    }
+
+    [data-theme="dark"] .theme-icon-moon {
+      display: none;
     }
 
     /* Hero Section */
@@ -477,6 +513,32 @@
     }
 
     @media (max-width: 640px) {
+      .nav-bar {
+        height: 60px;
+      }
+      .brand-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1.15rem;
+      }
+      .brand-title {
+        font-size: 1.25rem;
+      }
+      .brand-badge {
+        display: none;
+      }
+      .nav-curator-name-full {
+        display: none;
+      }
+      .nav-curator-name-short {
+        display: inline;
+      }
+      .nav-curator-link {
+        padding: 0 0.55rem;
+      }
+      .nav-actions {
+        gap: 0.45rem;
+      }
       .footer-content {
         flex-direction: column;
         align-items: flex-start;
@@ -484,6 +546,17 @@
       .footer-links a {
         margin-left: 0;
         margin-right: 1.25rem;
+      }
+    }
+    @media (max-width: 360px) {
+      .nav-curator-name-short {
+        display: none;
+      }
+      .nav-curator-link {
+        width: 32px;
+        min-width: 32px;
+        padding: 0;
+        justify-content: center;
       }
     }
   </style>
@@ -500,11 +573,25 @@
 
       <div class="nav-actions">
         <a href="https://hexdef.com" target="_blank" rel="noopener" class="nav-curator-link" title="Visit Tanvir Hussain's Systems Portfolio &amp; Resume at hexdef.com">
-          Tanvir Hussain <span class="ext-arrow">↗</span>
+          <span class="nav-curator-name-full">Tanvir Hussain</span>
+          <span class="nav-curator-name-short">Tanvir</span>
+          <span class="ext-arrow">↗</span>
         </a>
-        <button id="theme-btn" class="theme-toggle-btn" aria-label="Toggle theme">
-          <span id="theme-icon">🌓</span>
-          <span id="theme-text">Theme</span>
+        <button id="theme-btn" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme (Light / Dark)">
+          <svg class="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
         </button>
       </div>
     </div>
@@ -570,12 +657,10 @@
   <script>
     // Theme toggle matching the Python Book engine
     const themeBtn = document.getElementById('theme-btn');
-    const themeIcon = document.getElementById('theme-icon');
     
     function applyTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('python_book_theme', theme);
-      themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
     }
 
     const currentTheme = localStorage.getItem('python_book_theme') || 'light';

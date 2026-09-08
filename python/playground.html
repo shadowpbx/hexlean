@@ -20,7 +20,9 @@
       --sal: env(safe-area-inset-left, 0px);
       --sar: env(safe-area-inset-right, 0px);
 
-      --code-font-size: 15px;
+      --editor-font-size: 15px;
+      --terminal-font-size: 14px;
+      --code-font-size: var(--editor-font-size, 15px);
       --code-line-height: 1.6;
 
       --bg: #FFFFFF;
@@ -1125,7 +1127,7 @@
       padding: 1rem 1.1rem;
       overflow-y: auto;
       font-family: "IBM Plex Mono", Consolas, monospace;
-      font-size: var(--code-font-size, 15px);
+      font-size: var(--terminal-font-size, 14px);
       line-height: var(--code-line-height, 1.6);
       color: var(--term-text);
       white-space: pre-wrap;
@@ -1593,23 +1595,44 @@
           </div>
         </div>
 
-        <!-- Font Size -->
+        <!-- Editor Font Size -->
         <div class="settings-section">
           <div class="settings-label-row">
-            <span class="settings-section-title">Editor &amp; Terminal Font Size</span>
-            <span class="settings-section-desc">Scale code and terminal text together (12px – 24px)</span>
+            <span class="settings-section-title">Editor Font Size</span>
+            <span class="settings-section-desc">Scale code editor and line numbers (12px – 24px)</span>
           </div>
           <div class="font-settings-row">
             <div class="font-zoom-ctrl">
-              <button type="button" id="font-dec-btn" class="font-zoom-btn" title="Decrease font size" aria-label="Decrease font size">A−</button>
-              <button type="button" id="font-reset-btn" class="font-zoom-label" title="Reset font size to default 15px" aria-label="Reset font size">15px</button>
-              <button type="button" id="font-inc-btn" class="font-zoom-btn" title="Increase font size" aria-label="Increase font size">A+</button>
+              <button type="button" id="font-dec-btn" class="font-zoom-btn" title="Decrease editor font size" aria-label="Decrease editor font size">A−</button>
+              <button type="button" id="font-reset-btn" class="font-zoom-label" title="Reset editor font size to default 15px" aria-label="Reset editor font size">15px</button>
+              <button type="button" id="font-inc-btn" class="font-zoom-btn" title="Increase editor font size" aria-label="Increase editor font size">A+</button>
             </div>
             <div class="font-presets">
               <button type="button" class="font-preset-btn" data-size="13">13px</button>
               <button type="button" class="font-preset-btn" data-size="15">15px <span class="preset-tag">Def</span></button>
               <button type="button" class="font-preset-btn" data-size="18">18px</button>
               <button type="button" class="font-preset-btn" data-size="22">22px</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Output Font Size -->
+        <div class="settings-section">
+          <div class="settings-label-row">
+            <span class="settings-section-title">Terminal Output Font Size</span>
+            <span class="settings-section-desc">Scale terminal console output (12px – 24px)</span>
+          </div>
+          <div class="font-settings-row">
+            <div class="font-zoom-ctrl">
+              <button type="button" id="modal-term-font-dec-btn" class="font-zoom-btn" title="Decrease terminal font size" aria-label="Decrease terminal font size">A−</button>
+              <button type="button" id="modal-term-font-reset-btn" class="font-zoom-label" title="Reset terminal font size to default 14px" aria-label="Reset terminal font size">14px</button>
+              <button type="button" id="modal-term-font-inc-btn" class="font-zoom-btn" title="Increase terminal font size" aria-label="Increase terminal font size">A+</button>
+            </div>
+            <div class="font-presets">
+              <button type="button" class="term-font-preset-btn" data-size="12">12px</button>
+              <button type="button" class="term-font-preset-btn" data-size="14">14px <span class="preset-tag">Def</span></button>
+              <button type="button" class="term-font-preset-btn" data-size="16">16px</button>
+              <button type="button" class="term-font-preset-btn" data-size="18">18px</button>
             </div>
           </div>
           <div class="settings-hint">Run: <kbd class="kbd mod-key">Ctrl</kbd><span class="shortcut-plus">+</span><kbd class="kbd">Enter</kbd> or <kbd class="kbd">F5</kbd> · Zoom: <kbd class="kbd mod-key">Ctrl</kbd><span class="shortcut-plus">+</span><kbd class="kbd">+/-</kbd></div>
@@ -1753,17 +1776,13 @@
         <div class="pane-header">
           <div class="pane-title-group">
             <div class="term-dots">
-              <span class="dot dot-red"></span>
-              <span class="dot dot-yellow"></span>
-              <span class="dot dot-green"></span>
+              <span class="dot dot-red" id="dot-clear" title="Clear terminal"></span>
+              <span class="dot dot-yellow" id="dot-reset" title="Reset terminal font size"></span>
+              <span class="dot dot-green" id="dot-focus" title="Focus editor"></span>
             </div>
             <span>❯ Terminal Output</span>
           </div>
           <div class="pane-actions">
-            <div class="mac-stepper" title="Adjust terminal font size">
-              <button class="mac-stepper-btn" id="term-font-dec-btn" type="button" title="Decrease font size (Ctrl + -)" aria-label="Decrease font size">A−</button>
-              <button class="mac-stepper-btn" id="term-font-inc-btn" type="button" title="Increase font size (Ctrl + +)" aria-label="Increase font size">A+</button>
-            </div>
             <button class="mac-btn mac-btn-danger" id="clear-term-btn" type="button" title="Clear terminal output">
               <svg class="btn-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
               <span>Clear</span>
@@ -1974,22 +1993,31 @@
     var STORAGE_CODE_KEY = 'python_playground_code';
     var STORAGE_FILE_KEY = 'python_playground_filename';
     var STORAGE_FONT_KEY = 'python_playground_font_size';
+    var STORAGE_TERM_FONT_KEY = 'python_playground_term_font_size';
     var STORAGE_WRAP_KEY = 'python_playground_word_wrap';
 
     // --- Font Size Zoom Controller ---
-    var DEFAULT_FONT_SIZE = 15;
-    var MIN_FONT_SIZE = 12;
+    var DEFAULT_EDITOR_FONT_SIZE = 15;
+    var DEFAULT_TERM_FONT_SIZE = 14;
+    var MIN_FONT_SIZE = 11;
     var MAX_FONT_SIZE = 24;
-    var currentFontSize = DEFAULT_FONT_SIZE;
+    var currentEditorFontSize = DEFAULT_EDITOR_FONT_SIZE;
+    var currentTermFontSize = DEFAULT_TERM_FONT_SIZE;
 
     var fontDecBtn = document.getElementById('font-dec-btn');
     var fontResetBtn = document.getElementById('font-reset-btn');
     var fontIncBtn = document.getElementById('font-inc-btn');
-    var termFontDecBtn = document.getElementById('term-font-dec-btn');
-    var termFontIncBtn = document.getElementById('term-font-inc-btn');
     var fontPresetBtns = document.querySelectorAll('.font-preset-btn');
 
-    function updateFontPresetUI(size) {
+    var modalTermFontDecBtn = document.getElementById('modal-term-font-dec-btn');
+    var modalTermFontResetBtn = document.getElementById('modal-term-font-reset-btn');
+    var modalTermFontIncBtn = document.getElementById('modal-term-font-inc-btn');
+    var termFontPresetBtns = document.querySelectorAll('.term-font-preset-btn');
+
+    var dotClear = document.getElementById('dot-clear');
+    var dotReset = document.getElementById('dot-reset');
+
+    function updateEditorFontPresetUI(size) {
       if (!fontPresetBtns) return;
       fontPresetBtns.forEach(function(btn){
         var sz = parseInt(btn.getAttribute('data-size'), 10);
@@ -2001,15 +2029,28 @@
       });
     }
 
-    function applyFontSize(size) {
+    function updateTermFontPresetUI(size) {
+      if (!termFontPresetBtns) return;
+      termFontPresetBtns.forEach(function(btn){
+        var sz = parseInt(btn.getAttribute('data-size'), 10);
+        if (sz === size) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    function applyEditorFontSize(size) {
       if (size < MIN_FONT_SIZE) size = MIN_FONT_SIZE;
       if (size > MAX_FONT_SIZE) size = MAX_FONT_SIZE;
-      currentFontSize = size;
+      currentEditorFontSize = size;
+      document.documentElement.style.setProperty('--editor-font-size', size + 'px');
       document.documentElement.style.setProperty('--code-font-size', size + 'px');
       if (fontResetBtn) {
         fontResetBtn.textContent = size + 'px';
       }
-      updateFontPresetUI(size);
+      updateEditorFontPresetUI(size);
       try {
         localStorage.setItem(STORAGE_FONT_KEY, size.toString());
       } catch (e) {}
@@ -2019,28 +2060,68 @@
       }
     }
 
+    function applyTermFontSize(size) {
+      if (size < MIN_FONT_SIZE) size = MIN_FONT_SIZE;
+      if (size > MAX_FONT_SIZE) size = MAX_FONT_SIZE;
+      currentTermFontSize = size;
+      document.documentElement.style.setProperty('--terminal-font-size', size + 'px');
+      if (modalTermFontResetBtn) {
+        modalTermFontResetBtn.textContent = size + 'px';
+      }
+      updateTermFontPresetUI(size);
+      try {
+        localStorage.setItem(STORAGE_TERM_FONT_KEY, size.toString());
+      } catch (e) {}
+    }
+
     try {
       var savedFont = localStorage.getItem(STORAGE_FONT_KEY);
       if (savedFont !== null) {
         var parsedFont = parseInt(savedFont, 10);
         if (!isNaN(parsedFont) && parsedFont >= MIN_FONT_SIZE && parsedFont <= MAX_FONT_SIZE) {
-          currentFontSize = parsedFont;
+          currentEditorFontSize = parsedFont;
         }
       }
     } catch (e) {}
 
-    applyFontSize(currentFontSize);
+    try {
+      var savedTermFont = localStorage.getItem(STORAGE_TERM_FONT_KEY);
+      if (savedTermFont !== null) {
+        var parsedTermFont = parseInt(savedTermFont, 10);
+        if (!isNaN(parsedTermFont) && parsedTermFont >= MIN_FONT_SIZE && parsedTermFont <= MAX_FONT_SIZE) {
+          currentTermFontSize = parsedTermFont;
+        }
+      }
+    } catch (e) {}
 
-    if (fontIncBtn) fontIncBtn.addEventListener('click', function(){ applyFontSize(currentFontSize + 1); });
-    if (fontDecBtn) fontDecBtn.addEventListener('click', function(){ applyFontSize(currentFontSize - 1); });
-    if (fontResetBtn) fontResetBtn.addEventListener('click', function(){ applyFontSize(DEFAULT_FONT_SIZE); });
-    if (termFontIncBtn) termFontIncBtn.addEventListener('click', function(){ applyFontSize(currentFontSize + 1); });
-    if (termFontDecBtn) termFontDecBtn.addEventListener('click', function(){ applyFontSize(currentFontSize - 1); });
+    applyEditorFontSize(currentEditorFontSize);
+    applyTermFontSize(currentTermFontSize);
+
+    if (fontIncBtn) fontIncBtn.addEventListener('click', function(){ applyEditorFontSize(currentEditorFontSize + 1); });
+    if (fontDecBtn) fontDecBtn.addEventListener('click', function(){ applyEditorFontSize(currentEditorFontSize - 1); });
+    if (fontResetBtn) fontResetBtn.addEventListener('click', function(){ applyEditorFontSize(DEFAULT_EDITOR_FONT_SIZE); });
+
+    if (modalTermFontIncBtn) modalTermFontIncBtn.addEventListener('click', function(){ applyTermFontSize(currentTermFontSize + 1); });
+    if (modalTermFontDecBtn) modalTermFontDecBtn.addEventListener('click', function(){ applyTermFontSize(currentTermFontSize - 1); });
+    if (modalTermFontResetBtn) modalTermFontResetBtn.addEventListener('click', function(){ applyTermFontSize(DEFAULT_TERM_FONT_SIZE); });
+
+    if (dotClear) dotClear.addEventListener('click', function() {
+      var tb = document.getElementById('terminal-body');
+      if (tb) tb.innerHTML = '';
+    });
+    if (dotReset) dotReset.addEventListener('click', function() { applyTermFontSize(DEFAULT_TERM_FONT_SIZE); });
 
     fontPresetBtns.forEach(function(btn){
       btn.addEventListener('click', function(){
         var sz = parseInt(btn.getAttribute('data-size'), 10);
-        if (!isNaN(sz)) applyFontSize(sz);
+        if (!isNaN(sz)) applyEditorFontSize(sz);
+      });
+    });
+
+    termFontPresetBtns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var sz = parseInt(btn.getAttribute('data-size'), 10);
+        if (!isNaN(sz)) applyTermFontSize(sz);
       });
     });
 
@@ -2715,13 +2796,13 @@
         runPythonCode();
       } else if ((e.ctrlKey || e.metaKey) && (e.key === '=' || e.key === '+')) {
         e.preventDefault();
-        applyFontSize(currentFontSize + 1);
+        applyEditorFontSize(currentEditorFontSize + 1);
       } else if ((e.ctrlKey || e.metaKey) && (e.key === '-' || e.key === '_')) {
         e.preventDefault();
-        applyFontSize(currentFontSize - 1);
+        applyEditorFontSize(currentEditorFontSize - 1);
       } else if ((e.ctrlKey || e.metaKey) && e.key === '0') {
         e.preventDefault();
-        applyFontSize(DEFAULT_FONT_SIZE);
+        applyEditorFontSize(DEFAULT_EDITOR_FONT_SIZE);
       }
     });
 

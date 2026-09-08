@@ -20,7 +20,9 @@
       --sal: env(safe-area-inset-left, 0px);
       --sar: env(safe-area-inset-right, 0px);
 
-      --code-font-size: 15px;
+      --editor-font-size: 15px;
+      --terminal-font-size: 14px;
+      --code-font-size: var(--editor-font-size, 15px);
       --code-line-height: 1.6;
 
       --bg: #FFFFFF;
@@ -1059,7 +1061,7 @@
     #term-output-area {
       padding: 1.25rem;
       font-family: "IBM Plex Mono", monospace;
-      font-size: 14px;
+      font-size: var(--terminal-font-size, 14px);
       line-height: 1.6;
       color: #F8FAFC;
       white-space: pre-wrap;
@@ -1406,16 +1408,12 @@
           <div class="pane-title-group">
             <div class="term-dots">
               <span class="dot dot-red" id="dot-clear" title="Clear terminal"></span>
-              <span class="dot dot-yellow" id="dot-reset" title="Reset font size"></span>
+              <span class="dot dot-yellow" id="dot-reset" title="Reset terminal font size"></span>
               <span class="dot dot-green" id="dot-focus" title="Focus prompt"></span>
             </div>
             <span>⚡ Go 1.26 Console (Compiled Runtime)</span>
           </div>
           <div class="pane-actions">
-            <div class="mac-stepper" title="Adjust terminal font size">
-              <button class="mac-stepper-btn" id="term-font-dec-btn" type="button" title="Decrease font size">A−</button>
-              <button class="mac-stepper-btn" id="term-font-inc-btn" type="button" title="Increase font size">A+</button>
-            </div>
             <button class="mac-btn mac-btn-danger" id="clear-term-btn" type="button" title="Clear terminal screen">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -1512,12 +1510,24 @@
         <!-- Editor Font Size -->
         <div class="settings-section">
           <div class="settings-section-header">
-            <span class="settings-section-title">Editor &amp; Terminal Font Size</span>
+            <span class="settings-section-title">Editor Font Size</span>
           </div>
           <div class="font-stepper-row">
-            <button class="font-stepper-btn" id="modal-font-dec-btn" type="button">A−</button>
+            <button class="font-stepper-btn" id="modal-font-dec-btn" type="button" aria-label="Decrease editor font size">A−</button>
             <span class="font-stepper-val" id="modal-font-val">15px</span>
-            <button class="font-stepper-btn" id="modal-font-inc-btn" type="button">A+</button>
+            <button class="font-stepper-btn" id="modal-font-inc-btn" type="button" aria-label="Increase editor font size">A+</button>
+          </div>
+        </div>
+
+        <!-- Terminal Output Font Size -->
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <span class="settings-section-title">Terminal Output Font Size</span>
+          </div>
+          <div class="font-stepper-row">
+            <button class="font-stepper-btn" id="modal-term-font-dec-btn" type="button" aria-label="Decrease terminal font size">A−</button>
+            <span class="font-stepper-val" id="modal-term-font-val">14px</span>
+            <button class="font-stepper-btn" id="modal-term-font-inc-btn" type="button" aria-label="Increase terminal font size">A+</button>
           </div>
         </div>
 
@@ -1981,8 +1991,6 @@ Marshaled JSON Payload:
     var dotClear = document.getElementById('dot-clear');
     var dotReset = document.getElementById('dot-reset');
     var dotFocus = document.getElementById('dot-focus');
-    var termFontDecBtn = document.getElementById('term-font-dec-btn');
-    var termFontIncBtn = document.getElementById('term-font-inc-btn');
 
     // Settings Modal Elements
     var settingsBtn = document.getElementById('settings-btn');
@@ -1997,11 +2005,9 @@ Marshaled JSON Payload:
     var modalFontDecBtn = document.getElementById('modal-font-dec-btn');
     var modalFontIncBtn = document.getElementById('modal-font-inc-btn');
     var modalFontVal = document.getElementById('modal-font-val');
-
-    // Font Zoom Controls
-    var fontDecBtn = document.getElementById('font-dec-btn');
-    var fontIncBtn = document.getElementById('font-inc-btn');
-    var fontSizeLabel = document.getElementById('font-size-label');
+    var modalTermFontDecBtn = document.getElementById('modal-term-font-dec-btn');
+    var modalTermFontIncBtn = document.getElementById('modal-term-font-inc-btn');
+    var modalTermFontVal = document.getElementById('modal-term-font-val');
 
     // Mobile Tabs
     var tabEditorBtn = document.getElementById('tab-editor-btn');
@@ -2011,7 +2017,8 @@ Marshaled JSON Payload:
     var mobileTermBadge = document.getElementById('mobile-term-badge');
 
     // State Variables
-    var currentFontSize = parseInt(localStorage.getItem('hexlean_go_font_size') || '15', 10);
+    var currentEditorFontSize = parseInt(localStorage.getItem('hexlean_go_font_size') || '15', 10);
+    var currentTermFontSize = parseInt(localStorage.getItem('hexlean_go_term_font_size') || '14', 10);
     var wordWrap = localStorage.getItem('hexlean_go_word_wrap') === 'true';
     var saveTimer = null;
     var isRunning = false;
@@ -2186,17 +2193,28 @@ Marshaled JSON Payload:
     }
 
     // --- Font Size Management ---
-    function setFontSize(size) {
+    function setEditorFontSize(size) {
       if (size < 11) size = 11;
       if (size > 24) size = 24;
-      currentFontSize = size;
+      currentEditorFontSize = size;
+      document.documentElement.style.setProperty('--editor-font-size', size + 'px');
       document.documentElement.style.setProperty('--code-font-size', size + 'px');
-      if (fontSizeLabel) fontSizeLabel.textContent = size + 'px';
       if (modalFontVal) modalFontVal.textContent = size + 'px';
       try {
         localStorage.setItem('hexlean_go_font_size', size.toString());
       } catch(e){}
       syncScroll();
+    }
+
+    function setTermFontSize(size) {
+      if (size < 11) size = 11;
+      if (size > 24) size = 24;
+      currentTermFontSize = size;
+      document.documentElement.style.setProperty('--terminal-font-size', size + 'px');
+      if (modalTermFontVal) modalTermFontVal.textContent = size + 'px';
+      try {
+        localStorage.setItem('hexlean_go_term_font_size', size.toString());
+      } catch(e){}
     }
 
     // --- Word Wrap ---
@@ -2522,15 +2540,11 @@ Marshaled JSON Payload:
       clearTermBtn.addEventListener('click', clearTerminal);
       if (dotClear) dotClear.addEventListener('click', clearTerminal);
 
-      // Reset font via dot
-      if (dotReset) dotReset.addEventListener('click', function() { setFontSize(15); });
+      // Reset terminal font via dot
+      if (dotReset) dotReset.addEventListener('click', function() { setTermFontSize(14); });
 
       // Focus editor via dot
       if (dotFocus) dotFocus.addEventListener('click', function() { editor.focus(); });
-
-      // Terminal Font Stepper
-      if (termFontDecBtn) termFontDecBtn.addEventListener('click', function() { setFontSize(currentFontSize - 1); });
-      if (termFontIncBtn) termFontIncBtn.addEventListener('click', function() { setFontSize(currentFontSize + 1); });
 
       // Presets Dropdown
       presetSelect.addEventListener('change', function() {
@@ -2562,18 +2576,18 @@ Marshaled JSON Payload:
       themeLightBtn.addEventListener('click', function() { setTheme('light'); });
       themeDarkBtn.addEventListener('click', function() { setTheme('dark'); });
 
-      modalFontDecBtn.addEventListener('click', function() { setFontSize(currentFontSize - 1); });
-      modalFontIncBtn.addEventListener('click', function() { setFontSize(currentFontSize + 1); });
+      if (modalFontDecBtn) modalFontDecBtn.addEventListener('click', function() { setEditorFontSize(currentEditorFontSize - 1); });
+      if (modalFontIncBtn) modalFontIncBtn.addEventListener('click', function() { setEditorFontSize(currentEditorFontSize + 1); });
 
-      if (fontDecBtn) fontDecBtn.addEventListener('click', function() { setFontSize(currentFontSize - 1); });
-      if (fontIncBtn) fontIncBtn.addEventListener('click', function() { setFontSize(currentFontSize + 1); });
-      if (fontSizeLabel) fontSizeLabel.addEventListener('click', function() { setFontSize(15); });
+      if (modalTermFontDecBtn) modalTermFontDecBtn.addEventListener('click', function() { setTermFontSize(currentTermFontSize - 1); });
+      if (modalTermFontIncBtn) modalTermFontIncBtn.addEventListener('click', function() { setTermFontSize(currentTermFontSize + 1); });
 
       wordWrapToggle.addEventListener('change', function() { setWordWrap(this.checked); });
 
       resetSettingsBtn.addEventListener('click', function() {
         setTheme('light');
-        setFontSize(15);
+        setEditorFontSize(15);
+        setTermFontSize(14);
         setWordWrap(false);
       });
 
@@ -2600,7 +2614,8 @@ Marshaled JSON Payload:
     }
 
     // Initialize on DOM ready
-    setFontSize(currentFontSize);
+    setEditorFontSize(currentEditorFontSize);
+    setTermFontSize(currentTermFontSize);
     setWordWrap(wordWrap);
     loadSavedCode();
     initEvents();

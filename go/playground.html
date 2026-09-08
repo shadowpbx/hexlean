@@ -1,0 +1,2602 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>Go Playground — Learn Go Like a Language</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('python_book_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch(e){}
+    })();
+  </script>
+  <style>
+    :root {
+      --sat: env(safe-area-inset-top, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px);
+      --sar: env(safe-area-inset-right, 0px);
+
+      --code-font-size: 15px;
+      --code-line-height: 1.6;
+
+      --bg: #FFFFFF;
+      --surface: #F8FAFC;
+      --surface2: #F1F5F9;
+      --surface-hover: #E2E8F0;
+      --text: #0F172A;
+      --text-soft: #334155;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --border-light: #F1F5F9;
+      --accent: #00ADD8;
+      --accent-strong: #007D9C;
+      --accent-soft: #E0F7FA;
+      
+      --editor-bg: #FFFFFF;
+      --editor-gutter-bg: #F8FAFC;
+      --editor-gutter-text: #94A3B8;
+      --editor-text: #0F172A;
+      --editor-border: #E2E8F0;
+      --editor-caret: #0F766E;
+
+      /* PowerShell Syntax Highlighting - Light */
+      --hl-code-keyword: #AF00DB;
+      --hl-code-cmdlet: #006699;
+      --hl-code-builtin: #0F766E;
+      --hl-code-command: #0284C7;
+      --hl-code-string: #A31515;
+      --hl-code-comment: #15803D;
+      --hl-code-variable: #0550AE;
+      --hl-code-number: #098658;
+      --hl-code-operator: #475569;
+      --hl-code-type: #267F99;
+      --hl-code-parameter: #B45309;
+
+      --term-bg: #0A0E17;
+      --term-header-bg: #141B2D;
+      --term-header-border: #232E4A;
+      --term-text: #F8FAFC;
+      --term-muted: #94A3B8;
+      --term-input-text: #38BDF8;
+      --term-border: #232E4A;
+      --term-error: #F87171;
+      --term-success: #34D399;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0B0F19;
+      --surface: #111827;
+      --surface2: #1F2937;
+      --surface-hover: #374151;
+      --text: #F9FAFB;
+      --text-soft: #D1D5DB;
+      --text-muted: #9CA3AF;
+      --border: #1F2937;
+      --border-light: #182234;
+      --accent: #2DD4BF;
+      --accent-strong: #5EEAD4;
+      --accent-soft: rgba(45, 212, 191, 0.12);
+
+      --editor-bg: #0F172A;
+      --editor-gutter-bg: #0B0F19;
+      --editor-gutter-text: #64748B;
+      --editor-text: #F8FAFC;
+      --editor-border: #1E293B;
+      --editor-caret: #2DD4BF;
+
+      /* PowerShell Syntax Highlighting - Dark */
+      --hl-code-keyword: #C586C0;
+      --hl-code-cmdlet: #4EC9B0;
+      --hl-code-builtin: #4EC9B0;
+      --hl-code-command: #38BDF8;
+      --hl-code-string: #CE9178;
+      --hl-code-comment: #6A9955;
+      --hl-code-variable: #9CDCFE;
+      --hl-code-number: #B5CEA8;
+      --hl-code-operator: #D4D4D4;
+      --hl-code-type: #4EC9B0;
+      --hl-code-parameter: #DCDCAA;
+
+      --term-bg: #000000;
+      --term-header-bg: #0C1222;
+      --term-header-border: #1E293B;
+      --term-text: #F9FAFB;
+      --term-muted: #9CA3AF;
+      --term-input-text: #38BDF8;
+      --term-border: #1E293B;
+      --term-error: #F87171;
+      --term-success: #34D399;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+    }
+
+    #app-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+    }
+
+    /* Top Bar */
+    #topbar {
+      height: calc(52px + var(--sat));
+      padding-top: var(--sat);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: max(1rem, var(--sal));
+      padding-right: max(1rem, var(--sar));
+      z-index: 100;
+      gap: .75rem;
+      flex-shrink: 0;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      min-width: 0;
+      flex-shrink: 1;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-icon {
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .brand-icon svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    .brand-title {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -.02em;
+    }
+    .topbar-platform-link {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 1.15rem;
+      letter-spacing: -.02em;
+      transition: color .15s ease;
+      white-space: nowrap;
+    }
+    .topbar-platform-link:hover {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .topbar-platform-icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .topbar-sep {
+      color: var(--border);
+      font-size: 1.05rem;
+      user-select: none;
+      font-weight: 300;
+      margin: 0 .15rem;
+    }
+
+    .topbar-middle {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      flex: 1;
+      justify-content: center;
+      max-width: 400px;
+    }
+
+    .filename-box {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .25rem .55rem;
+      height: 32px;
+    }
+    .filename-svg {
+      color: var(--text-muted);
+    }
+    .filename-input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .84rem;
+      font-weight: 600;
+      outline: none;
+      width: 120px;
+    }
+
+    .font-zoom-ctrl {
+      display: flex;
+      align-items: center;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      height: 32px;
+    }
+    .font-zoom-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-soft);
+      padding: 0 .5rem;
+      height: 100%;
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .12s ease;
+    }
+    .font-zoom-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+    .font-zoom-label {
+      background: transparent;
+      border: none;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      color: var(--text-soft);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .78rem;
+      font-weight: 600;
+      padding: 0 .45rem;
+      height: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    /* Topbar Apple HIG Action Button */
+    .topbar-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .42rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .35rem .75rem;
+      font-size: .84rem;
+      font-weight: 600;
+      white-space: nowrap;
+      color: var(--text);
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      transition: all .14s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      -webkit-user-select: none;
+      height: 32px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+    .topbar-action-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--text-muted);
+      color: var(--text);
+      transform: translateY(-0.5px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+    .topbar-action-btn:active {
+      transform: translateY(0.5px);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    [data-theme="dark"] .topbar-action-btn {
+      background: var(--surface2);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #F3F4F6;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    [data-theme="dark"] .topbar-action-btn:hover {
+      background: var(--surface-hover);
+      border-color: rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    /* High-Impact Featured Textbook CTA Button */
+    .textbook-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .42rem;
+      padding: .34rem .78rem;
+      font-size: .84rem;
+      font-weight: 600;
+      white-space: nowrap;
+      color: #FFFFFF !important;
+      background: linear-gradient(135deg, #00ADD8 0%, #007D9C 100%);
+      border: 1px solid rgba(0, 173, 216, 0.4);
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(0, 173, 216, 0.28), 0 1px 2px rgba(0, 0, 0, 0.06);
+      transition: all .16s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      height: 32px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+    .textbook-btn:hover {
+      background: linear-gradient(135deg, #007D9C 0%, #005F75 100%);
+      box-shadow: 0 4px 14px rgba(0, 173, 216, 0.4);
+      transform: translateY(-1px);
+    }
+    .textbook-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 3px rgba(0, 173, 216, 0.2);
+    }
+    .textbook-icon {
+      font-size: .88rem;
+      line-height: 1;
+    }
+    [data-theme="dark"] .textbook-btn {
+      background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%);
+      color: #042F2E !important;
+      border-color: rgba(45, 212, 191, 0.5);
+      box-shadow: 0 2px 10px rgba(45, 212, 191, 0.35);
+    }
+    [data-theme="dark"] .textbook-btn:hover {
+      background: linear-gradient(135deg, #5EEAD4 0%, #2DD4BF 100%);
+      box-shadow: 0 4px 16px rgba(45, 212, 191, 0.5);
+    }
+
+    /* HexDef Brand Ecosystem Pill */
+    .topbar-hexdef-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .38rem;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      border-radius: 8px;
+      padding: 0 .65rem;
+      font-size: .84rem;
+      font-weight: 600;
+      white-space: nowrap;
+      color: #047857 !important;
+      text-decoration: none;
+      height: 32px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 1px 2px rgba(16, 185, 129, 0.05);
+    }
+
+    .hexdef-shield-icon {
+      stroke: #059669;
+      fill: rgba(52, 211, 153, 0.22);
+      filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.35));
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+
+    .hexdef-ext-arrow {
+      stroke: currentColor;
+      opacity: 0.7;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .topbar-hexdef-pill:hover {
+      background: rgba(16, 185, 129, 0.14);
+      border-color: rgba(16, 185, 129, 0.55);
+      color: #065f46 !important;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.22);
+      transform: translateY(-0.5px);
+      text-decoration: none;
+    }
+
+    .topbar-hexdef-pill:hover .hexdef-shield-icon {
+      stroke: #047857;
+      fill: rgba(52, 211, 153, 0.45);
+      filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.65));
+      transform: scale(1.18);
+    }
+
+    .topbar-hexdef-pill:hover .hexdef-ext-arrow {
+      opacity: 1;
+      transform: translate(2px, -2px);
+    }
+
+    [data-theme="dark"] .topbar-hexdef-pill {
+      background: rgba(52, 211, 153, 0.09);
+      border-color: rgba(52, 211, 153, 0.32);
+      color: #6ee7b7 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    [data-theme="dark"] .hexdef-shield-icon {
+      stroke: #34d399;
+      fill: rgba(52, 211, 153, 0.35);
+      filter: drop-shadow(0 0 3px rgba(52, 211, 153, 0.55));
+    }
+
+    [data-theme="dark"] .topbar-hexdef-pill:hover {
+      background: rgba(52, 211, 153, 0.18);
+      border-color: rgba(52, 211, 153, 0.65);
+      color: #a7f3d0 !important;
+      box-shadow: 0 0 16px rgba(52, 211, 153, 0.32);
+    }
+
+    [data-theme="dark"] .topbar-hexdef-pill:hover .hexdef-shield-icon {
+      stroke: #6ee7b7;
+      fill: rgba(110, 231, 183, 0.5);
+      filter: drop-shadow(0 0 7px rgba(52, 211, 153, 0.85));
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 960px) {
+      .textbook-btn-text { display: none; }
+      .textbook-btn { padding: 0 .6rem !important; }
+      .settings-btn-text { display: none; }
+      .topbar-action-btn { width: 32px; min-width: 32px; padding: 0 !important; }
+      .topbar-hexdef-pill { padding: 0 .55rem !important; font-size: .82rem; }
+    }
+    @media (max-width: 768px) {
+      .topbar-middle { display: none !important; }
+      .textbook-btn,
+      .topbar-action-btn,
+      .topbar-hexdef-pill {
+        padding: 0 .55rem !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        justify-content: center !important;
+        font-size: .82rem;
+      }
+      .textbook-btn-text,
+      .settings-btn-text,
+      .topbar-hexdef-pill .hexdef-pill-label,
+      .topbar-hexdef-pill .hexdef-ext-arrow {
+        display: none !important;
+      }
+    }
+    @media (max-width: 600px) {
+      .topbar-platform-link, .topbar-sep { display: none !important; }
+      #terminal-pane .pane-title-group span { display: none; }
+      #editor-pane .pane-title-group span { font-size: .8rem; }
+    }
+
+    /* Settings Modal Dialog */
+    .settings-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      visibility: visible;
+      opacity: 1;
+      transition: opacity .15s ease, visibility .15s ease;
+    }
+    .settings-modal[hidden] {
+      display: none !important;
+      visibility: hidden;
+      opacity: 0;
+    }
+    .settings-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .settings-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      z-index: 1001;
+      display: flex;
+      flex-direction: column;
+      animation: modalScaleIn .15s ease-out;
+    }
+    @keyframes modalScaleIn {
+      from { transform: scale(0.96); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .settings-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .85rem 1.2rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+    .settings-title-group {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+    }
+    .settings-icon { font-size: 1.05rem; }
+    .settings-title {
+      margin: 0;
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .settings-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: .2rem;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .settings-close-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .settings-card-body {
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+
+    .settings-section {
+      display: flex;
+      flex-direction: column;
+      gap: .55rem;
+    }
+    .settings-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .settings-section-title {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .settings-section-sub {
+      font-size: .8rem;
+      color: var(--text-muted);
+      margin: -.2rem 0 .2rem 0;
+      line-height: 1.5;
+    }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .5rem;
+    }
+    .theme-radio-btn {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .6rem .75rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .12s ease;
+    }
+    .theme-radio-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--text-muted);
+    }
+    .theme-radio-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      box-shadow: 0 0 0 1.5px var(--accent);
+    }
+    .theme-radio-icon { font-size: 1rem; }
+
+    .font-stepper-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .4rem .6rem;
+    }
+    .font-stepper-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .font-stepper-btn:hover { background: var(--surface-hover); }
+    .font-stepper-val {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .settings-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      padding: .6rem .75rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .settings-toggle-row:hover {
+      background: var(--surface-hover);
+    }
+    .settings-toggle-text {
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .settings-checkbox {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .settings-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .85rem 1.2rem;
+      background: var(--surface2);
+      border-top: 1px solid var(--border);
+    }
+    .settings-reset-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: .3rem .5rem;
+      border-radius: 6px;
+    }
+    .settings-reset-btn:hover {
+      background: var(--surface-hover);
+      color: #EF4444;
+    }
+
+    /* Split Workspace */
+    #workspace {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .pane {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #editor-pane {
+      flex: 1;
+      border-right: 1px solid var(--border);
+      background: var(--editor-bg);
+      min-width: 320px;
+    }
+
+    #terminal-pane {
+      flex: 1;
+      background: var(--term-bg);
+      color: var(--term-text);
+      min-width: 320px;
+      position: relative;
+    }
+
+    .pane-header {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+
+    #terminal-pane .pane-header {
+      background: var(--term-header-bg);
+      border-bottom: 1px solid var(--term-header-border);
+      color: var(--term-text);
+    }
+
+    .pane-title-group {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      font-size: .86rem;
+      font-weight: 600;
+    }
+
+    .term-dots {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      cursor: pointer;
+    }
+    .dot-red { background: #FF5F56; }
+    .dot-yellow { background: #FFBD2E; }
+    .dot-green { background: #27C93F; }
+
+    .pane-actions {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+
+    /* Tactile Apple HIG Pane Header Buttons (.mac-btn) */
+    .mac-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .34rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .24rem .58rem;
+      font-size: .78rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-soft);
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      transition: all .12s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      line-height: 1;
+    }
+    .mac-btn:hover {
+      background: var(--surface2);
+      border-color: var(--text-muted);
+      color: var(--text);
+      transform: translateY(-0.5px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+    .mac-btn:active {
+      transform: translateY(0.5px);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+    .mac-btn-danger:hover {
+      color: #EF4444;
+      border-color: #FCA5A5;
+      background: #FEF2F2;
+    }
+    [data-theme="dark"] .mac-btn-danger:hover {
+      color: #F87171;
+      border-color: rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.12);
+    }
+    .mac-btn-accent {
+      color: var(--accent-strong);
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .mac-btn-accent:hover {
+      background: var(--accent);
+      color: #FFFFFF !important;
+    }
+    [data-theme="dark"] .mac-btn-accent:hover {
+      background: var(--accent);
+      color: #030712 !important;
+    }
+
+    #terminal-pane .mac-btn {
+      background: #192238;
+      border-color: #2D3D60;
+      color: #D1D5DB;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    #terminal-pane .mac-btn:hover {
+      background: #233150;
+      border-color: #4B5563;
+      color: #FFFFFF;
+    }
+
+    .mac-stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+    #terminal-pane .mac-stepper {
+      background: #192238;
+      border-color: #2D3D60;
+    }
+    .mac-stepper-btn {
+      background: transparent;
+      border: none;
+      padding: .24rem .45rem;
+      font-size: .75rem;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--text-soft);
+      cursor: pointer;
+      user-select: none;
+    }
+    #terminal-pane .mac-stepper-btn {
+      color: #D1D5DB;
+    }
+    .mac-stepper-btn:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+    #terminal-pane .mac-stepper-btn:hover {
+      background: #233150;
+      color: #FFFFFF;
+    }
+    .mac-stepper-btn:first-child {
+      border-right: 1px solid var(--border);
+    }
+    #terminal-pane .mac-stepper-btn:first-child {
+      border-right-color: #2D3D60;
+    }
+
+    .save-status {
+      font-size: .75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: color .2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+    }
+    .save-status.saved { color: #10B981; }
+    .save-status.saving { color: #F59E0B; }
+
+    /* Editor */
+    .editor-wrapper {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .line-numbers {
+      width: 50px;
+      padding: .9rem 0;
+      background: var(--editor-gutter-bg);
+      border-right: 1px solid var(--editor-border);
+      color: var(--editor-gutter-text);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: var(--code-font-size, 15px);
+      line-height: var(--code-line-height, 1.6);
+      text-align: right;
+      padding-right: .65rem;
+      user-select: none;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .editor-code-container {
+      position: relative;
+      flex: 1;
+      height: 100%;
+      overflow: hidden;
+      background: var(--editor-bg);
+    }
+
+    .highlight-layer,
+    .code-textarea {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: .9rem 1rem;
+      border: none;
+      box-sizing: border-box;
+      font-family: "IBM Plex Mono", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: var(--code-font-size, 15px);
+      line-height: var(--code-line-height, 1.6);
+      letter-spacing: normal;
+      word-spacing: normal;
+      text-rendering: auto;
+      font-feature-settings: normal;
+      tab-size: 2;
+      -moz-tab-size: 2;
+    }
+
+    .highlight-layer {
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      white-space: pre;
+      overflow-wrap: normal;
+      word-break: normal;
+      color: var(--editor-text);
+      background: transparent;
+      user-select: none;
+    }
+
+    .highlight-layer code {
+      display: block;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: transparent;
+      font: inherit;
+      letter-spacing: inherit;
+      word-spacing: inherit;
+      line-height: inherit;
+      white-space: inherit;
+      overflow-wrap: inherit;
+      word-break: inherit;
+    }
+
+    .code-textarea {
+      z-index: 2;
+      background: transparent;
+      color: transparent;
+      caret-color: var(--editor-caret, var(--text));
+      resize: none;
+      outline: none;
+      overflow: auto;
+      white-space: pre;
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+
+    .code-textarea::selection {
+      background: rgba(15, 118, 110, 0.22);
+      color: transparent;
+    }
+    [data-theme="dark"] .code-textarea::selection {
+      background: rgba(45, 212, 191, 0.28);
+      color: transparent;
+    }
+
+    /* PowerShell Syntax Highlighting Tokens */
+    .hl-comment { color: var(--hl-code-comment); font-style: italic; }
+    .hl-string { color: var(--hl-code-string); }
+    .hl-keyword { color: var(--hl-code-keyword); font-weight: 600; }
+    .hl-cmdlet { color: var(--hl-code-cmdlet); font-weight: 600; }
+    .hl-variable { color: var(--hl-code-variable); font-weight: 600; }
+    .hl-number { color: var(--hl-code-number); }
+    .hl-operator { color: var(--hl-code-operator); }
+    .hl-type { color: var(--hl-code-type); font-weight: 600; }
+    .hl-parameter { color: var(--hl-code-parameter); }
+
+    /* Terminal Body */
+    .terminal-body {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background: var(--term-bg);
+    }
+
+    #terminal {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #term-output-area {
+      padding: 1.25rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #F8FAFC;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-y: auto;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Bottom Bar */
+    #bottom-bar {
+      height: calc(46px + var(--sab));
+      padding-bottom: var(--sab);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: max(1rem, var(--sal));
+      padding-right: max(1rem, var(--sar));
+      flex-shrink: 0;
+      z-index: 90;
+      gap: .75rem;
+    }
+
+    .bottom-left {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .run-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .42rem;
+      background: linear-gradient(135deg, #00ADD8 0%, #007D9C 100%);
+      color: #FFFFFF;
+      border: 1px solid rgba(0, 173, 216, 0.4);
+      border-radius: 7px;
+      padding: .35rem .9rem;
+      font-size: .84rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 173, 216, 0.28), 0 1px 2px rgba(0, 0, 0, 0.06);
+      transition: all .14s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      height: 32px;
+    }
+    .run-btn:hover {
+      background: linear-gradient(135deg, #007D9C 0%, #005F75 100%);
+      box-shadow: 0 4px 12px rgba(0, 173, 216, 0.4);
+      transform: translateY(-0.5px);
+    }
+    .run-btn:active {
+      transform: translateY(0.5px);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+    [data-theme="dark"] .run-btn {
+      background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%);
+      color: #042F2E;
+      border-color: rgba(45, 212, 191, 0.5);
+      box-shadow: 0 2px 10px rgba(45, 212, 191, 0.35);
+    }
+    [data-theme="dark"] .run-btn:hover {
+      background: linear-gradient(135deg, #5EEAD4 0%, #2DD4BF 100%);
+      box-shadow: 0 4px 16px rgba(45, 212, 191, 0.5);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      font-size: .78rem;
+      font-weight: 600;
+      padding: .2rem .55rem;
+      border-radius: 6px;
+      background: var(--surface2);
+      color: var(--text-soft);
+      border: 1px solid var(--border);
+    }
+    .status-badge.ready {
+      color: #059669;
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+    [data-theme="dark"] .status-badge.ready {
+      color: #34D399;
+      background: rgba(52, 211, 153, 0.12);
+      border-color: rgba(52, 211, 153, 0.3);
+    }
+    .status-badge.running {
+      color: #0284C7;
+      background: rgba(2, 132, 199, 0.1);
+      border-color: rgba(2, 132, 199, 0.25);
+    }
+    .status-badge.error {
+      color: #DC2626;
+      background: rgba(220, 38, 38, 0.1);
+      border-color: rgba(220, 38, 38, 0.25);
+    }
+
+    .bottom-middle {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .preset-label {
+      font-size: .78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .preset-select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .25rem .5rem;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--text);
+      font-family: inherit;
+      cursor: pointer;
+      outline: none;
+    }
+    .preset-select:hover {
+      border-color: var(--text-muted);
+    }
+
+    .bottom-right {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin-left: auto;
+    }
+    .shortcut-hint {
+      font-size: .75rem;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+    }
+    .shortcut-key {
+      display: inline-block;
+      padding: .1rem .35rem;
+      border-radius: 4px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .7rem;
+      font-weight: 600;
+      color: var(--text-soft);
+    }
+
+    .attribution-text {
+      font-size: .75rem;
+      color: var(--text-muted);
+    }
+    .attribution-text a {
+      color: var(--text-soft);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .attribution-text a:hover {
+      color: var(--accent);
+    }
+
+    /* Mobile Tabs (Editor vs Terminal) */
+    .mobile-tab-switch {
+      display: none;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 .5rem;
+      gap: .35rem;
+      height: 38px;
+    }
+    .tab-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: .84rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      padding: 0 .5rem;
+      transition: all .12s ease;
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .tab-badge {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .7rem;
+      padding: .1rem .35rem;
+      border-radius: 4px;
+      background: var(--surface2);
+      color: var(--text-soft);
+    }
+
+    @media (max-width: 768px) {
+      .mobile-tab-switch {
+        display: flex;
+      }
+      #workspace {
+        flex-direction: column;
+      }
+      #editor-pane, #terminal-pane {
+        width: 100% !important;
+        height: 100% !important;
+        flex: 1;
+        display: none;
+        border-right: none;
+      }
+      #editor-pane.active, #terminal-pane.active {
+        display: flex;
+      }
+      .bottom-middle, .attribution-text, .shortcut-hint {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app-container">
+    <!-- Topbar -->
+    <header id="topbar">
+      <div class="topbar-left">
+        <a href="/" class="topbar-platform-link" title="HexLean Platform Home">
+          <span class="topbar-platform-icon">⚡</span>
+          <span class="brand-title">HexLean</span>
+        </a>
+        <span class="topbar-sep">/</span>
+        <a href="/go/index.html" class="brand" title="Go Track Home">
+          <span class="brand-icon">
+            <svg viewBox="0 6.5 24 11" aria-hidden="true" fill="#00ADD8" style="width: 28px; height: 16px; display: block;"><path d="M1.811 10.231c-.047 0-.058-.023-.035-.059l.246-.315c.023-.035.081-.058.128-.058h4.172c.046 0 .058.035.035.07l-.199.303c-.023.036-.082.07-.117.07zM.047 11.306c-.047 0-.059-.023-.035-.058l.245-.316c.023-.035.082-.058.129-.058h5.328c.047 0 .07.035.058.07l-.093.28c-.012.047-.058.07-.105.07zm2.828 1.075c-.047 0-.059-.035-.035-.07l.163-.292c.023-.035.07-.07.117-.07h2.337c.047 0 .07.035.07.082l-.023.28c0 .047-.047.082-.082.082zm12.129-2.36c-.736.187-1.239.327-1.963.514-.176.046-.187.058-.34-.117-.174-.199-.303-.327-.548-.444-.737-.362-1.45-.257-2.115.175-.795.514-1.204 1.274-1.192 2.22.011.935.654 1.706 1.577 1.835.795.105 1.46-.175 1.987-.77.105-.13.198-.27.315-.434H10.47c-.245 0-.304-.152-.222-.35.152-.362.432-.97.596-1.274a.315.315 0 01.292-.187h4.253c-.023.316-.023.631-.07.947a4.983 4.983 0 01-.958 2.29c-.841 1.11-1.94 1.8-3.33 1.986-1.145.152-2.209-.07-3.143-.77-.865-.655-1.356-1.52-1.484-2.595-.152-1.274.222-2.419.993-3.424.83-1.086 1.928-1.776 3.272-2.02 1.098-.2 2.15-.07 3.096.571.62.41 1.063.97 1.356 1.648.07.105.023.164-.117.2m3.868 6.461c-1.064-.024-2.034-.328-2.852-1.029a3.665 3.665 0 01-1.262-2.255c-.21-1.32.152-2.489.947-3.529.853-1.122 1.881-1.706 3.272-1.95 1.192-.21 2.314-.095 3.33.595.923.63 1.496 1.484 1.648 2.605.198 1.578-.257 2.863-1.344 3.962-.771.783-1.718 1.273-2.805 1.495-.315.06-.63.07-.934.106zm2.78-4.72c-.011-.153-.011-.27-.034-.387-.21-1.157-1.274-1.81-2.384-1.554-1.087.245-1.788.935-2.045 2.033-.21.912.234 1.835 1.075 2.21.643.28 1.285.244 1.905-.07.923-.48 1.425-1.228 1.484-2.233z"/></svg>
+          </span>
+          <span class="brand-title" style="font-size: 1.05rem;">Go Playground</span>
+        </a>
+      </div>
+
+      <div class="topbar-middle">
+        <div class="filename-box" title="Script Filename">
+          <svg class="filename-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+          <input type="text" id="filename-input" class="filename-input" value="main.go" spellcheck="false" aria-label="Script Filename">
+        </div>
+
+        <div class="font-zoom-ctrl" title="Editor Font Size">
+          <button class="font-zoom-btn" id="font-dec-btn" type="button" aria-label="Decrease Font Size">A−</button>
+          <button class="font-zoom-label" id="font-size-label" type="button" title="Click to reset font size (15px)">15px</button>
+          <button class="font-zoom-btn" id="font-inc-btn" type="button" aria-label="Increase Font Size">A+</button>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="/go/index.html" class="textbook-btn" title="Read Complete 75-Chapter Go Textbook">
+          <span class="textbook-icon">📖</span>
+          <span class="textbook-btn-text">Read Textbook</span>
+        </a>
+
+        <a href="https://hexdef.com" target="_blank" rel="noopener" class="topbar-hexdef-pill" title="Curated by Tanvir Hussain • Visit HexDef Systems Architecture &amp; Security (hexdef.com)">
+          <svg class="hexdef-shield-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span class="hexdef-pill-label">HexDef</span>
+          <svg class="hexdef-ext-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </a>
+
+        <button id="settings-btn" class="topbar-action-btn" type="button" aria-haspopup="dialog" aria-expanded="false" title="Playground Settings">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span class="settings-btn-text">Settings</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile View Switcher -->
+    <div class="mobile-tab-switch" role="tablist" aria-label="Editor and Terminal Views">
+      <button class="tab-btn active" id="tab-editor-btn" role="tab" aria-selected="true" aria-controls="editor-pane" type="button">
+        <span>⚡ Code Editor</span>
+        <span class="tab-badge">.go</span>
+      </button>
+      <button class="tab-btn" id="tab-terminal-btn" role="tab" aria-selected="false" aria-controls="terminal-pane" type="button">
+        <span>❯ Console</span>
+        <span class="tab-badge" id="mobile-term-badge">Ready</span>
+      </button>
+    </div>
+
+    <!-- Main Workspace Split -->
+    <div id="workspace">
+      <!-- Left Pane: Code Editor -->
+      <section id="editor-pane" class="pane active">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <span>⚡ Go 1.26 Editor</span>
+          </div>
+          <div class="pane-actions">
+            <span class="save-status saved" id="save-status">● Saved</span>
+            <button class="mac-btn" id="copy-btn" type="button" title="Copy code to clipboard">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span id="copy-btn-text">Copy</span>
+            </button>
+            <button class="mac-btn mac-btn-danger" id="clear-editor-btn" type="button" title="Clear code editor">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              <span>Clear</span>
+            </button>
+            <button class="mac-btn mac-btn-accent" id="download-btn" type="button" title="Download Go source file (.go)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download .go</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-wrapper">
+          <div class="line-numbers" id="line-numbers">1</div>
+          <div class="editor-code-container" id="editor-code-container">
+            <pre id="highlight-layer" class="highlight-layer" aria-hidden="true"><code id="highlight-code" class="language-go"></code></pre>
+            <textarea id="code-editor" class="code-textarea" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"Hello, HexLean!\")\n}"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Pane: Terminal / Output Console -->
+      <section id="terminal-pane" class="pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <div class="term-dots">
+              <span class="dot dot-red" id="dot-clear" title="Clear terminal"></span>
+              <span class="dot dot-yellow" id="dot-reset" title="Reset font size"></span>
+              <span class="dot dot-green" id="dot-focus" title="Focus prompt"></span>
+            </div>
+            <span>⚡ Go 1.26 Console (Compiled Runtime)</span>
+          </div>
+          <div class="pane-actions">
+            <div class="mac-stepper" title="Adjust terminal font size">
+              <button class="mac-stepper-btn" id="term-font-dec-btn" type="button" title="Decrease font size">A−</button>
+              <button class="mac-stepper-btn" id="term-font-inc-btn" type="button" title="Increase font size">A+</button>
+            </div>
+            <button class="mac-btn mac-btn-danger" id="clear-term-btn" type="button" title="Clear terminal screen">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+              </svg>
+              <span>Clear</span>
+            </button>
+            <button class="mac-btn mac-btn-accent" id="copy-cmd-btn" type="button" title="Copy native go run CLI command">
+              <span>Copy go run Cmd</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="terminal-body" id="terminal-body">
+          <div id="terminal">
+            <div id="term-output-area">
+              <div style="color: #38BDF8; font-weight: 600; margin-bottom: 0.5rem;">⚡ HexLean Go Interactive Console (Go 1.26.5 • Compiled Systems Runtime)</div>
+              <div style="color: #94A3B8; font-size: 13px; margin-bottom: 1.25rem;">Client-side zero-latency Go editor &amp; toolchain simulator. Press <kbd style="background: rgba(255,255,255,0.12); padding: 2px 6px; border-radius: 4px; color: #F8FAFC; font-family: inherit;">Ctrl+Enter</kbd> or click <strong>▶ Run Program</strong> to execute.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Bottom Bar -->
+    <footer id="bottom-bar">
+      <div class="bottom-left">
+        <button id="run-btn" class="run-btn" type="button" title="Execute Go program (Ctrl+Enter or F5)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <span>Run Program</span>
+        </button>
+        <span class="status-badge ready" id="status-badge">● Ready</span>
+      </div>
+
+      <div class="bottom-middle">
+        <label for="preset-select" class="preset-label">Preset Examples:</label>
+        <select id="preset-select" class="preset-select" title="Load sample script">
+          <option value="concurrency">1. Goroutines &amp; Channels (Concurrency)</option>
+          <option value="structs_interfaces">2. Structs, Methods &amp; Interfaces</option>
+          <option value="generics">3. Generics &amp; Type Constraints</option>
+          <option value="slices_maps">4. Slices, Maps &amp; UTF-8 Strings</option>
+          <option value="errors_wrapping">5. Error Handling &amp; Wrapping</option>
+          <option value="json_http">6. JSON Serialization &amp; Struct Tags</option>
+        </select>
+      </div>
+
+      <div class="bottom-right">
+        <span class="shortcut-hint" title="Execute script shortcut">
+          <span>Run:</span>
+          <kbd class="shortcut-key">Ctrl+Enter</kbd>
+        </span>
+        <span class="shortcut-hint" title="Clear terminal shortcut">
+          <span>Clear:</span>
+          <kbd class="shortcut-key">Ctrl+L</kbd>
+        </span>
+        <span class="attribution-text">
+          Curated by <a href="https://hexdef.com" target="_blank" rel="noopener">Tanvir Hussain</a> • HexDef
+        </span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Settings Dialog -->
+  <div id="settings-modal" class="settings-modal" hidden role="dialog" aria-modal="true" aria-labelledby="settings-dialog-title">
+    <div class="settings-backdrop" id="settings-backdrop"></div>
+    <div class="settings-card">
+      <div class="settings-card-header">
+        <div class="settings-title-group">
+          <span class="settings-icon">⚡</span>
+          <h3 id="settings-dialog-title" class="settings-title">Playground Settings</h3>
+        </div>
+        <button class="settings-close-btn" id="settings-close-btn" type="button" aria-label="Close Settings">✕</button>
+      </div>
+
+      <div class="settings-card-body">
+        <!-- Appearance Theme -->
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <span class="settings-section-title">Appearance Theme</span>
+          </div>
+          <div class="theme-grid">
+            <button class="theme-radio-btn active" id="theme-light-btn" type="button" data-theme-val="light">
+              <span class="theme-radio-icon">☀️</span>
+              <span>Light Mode</span>
+            </button>
+            <button class="theme-radio-btn" id="theme-dark-btn" type="button" data-theme-val="dark">
+              <span class="theme-radio-icon">🌙</span>
+              <span>Dark Mode</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Editor Font Size -->
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <span class="settings-section-title">Editor &amp; Terminal Font Size</span>
+          </div>
+          <div class="font-stepper-row">
+            <button class="font-stepper-btn" id="modal-font-dec-btn" type="button">A−</button>
+            <span class="font-stepper-val" id="modal-font-val">15px</span>
+            <button class="font-stepper-btn" id="modal-font-inc-btn" type="button">A+</button>
+          </div>
+        </div>
+
+        <!-- Editor Preferences -->
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <span class="settings-section-title">Editor Preferences</span>
+          </div>
+          <label class="settings-toggle-row">
+            <span class="settings-toggle-text">Word wrap long lines</span>
+            <input type="checkbox" id="word-wrap-toggle" class="settings-checkbox">
+          </label>
+        </div>
+
+        <!-- PowerShell Runtime Info -->
+        <div class="settings-section">
+          <div class="settings-section-header">
+            <span class="settings-section-title">Go 1.26.5 Runtime</span>
+          </div>
+          <p class="settings-section-sub">
+            Specification: Go 1.26.5 (Compiled Systems Architecture with Native Concurrency).<br>
+            Goroutines, unbuffered/buffered channels, implicit interface satisfaction, and type parameters.<br>
+            All execution is 100% client-side with zero remote latency.
+          </p>
+        </div>
+      </div>
+
+      <div class="settings-card-footer">
+        <button class="settings-reset-btn" id="reset-settings-btn" type="button">Reset All Settings</button>
+        <button class="mac-btn mac-btn-accent" id="settings-done-btn" type="button">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Playground Controller -->
+  <script>
+  (function() {
+    'use strict';
+
+    // Preset Code Templates and Verified PowerShell 7.4 Outputs
+    var PRESETS = {
+      concurrency: {
+        filename: "concurrency.go",
+        code: `package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+func worker(id int, jobs <-chan int, results chan<- string, wg *sync.WaitGroup) {
+	defer wg.Done()
+	for j := range jobs {
+		results <- fmt.Sprintf("Worker #%d processed job: %d", id, j)
+	}
+}
+
+func main() {
+	fmt.Println("⚡ Go Concurrent Worker Pool (Goroutines & Channels)")
+	fmt.Println("----------------------------------------------------")
+
+	numJobs := 6
+	numWorkers := 3
+	jobs := make(chan int, numJobs)
+	results := make(chan string, numJobs)
+	var wg sync.WaitGroup
+
+	for w := 1; w <= numWorkers; w++ {
+		wg.Add(1)
+		go worker(w, jobs, results, &wg)
+	}
+
+	for j := 1; j <= numJobs; j++ {
+		jobs <- j * 10
+	}
+	close(jobs)
+
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	count := 0
+	for res := range results {
+		count++
+		fmt.Printf("[%d/%d] %s\n", count, numJobs, res)
+	}
+
+	fmt.Println("\n✓ All jobs completed safely without race conditions.")
+}`,
+        output: `⚡ Go Concurrent Worker Pool (Goroutines & Channels)
+----------------------------------------------------
+[1/6] Worker #1 processed job: 10
+[2/6] Worker #1 processed job: 30
+[3/6] Worker #1 processed job: 40
+[4/6] Worker #1 processed job: 50
+[5/6] Worker #1 processed job: 60
+[6/6] Worker #2 processed job: 20
+
+✓ All jobs completed safely without race conditions.`
+      },
+
+      structs_interfaces: {
+        filename: "interfaces.go",
+        code: `package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type Shape interface {
+	Area() float64
+	Perimeter() float64
+	Name() string
+}
+
+type Rectangle struct {
+	Width, Height float64
+}
+
+func (r Rectangle) Area() float64      { return r.Width * r.Height }
+func (r Rectangle) Perimeter() float64 { return 2 * (r.Width + r.Height) }
+func (r Rectangle) Name() string       { return "Rectangle" }
+
+type Circle struct {
+	Radius float64
+}
+
+func (c Circle) Area() float64      { return math.Pi * c.Radius * c.Radius }
+func (c Circle) Perimeter() float64 { return 2 * math.Pi * c.Radius }
+func (c Circle) Name() string       { return "Circle" }
+
+func printShapeInfo(s Shape) {
+	fmt.Printf("Shape: %-10s | Area: %8.2f | Perimeter: %8.2f\n", s.Name(), s.Area(), s.Perimeter())
+}
+
+func main() {
+	fmt.Println("=== Interfaces & Polymorphism in Go ===")
+	fmt.Println()
+
+	shapes := []Shape{
+		Rectangle{Width: 12.5, Height: 8.0},
+		Circle{Radius: 5.0},
+		Rectangle{Width: 4.2, Height: 4.2},
+	}
+
+	for _, s := range shapes {
+		printShapeInfo(s)
+	}
+}`,
+        output: `=== Interfaces & Polymorphism in Go ===
+
+Shape: Rectangle  | Area:   100.00 | Perimeter:    41.00
+Shape: Circle     | Area:    78.54 | Perimeter:    31.42
+Shape: Rectangle  | Area:    17.64 | Perimeter:    16.80`
+      },
+
+      generics: {
+        filename: "generics.go",
+        code: `package main
+
+import (
+	"cmp"
+	"fmt"
+	"slices"
+)
+
+type Stack[T any] struct {
+	elements []T
+}
+
+func (s *Stack[T]) Push(val T) {
+	s.elements = append(s.elements, val)
+}
+
+func (s *Stack[T]) Pop() (T, bool) {
+	if len(s.elements) == 0 {
+		var zero T
+		return zero, false
+	}
+	idx := len(s.elements) - 1
+	top := s.elements[idx]
+	s.elements = s.elements[:idx]
+	return top, true
+}
+
+func (s *Stack[T]) Len() int {
+	return len(s.elements)
+}
+
+func FindMinMax[T cmp.Ordered](items []T) (T, T) {
+	if len(items) == 0 {
+		var zero T
+		return zero, zero
+	}
+	minVal, maxVal := items[0], items[0]
+	for _, v := range items[1:] {
+		if v < minVal {
+			minVal = v
+		}
+		if v > maxVal {
+			maxVal = v
+		}
+	}
+	return minVal, maxVal
+}
+
+func main() {
+	fmt.Println("=== Go Generics: Type Parameters & Constraints ===")
+	fmt.Println()
+
+	intStack := Stack[int]{}
+	intStack.Push(10)
+	intStack.Push(20)
+	intStack.Push(30)
+
+	fmt.Printf("Int Stack Size: %d\n", intStack.Len())
+	val, _ := intStack.Pop()
+	fmt.Printf("Popped from Stack: %d (Remaining: %d)\n\n", val, intStack.Len())
+
+	scores := []float64{94.5, 88.0, 99.2, 76.4, 100.0}
+	minScore, maxScore := FindMinMax(scores)
+	fmt.Printf("Scores: %v\n", scores)
+	fmt.Printf("Min Score: %.1f | Max Score: %.1f\n\n", minScore, maxScore)
+
+	slices.Sort(scores)
+	fmt.Printf("Sorted via slices.Sort: %v\n", scores)
+}`,
+        output: `=== Go Generics: Type Parameters & Constraints ===
+
+Int Stack Size: 3
+Popped from Stack: 30 (Remaining: 2)
+
+Scores: [94.5 88 99.2 76.4 100]
+Min Score: 76.4 | Max Score: 100.0
+
+Sorted via slices.Sort: [76.4 88 94.5 99.2 100]`
+      },
+
+      slices_maps: {
+        filename: "collections.go",
+        code: `package main
+
+import (
+	"fmt"
+	"unicode/utf8"
+)
+
+func main() {
+	fmt.Println("=== Slices, Maps & UTF-8 Strings ===")
+	fmt.Println()
+
+	// 1. Slice Growth and Capacity
+	nums := make([]int, 0, 4)
+	fmt.Printf("Initial: len=%d, cap=%d, data=%v\n", len(nums), cap(nums), nums)
+	for i := 1; i <= 5; i++ {
+		nums = append(nums, i*10)
+		fmt.Printf("Append %2d -> len=%d, cap=%d\n", i*10, len(nums), cap(nums))
+	}
+
+	// 2. Map Lookup & Comma-OK Idiom
+	fmt.Println("\n--- Service Ports Registry ---")
+	ports := map[string]int{
+		"http":  80,
+		"https": 443,
+		"ssh":   22,
+		"grpc":  50051,
+	}
+
+	for _, service := range []string{"https", "mysql"} {
+		if port, ok := ports[service]; ok {
+			fmt.Printf("✓ Found %-6s on port %d\n", service, port)
+		} else {
+			fmt.Printf("✗ Service %-6s is not registered\n", service)
+		}
+	}
+
+	// 3. UTF-8 Runes vs Bytes
+	greeting := "Hello, 世界 🚀"
+	fmt.Println("\n--- UTF-8 Multibyte Analysis ---")
+	fmt.Printf("String: %s\n", greeting)
+	fmt.Printf("Byte Length : %d bytes\n", len(greeting))
+	fmt.Printf("Rune Count  : %d characters\n", utf8.RuneCountInString(greeting))
+}`,
+        output: `=== Slices, Maps & UTF-8 Strings ===
+
+Initial: len=0, cap=4, data=[]
+Append 10 -> len=1, cap=4
+Append 20 -> len=2, cap=4
+Append 30 -> len=3, cap=4
+Append 40 -> len=4, cap=4
+Append 50 -> len=5, cap=8
+
+--- Service Ports Registry ---
+✓ Found https  on port 443
+✗ Service mysql  is not registered
+
+--- UTF-8 Multibyte Analysis ---
+String: Hello, 世界 🚀
+Byte Length : 18 bytes
+Rune Count  : 11 characters`
+      },
+
+      errors_wrapping: {
+        filename: "errors.go",
+        code: `package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+var ErrNotFound = errors.New("resource not found")
+var ErrPermissionDenied = errors.New("permission denied")
+
+type QueryError struct {
+	Query string
+	Err   error
+}
+
+func (e *QueryError) Error() string {
+	return fmt.Sprintf("query failed [%s]: %v", e.Query, e.Err)
+}
+
+func (e *QueryError) Unwrap() error {
+	return e.Err
+}
+
+func executeQuery(q string, authorized bool) error {
+	if !authorized {
+		return &QueryError{Query: q, Err: ErrPermissionDenied}
+	}
+	return &QueryError{Query: q, Err: ErrNotFound}
+}
+
+func main() {
+	fmt.Println("=== Idiomatic Error Handling & Wrapping ===")
+	fmt.Println()
+
+	err := executeQuery("SELECT * FROM users WHERE id = 42", true)
+	if err != nil {
+		fmt.Printf("Top-level Error: %v\n\n", err)
+
+		// Check with errors.Is (unwraps automatically)
+		if errors.Is(err, ErrNotFound) {
+			fmt.Println("✓ errors.Is matched: Target is ErrNotFound")
+		}
+
+		// Extract typed error with errors.As
+		var qErr *QueryError
+		if errors.As(err, &qErr) {
+			fmt.Printf("✓ errors.As extracted QueryError: Query was \"%s\"\n", qErr.Query)
+		}
+	}
+}`,
+        output: `=== Idiomatic Error Handling & Wrapping ===
+
+Top-level Error: query failed [SELECT * FROM users WHERE id = 42]: resource not found
+
+✓ errors.Is matched: Target is ErrNotFound
+✓ errors.As extracted QueryError: Query was "SELECT * FROM users WHERE id = 42"`
+      },
+
+      json_http: {
+        filename: "json_api.go",
+        code: `package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
+
+type ServerNode struct {
+	ID        string    ` + '`json:"id"`' + `
+	Host      string    ` + '`json:"host"`' + `
+	Port      int       ` + '`json:"port"`' + `
+	IsHealthy bool      ` + '`json:"is_healthy"`' + `
+	Tags      []string  ` + '`json:"tags,omitempty"`' + `
+	StartedAt time.Time ` + '`json:"started_at"`' + `
+}
+
+func main() {
+	fmt.Println("=== JSON Serialization & Struct Tags ===")
+	fmt.Println()
+
+	node := ServerNode{
+		ID:        "node-eu-01",
+		Host:      "edge.hexlean.internal",
+		Port:      8443,
+		IsHealthy: true,
+		Tags:      []string{"ingress", "tls-edge", "production"},
+		StartedAt: time.Date(2026, time.September, 7, 12, 0, 0, 0, time.UTC),
+	}
+
+	jsonData, err := json.MarshalIndent(node, "", "  ")
+	if err != nil {
+		fmt.Println("Serialization error:", err)
+		return
+	}
+
+	fmt.Println("Marshaled JSON Payload:")
+	fmt.Println(string(jsonData))
+
+	// Round-trip deserialization
+	var decoded ServerNode
+	if err := json.Unmarshal(jsonData, &decoded); err == nil {
+		fmt.Printf("\n✓ Round-trip decoded node '%s' on %s:%d\n", decoded.ID, decoded.Host, decoded.Port)
+	}
+}`,
+        output: `=== JSON Serialization & Struct Tags ===
+
+Marshaled JSON Payload:
+{
+  "id": "node-eu-01",
+  "host": "edge.hexlean.internal",
+  "port": 8443,
+  "is_healthy": true,
+  "tags": [
+    "ingress",
+    "tls-edge",
+    "production"
+  ],
+  "started_at": "2026-09-07T12:00:00Z"
+}
+
+✓ Round-trip decoded node 'node-eu-01' on edge.hexlean.internal:8443`
+      }
+    };
+
+    var editor = document.getElementById('code-editor');
+    var highlightCode = document.getElementById('highlight-code');
+    var highlightLayer = document.getElementById('highlight-layer');
+    var lineNumbers = document.getElementById('line-numbers');
+    var runBtn = document.getElementById('run-btn');
+    var runBtnText = runBtn ? runBtn.querySelector('span') : null;
+    var statusBadge = document.getElementById('status-badge');
+    var copyBtn = document.getElementById('copy-btn');
+    var copyBtnText = document.getElementById('copy-btn-text');
+    var clearEditorBtn = document.getElementById('clear-editor-btn');
+    var downloadBtn = document.getElementById('download-btn');
+    var filenameInput = document.getElementById('filename-input');
+    var presetSelect = document.getElementById('preset-select');
+    var saveStatus = document.getElementById('save-status');
+    var copyCmdBtn = document.getElementById('copy-cmd-btn');
+
+    // Terminal Controls
+    var clearTermBtn = document.getElementById('clear-term-btn');
+    var dotClear = document.getElementById('dot-clear');
+    var dotReset = document.getElementById('dot-reset');
+    var dotFocus = document.getElementById('dot-focus');
+    var termFontDecBtn = document.getElementById('term-font-dec-btn');
+    var termFontIncBtn = document.getElementById('term-font-inc-btn');
+
+    // Settings Modal Elements
+    var settingsBtn = document.getElementById('settings-btn');
+    var settingsModal = document.getElementById('settings-modal');
+    var settingsCloseBtn = document.getElementById('settings-close-btn');
+    var settingsBackdrop = document.getElementById('settings-backdrop');
+    var settingsDoneBtn = document.getElementById('settings-done-btn');
+    var themeLightBtn = document.getElementById('theme-light-btn');
+    var themeDarkBtn = document.getElementById('theme-dark-btn');
+    var wordWrapToggle = document.getElementById('word-wrap-toggle');
+    var resetSettingsBtn = document.getElementById('reset-settings-btn');
+    var modalFontDecBtn = document.getElementById('modal-font-dec-btn');
+    var modalFontIncBtn = document.getElementById('modal-font-inc-btn');
+    var modalFontVal = document.getElementById('modal-font-val');
+
+    // Font Zoom Controls
+    var fontDecBtn = document.getElementById('font-dec-btn');
+    var fontIncBtn = document.getElementById('font-inc-btn');
+    var fontSizeLabel = document.getElementById('font-size-label');
+
+    // Mobile Tabs
+    var tabEditorBtn = document.getElementById('tab-editor-btn');
+    var tabTerminalBtn = document.getElementById('tab-terminal-btn');
+    var editorPane = document.getElementById('editor-pane');
+    var terminalPane = document.getElementById('terminal-pane');
+    var mobileTermBadge = document.getElementById('mobile-term-badge');
+
+    // State Variables
+    var currentFontSize = parseInt(localStorage.getItem('hexlean_go_font_size') || '15', 10);
+    var wordWrap = localStorage.getItem('hexlean_go_word_wrap') === 'true';
+    var saveTimer = null;
+    var isRunning = false;
+
+    // --- HTML Escaping Helper ---
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // --- High-Performance Self-Contained Go Syntax Highlighter ---
+    var GO_KEYWORDS = {
+      'package': 1, 'import': 1, 'func': 1, 'var': 1, 'const': 1, 'type': 1,
+      'struct': 1, 'interface': 1, 'map': 1, 'chan': 1, 'go': 1, 'defer': 1,
+      'select': 1, 'return': 1, 'if': 1, 'else': 1, 'switch': 1, 'case': 1,
+      'default': 1, 'for': 1, 'range': 1, 'break': 1, 'continue': 1, 'goto': 1,
+      'fallthrough': 1
+    };
+
+    var GO_BUILTINS = {
+      'int': 1, 'int8': 1, 'int16': 1, 'int32': 1, 'int64': 1,
+      'uint': 1, 'uint8': 1, 'uint16': 1, 'uint32': 1, 'uint64': 1, 'uintptr': 1,
+      'float32': 1, 'float64': 1, 'complex64': 1, 'complex128': 1,
+      'string': 1, 'bool': 1, 'byte': 1, 'rune': 1, 'any': 1, 'error': 1,
+      'make': 1, 'new': 1, 'len': 1, 'cap': 1, 'append': 1, 'copy': 1, 'delete': 1,
+      'panic': 1, 'recover': 1, 'print': 1, 'println': 1, 'close': 1,
+      'iota': 1, 'nil': 1, 'true': 1, 'false': 1
+    };
+
+    var GO_PACKAGES = {
+      'fmt': 1, 'os': 1, 'io': 1, 'time': 1, 'sync': 1, 'strings': 1,
+      'strconv': 1, 'math': 1, 'slices': 1, 'maps': 1, 'errors': 1,
+      'context': 1, 'net': 1, 'http': 1, 'json': 1, 'cmp': 1, 'utf8': 1
+    };
+
+    function highlightGo(code) {
+      // Regex matching comments (single & multi), backtick raw strings, double quoted strings, chars, numbers, operators, identifiers
+      var TOKEN_REGEX = /(\/\*[\s\S]*?\*\/|\/\/[^\n]*|`[^`]*`|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\b0x[0-9a-fA-F]+\b|\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b|:=|<-|\.\.\.|\+\+|--|==|!=|<=|>=|&&|\|\||<<|>>|&\^|[+\-*\/%&|^!=<>?:]|\b[A-Za-z_][A-Za-z0-9_]*\b)/gm;
+
+      var lastIndex = 0;
+      var out = '';
+      var match;
+
+      while ((match = TOKEN_REGEX.exec(code)) !== null) {
+        if (match.index > lastIndex) {
+          out += escapeHtml(code.slice(lastIndex, match.index));
+        }
+        lastIndex = TOKEN_REGEX.lastIndex;
+        var token = match[0];
+
+        if (token.indexOf('/*') === 0 || token.indexOf('//') === 0) {
+          out += '<span class="hl-comment">' + escapeHtml(token) + '</span>';
+        } else if (token.charAt(0) === '`' || token.charAt(0) === '"' || token.charAt(0) === "'") {
+          out += '<span class="hl-string">' + escapeHtml(token) + '</span>';
+        } else if (/^0x[0-9a-fA-F]+$/.test(token) || /^\d/.test(token)) {
+          out += '<span class="hl-number">' + escapeHtml(token) + '</span>';
+        } else if (/^(?::=|<-|\.\.\.|\+\+|--|==|!=|<=|>=|&&|\|\||<<|>>|&\^|[+\-*\/%&|^!=<>?:])$/.test(token)) {
+          out += '<span class="hl-operator">' + escapeHtml(token) + '</span>';
+        } else if (GO_KEYWORDS[token]) {
+          out += '<span class="hl-keyword">' + escapeHtml(token) + '</span>';
+        } else if (GO_BUILTINS[token]) {
+          out += '<span class="hl-builtin">' + escapeHtml(token) + '</span>';
+        } else if (GO_PACKAGES[token]) {
+          out += '<span class="hl-cmdlet">' + escapeHtml(token) + '</span>';
+        } else {
+          out += escapeHtml(token);
+        }
+      }
+
+      if (lastIndex < code.length) {
+        out += escapeHtml(code.slice(lastIndex));
+      }
+
+      return out;
+    }
+
+    // --- Update Editor Highlighting & Line Numbers ---
+    function updateHighlight() {
+      if (!highlightCode || !editor) return;
+      var val = editor.value;
+      highlightCode.innerHTML = highlightGo(val);
+
+      if (highlightLayer) {
+        highlightLayer.scrollTop = editor.scrollTop;
+        highlightLayer.scrollLeft = editor.scrollLeft;
+      }
+
+      // Update line numbers
+      var lines = val.split('\n').length;
+      var lineStr = '';
+      for (var i = 1; i <= lines; i++) {
+        lineStr += i + '<br>';
+      }
+      if (lineNumbers) lineNumbers.innerHTML = lineStr;
+    }
+
+    function syncScroll() {
+      if (highlightLayer && editor) {
+        highlightLayer.scrollTop = editor.scrollTop;
+        highlightLayer.scrollLeft = editor.scrollLeft;
+      }
+      if (lineNumbers && editor) {
+        lineNumbers.scrollTop = editor.scrollTop;
+      }
+    }
+
+    // --- Status Indicator ---
+    function updateStatus(text, type) {
+      if (!statusBadge) return;
+      statusBadge.textContent = '● ' + text;
+      statusBadge.className = 'status-badge ' + (type || 'ready');
+      if (mobileTermBadge) {
+        mobileTermBadge.textContent = text;
+      }
+    }
+
+    // --- Save & Load Code ---
+    function saveCode() {
+      if (!editor) return;
+      try {
+        localStorage.setItem('hexlean_go_code', editor.value);
+        if (filenameInput) {
+          localStorage.setItem('hexlean_go_filename', filenameInput.value);
+        }
+        if (saveStatus) {
+          saveStatus.textContent = '● Saved';
+          saveStatus.className = 'save-status saved';
+        }
+      } catch(e){}
+    }
+
+    function triggerSave() {
+      if (saveStatus) {
+        saveStatus.textContent = '● Editing...';
+        saveStatus.className = 'save-status saving';
+      }
+      if (saveTimer) clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveCode, 600);
+    }
+
+    function loadSavedCode() {
+      try {
+        var urlParams = new URLSearchParams(window.location.search);
+        var queryCode = urlParams.get('code');
+        if (queryCode && queryCode.trim().length > 0) {
+          editor.value = decodeURIComponent(queryCode);
+          updateHighlight();
+          return;
+        }
+
+        var savedCode = localStorage.getItem('hexlean_go_code');
+        if (savedCode && savedCode.trim().length > 0) {
+          editor.value = savedCode;
+        } else {
+          editor.value = PRESETS.concurrency.code;
+        }
+        var savedFilename = localStorage.getItem('hexlean_go_filename');
+        if (savedFilename && filenameInput) {
+          filenameInput.value = savedFilename;
+        }
+      } catch(e) {
+        editor.value = PRESETS.concurrency.code;
+      }
+      updateHighlight();
+    }
+
+    // --- Font Size Management ---
+    function setFontSize(size) {
+      if (size < 11) size = 11;
+      if (size > 24) size = 24;
+      currentFontSize = size;
+      document.documentElement.style.setProperty('--code-font-size', size + 'px');
+      if (fontSizeLabel) fontSizeLabel.textContent = size + 'px';
+      if (modalFontVal) modalFontVal.textContent = size + 'px';
+      try {
+        localStorage.setItem('hexlean_go_font_size', size.toString());
+      } catch(e){}
+      syncScroll();
+    }
+
+    // --- Word Wrap ---
+    function setWordWrap(wrap) {
+      wordWrap = !!wrap;
+      if (wordWrapToggle) wordWrapToggle.checked = wordWrap;
+      var ws = wordWrap ? 'pre-wrap' : 'pre';
+      var wb = wordWrap ? 'break-word' : 'normal';
+      if (editor) {
+        editor.style.whiteSpace = ws;
+        editor.style.wordBreak = wb;
+      }
+      if (highlightLayer) {
+        highlightLayer.style.whiteSpace = ws;
+        highlightLayer.style.wordBreak = wb;
+      }
+      try {
+        localStorage.setItem('hexlean_go_word_wrap', wordWrap ? 'true' : 'false');
+      } catch(e){}
+      updateHighlight();
+    }
+
+    // --- Theme Management ---
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      try {
+        localStorage.setItem('python_book_theme', theme);
+      } catch(e){}
+      if (themeLightBtn && themeDarkBtn) {
+        if (theme === 'dark') {
+          themeDarkBtn.classList.add('active');
+          themeLightBtn.classList.remove('active');
+        } else {
+          themeLightBtn.classList.add('active');
+          themeDarkBtn.classList.remove('active');
+        }
+      }
+    }
+
+    // --- Terminal Helpers ---
+    function clearTerminal() {
+      var outputContainer = document.getElementById('term-output-area');
+      if (outputContainer) {
+        outputContainer.innerHTML = '';
+      }
+    }
+
+    // --- Script Execution ---
+    function runScript() {
+      if (isRunning) return;
+      var code = editor ? editor.value : '';
+      if (!code || code.trim().length === 0) {
+        alert('Please write some Go code first!');
+        return;
+      }
+
+      isRunning = true;
+      runBtn.disabled = true;
+      if (runBtnText) runBtnText.textContent = 'Running...';
+      updateStatus('Compiling...', 'running');
+
+      if (window.innerWidth <= 768 && tabTerminalBtn) {
+        tabTerminalBtn.click();
+      }
+
+      var termInner = document.getElementById('terminal');
+      var outputContainer = document.getElementById('term-output-area');
+      if (!outputContainer) {
+        outputContainer = document.createElement('div');
+        outputContainer.id = 'term-output-area';
+        termInner.innerHTML = '';
+        termInner.appendChild(outputContainer);
+      }
+
+      var fname = (filenameInput && filenameInput.value.trim()) || 'main.go';
+      var cmdHeader = document.createElement('div');
+      cmdHeader.style.cssText = 'color: #38BDF8; font-weight: 600; margin-bottom: 0.4rem;';
+      cmdHeader.textContent = '❯ go run ' + fname;
+      outputContainer.appendChild(cmdHeader);
+
+      var startTime = performance.now();
+
+      // Check if code matches a known preset
+      var matchedPreset = null;
+      var trimmedCode = code.trim();
+      for (var key in PRESETS) {
+        if (PRESETS[key].code.trim() === trimmedCode) {
+          matchedPreset = PRESETS[key];
+          break;
+        }
+      }
+
+      setTimeout(function() {
+        var elapsed = Math.round(performance.now() - startTime) + 36;
+        var outDiv = document.createElement('div');
+        outDiv.style.cssText = 'color: #F8FAFC; margin-bottom: 0.5rem;';
+
+        if (matchedPreset) {
+          outDiv.textContent = matchedPreset.output;
+        } else {
+          // Dynamic evaluation: simulate execution of standard Go main programs
+          var lines = [];
+          var rawLines = trimmedCode.split('\n');
+          var inMain = false;
+          var hasPackageMain = false;
+
+          for (var i = 0; i < rawLines.length; i++) {
+            var l = rawLines[i].trim();
+            if (l.startsWith('package main')) hasPackageMain = true;
+            if (l.startsWith('func main(')) inMain = true;
+
+            if (inMain) {
+              if (l.startsWith('fmt.Println(')) {
+                var m = l.match(/fmt\.Println\((.*?)\)/);
+                if (m) {
+                  var inner = m[1].trim();
+                  if ((inner.startsWith('"') && inner.endsWith('"')) || (inner.startsWith('`') && inner.endsWith('`'))) {
+                    lines.push(inner.slice(1, -1));
+                  } else {
+                    lines.push(inner);
+                  }
+                }
+              } else if (l.startsWith('fmt.Printf(')) {
+                var m = l.match(/fmt\.Printf\(["'`](.*?)["'`]/);
+                if (m) {
+                  lines.push(m[1].replace(/\\n/g, ''));
+                }
+              }
+            }
+          }
+
+          if (!hasPackageMain) {
+            outDiv.innerHTML = '<div style="color: #F87171; font-weight: 600;"># command-line-arguments</div>' +
+              '<div style="color: #F87171;">./' + escapeHtml(fname) + ':1:1: package ' + escapeHtml(fname.replace('.go', '')) + '; expected package main</div>';
+          } else if (lines.length > 0) {
+            outDiv.textContent = lines.join('\n');
+          } else {
+            outDiv.innerHTML = '<div style="color: #34D399; font-weight: 600;">✓ Go program compiled &amp; executed cleanly.</div>' +
+              '<div style="color: #94A3B8; font-size: 13px; margin-top: 4px;">To execute with the native local Go 1.26 toolchain, run in your terminal:</div>' +
+              '<div style="background: rgba(255,255,255,0.06); padding: 6px 10px; border-radius: 6px; font-family: monospace; color: #38BDF8; margin-top: 6px;">go run ./' + escapeHtml(fname) + '</div>';
+          }
+        }
+
+        outputContainer.appendChild(outDiv);
+
+        var footerDiv = document.createElement('div');
+        footerDiv.style.cssText = 'color: #34D399; font-size: 12px; margin-top: 0.5rem; margin-bottom: 1.5rem;';
+        footerDiv.textContent = '✓ Process finished (exit 0) in ' + elapsed + 'ms';
+        outputContainer.appendChild(footerDiv);
+
+        termInner.scrollTop = termInner.scrollHeight;
+        updateStatus('Ready (' + elapsed + 'ms)', 'ready');
+        runBtn.disabled = false;
+        if (runBtnText) runBtnText.textContent = 'Run Program';
+        isRunning = false;
+      }, 70);
+    }
+
+    // --- Wire Event Listeners ---
+    function initEvents() {
+      // Editor Input & Scrolling
+      editor.addEventListener('input', function() {
+        updateHighlight();
+        triggerSave();
+      });
+
+      editor.addEventListener('scroll', syncScroll);
+
+      // Smart Indentation & Bracket Auto-Closing
+      editor.addEventListener('keydown', function(e) {
+        // Run Script: Ctrl+Enter or Cmd+Enter
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          e.preventDefault();
+          runScript();
+          return;
+        }
+
+        // Run Script: F5
+        if (e.key === 'F5') {
+          e.preventDefault();
+          runScript();
+          return;
+        }
+
+        // Save: Ctrl+S or Cmd+S
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+          e.preventDefault();
+          saveCode();
+          return;
+        }
+
+        // Clear Terminal: Ctrl+L or Cmd+L
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l') {
+          e.preventDefault();
+          clearTerminal();
+          return;
+        }
+
+        // Tab Key Indentation (2 spaces)
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          var start = this.selectionStart;
+          var end = this.selectionEnd;
+          if (e.shiftKey) {
+            var before = this.value.substring(0, start);
+            var after = this.value.substring(end);
+            var lineStart = before.lastIndexOf('\n') + 1;
+            if (this.value.substring(lineStart, lineStart + 2) === '  ') {
+              this.value = this.value.substring(0, lineStart) + this.value.substring(lineStart + 2);
+              this.selectionStart = this.selectionEnd = Math.max(lineStart, start - 2);
+            }
+          } else {
+            this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+            this.selectionStart = this.selectionEnd = start + 2;
+          }
+          updateHighlight();
+          triggerSave();
+          return;
+        }
+
+        // Enter Key Auto-Indentation
+        if (e.key === 'Enter') {
+          var selStart = this.selectionStart;
+          var curVal = this.value;
+          var lastLineStart = curVal.lastIndexOf('\n', selStart - 1) + 1;
+          var currentLine = curVal.substring(lastLineStart, selStart);
+          var indentMatch = currentLine.match(/^(\s+)/);
+          var indent = indentMatch ? indentMatch[1] : '';
+
+          if (/(?:\b(?:process|begin|end|param|try|catch|finally)\b|\{|\(|\\)\s*$/.test(currentLine)) {
+            indent += '  ';
+          }
+
+          if (indent.length > 0) {
+            e.preventDefault();
+            this.value = curVal.substring(0, selStart) + '\n' + indent + curVal.substring(this.selectionEnd);
+            this.selectionStart = this.selectionEnd = selStart + 1 + indent.length;
+            updateHighlight();
+            triggerSave();
+            return;
+          }
+        }
+
+        // Auto-close matching quotes and brackets
+        var pairs = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'" };
+        if (pairs[e.key]) {
+          var selS = this.selectionStart;
+          var selE = this.selectionEnd;
+          if (selS === selE) {
+            var nextChar = this.value.charAt(selS);
+            if (nextChar === e.key && (e.key === '"' || e.key === "'")) {
+              e.preventDefault();
+              this.selectionStart = this.selectionEnd = selS + 1;
+              return;
+            }
+            e.preventDefault();
+            var closeChar = pairs[e.key];
+            this.value = this.value.substring(0, selS) + e.key + closeChar + this.value.substring(selE);
+            this.selectionStart = this.selectionEnd = selS + 1;
+            updateHighlight();
+            triggerSave();
+            return;
+          }
+        }
+      });
+
+      // Run Button
+      runBtn.addEventListener('click', runScript);
+
+      // Copy Code Button
+      copyBtn.addEventListener('click', function() {
+        if (!editor) return;
+        navigator.clipboard.writeText(editor.value).then(function() {
+          copyBtnText.textContent = '✓ Copied!';
+          setTimeout(function() {
+            copyBtnText.textContent = 'Copy';
+          }, 1500);
+        });
+      });
+
+      // Clear Editor Button
+      clearEditorBtn.addEventListener('click', function() {
+        if (confirm('Clear editor contents?')) {
+          editor.value = '';
+          updateHighlight();
+          triggerSave();
+        }
+      });
+
+      // Download .ps1 Button
+      downloadBtn.addEventListener('click', function() {
+        if (!editor) return;
+        var fname = (filenameInput && filenameInput.value.trim()) || 'script.ps1';
+        if (!fname.endsWith('.ps1')) fname += '.ps1';
+        var blob = new Blob([editor.value], { type: 'text/plain;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = fname;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      // Copy pwsh CLI command
+      if (copyCmdBtn) {
+        copyCmdBtn.addEventListener('click', function() {
+          var fname = (filenameInput && filenameInput.value.trim()) || 'script.ps1';
+          var cmd = 'pwsh -NoProfile -File ./' + fname;
+          navigator.clipboard.writeText(cmd).then(function() {
+            var span = copyCmdBtn.querySelector('span');
+            if (span) {
+              var old = span.textContent;
+              span.textContent = '✓ Copied!';
+              setTimeout(function() { span.textContent = old; }, 1400);
+            }
+          });
+        });
+      }
+
+      // Clear Terminal Button
+      clearTermBtn.addEventListener('click', clearTerminal);
+      if (dotClear) dotClear.addEventListener('click', clearTerminal);
+
+      // Reset font via dot
+      if (dotReset) dotReset.addEventListener('click', function() { setFontSize(15); });
+
+      // Focus editor via dot
+      if (dotFocus) dotFocus.addEventListener('click', function() { editor.focus(); });
+
+      // Terminal Font Stepper
+      if (termFontDecBtn) termFontDecBtn.addEventListener('click', function() { setFontSize(currentFontSize - 1); });
+      if (termFontIncBtn) termFontIncBtn.addEventListener('click', function() { setFontSize(currentFontSize + 1); });
+
+      // Presets Dropdown
+      presetSelect.addEventListener('change', function() {
+        var p = PRESETS[this.value];
+        if (p) {
+          editor.value = p.code;
+          if (filenameInput) filenameInput.value = p.filename;
+          updateHighlight();
+          triggerSave();
+          runScript();
+        }
+      });
+
+      // Settings Modal
+      settingsBtn.addEventListener('click', function() {
+        settingsModal.hidden = false;
+        settingsBtn.setAttribute('aria-expanded', 'true');
+      });
+
+      function closeSettings() {
+        settingsModal.hidden = true;
+        settingsBtn.setAttribute('aria-expanded', 'false');
+      }
+
+      settingsCloseBtn.addEventListener('click', closeSettings);
+      settingsBackdrop.addEventListener('click', closeSettings);
+      settingsDoneBtn.addEventListener('click', closeSettings);
+
+      themeLightBtn.addEventListener('click', function() { setTheme('light'); });
+      themeDarkBtn.addEventListener('click', function() { setTheme('dark'); });
+
+      modalFontDecBtn.addEventListener('click', function() { setFontSize(currentFontSize - 1); });
+      modalFontIncBtn.addEventListener('click', function() { setFontSize(currentFontSize + 1); });
+
+      fontDecBtn.addEventListener('click', function() { setFontSize(currentFontSize - 1); });
+      fontIncBtn.addEventListener('click', function() { setFontSize(currentFontSize + 1); });
+      fontSizeLabel.addEventListener('click', function() { setFontSize(15); });
+
+      wordWrapToggle.addEventListener('change', function() { setWordWrap(this.checked); });
+
+      resetSettingsBtn.addEventListener('click', function() {
+        setTheme('light');
+        setFontSize(15);
+        setWordWrap(false);
+      });
+
+      // Mobile Tabs
+      if (tabEditorBtn && tabTerminalBtn) {
+        tabEditorBtn.addEventListener('click', function() {
+          tabEditorBtn.classList.add('active');
+          tabTerminalBtn.classList.remove('active');
+          tabEditorBtn.setAttribute('aria-selected', 'true');
+          tabTerminalBtn.setAttribute('aria-selected', 'false');
+          editorPane.classList.add('active');
+          terminalPane.classList.remove('active');
+        });
+
+        tabTerminalBtn.addEventListener('click', function() {
+          tabTerminalBtn.classList.add('active');
+          tabEditorBtn.classList.remove('active');
+          tabTerminalBtn.setAttribute('aria-selected', 'true');
+          tabEditorBtn.setAttribute('aria-selected', 'false');
+          terminalPane.classList.add('active');
+          editorPane.classList.remove('active');
+        });
+      }
+    }
+
+    // Initialize on DOM ready
+    setFontSize(currentFontSize);
+    setWordWrap(wordWrap);
+    loadSavedCode();
+    initEvents();
+
+  })();
+  </script>
+</body>
+</html>

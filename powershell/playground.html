@@ -1475,12 +1475,13 @@
       <div class="bottom-middle">
         <label for="preset-select" class="preset-label">Preset Examples:</label>
         <select id="preset-select" class="preset-select" title="Load sample script">
-          <option value="starter">1. Welcome &amp; Object Pipeline</option>
-          <option value="hashtables">2. Hashtables &amp; PSCustomObject</option>
-          <option value="pipeline">3. Pipeline Filtering &amp; Projection</option>
-          <option value="functions">4. Advanced Functions &amp; CmdletBinding</option>
-          <option value="json_csv">5. JSON &amp; Data Transformation</option>
-          <option value="regex_strings">6. Regex Matching &amp; String Manipulation</option>
+          <option value="hello">1. Hello, World!</option>
+          <option value="starter">2. Welcome &amp; Object Pipeline</option>
+          <option value="hashtables">3. Hashtables &amp; PSCustomObject</option>
+          <option value="pipeline">4. Pipeline Filtering &amp; Projection</option>
+          <option value="functions">5. Advanced Functions &amp; CmdletBinding</option>
+          <option value="json_csv">6. JSON &amp; Data Transformation</option>
+          <option value="regex_strings">7. Regex Matching &amp; String Manipulation</option>
         </select>
       </div>
 
@@ -1580,6 +1581,11 @@
 
     // Preset Code Templates and Verified PowerShell 7.4 Outputs
     var PRESETS = {
+      hello: {
+        filename: "hello.ps1",
+        code: `Write-Host "Hello, World!"`,
+        output: `Hello, World!`
+      },
       starter: {
         filename: "ObjectPipeline.ps1",
         code: `Write-Host "⚡ Welcome to HexLean PowerShell Playground!" -ForegroundColor Cyan
@@ -2069,17 +2075,20 @@ Masked: api_key=[REDACTED] token=[REDACTED]`
         }
 
         var savedCode = localStorage.getItem('hexlean_powershell_code');
-        if (savedCode && savedCode.trim().length > 0) {
+        if (savedCode && savedCode.trim().length > 0 && savedCode.indexOf('Welcome to HexLean PowerShell Playground!') === -1) {
           editor.value = savedCode;
         } else {
-          editor.value = PRESETS.starter.code;
+          editor.value = PRESETS.hello.code;
+          if (filenameInput) filenameInput.value = PRESETS.hello.filename;
+          if (presetSelect) presetSelect.value = 'hello';
         }
         var savedFilename = localStorage.getItem('hexlean_powershell_filename');
-        if (savedFilename && filenameInput) {
+        if (savedFilename && filenameInput && savedFilename !== 'ObjectPipeline.ps1') {
           filenameInput.value = savedFilename;
         }
       } catch(e) {
-        editor.value = PRESETS.starter.code;
+        editor.value = PRESETS.hello.code;
+        if (filenameInput) filenameInput.value = PRESETS.hello.filename;
       }
       updateHighlight();
     }

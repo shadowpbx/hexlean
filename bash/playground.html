@@ -1515,11 +1515,12 @@
       <div class="bottom-middle">
         <label for="preset-select" class="preset-label">Preset Examples:</label>
         <select id="preset-select" class="preset-select" title="Load sample script">
-          <option value="starter">1. Tour &amp; Stream Pipeline</option>
-          <option value="arrays">2. Functions &amp; Arrays</option>
-          <option value="pipes">3. Log Analysis (grep / awk)</option>
-          <option value="json">4. Structured JSON &amp; jq</option>
-          <option value="files">5. Virtual Filesystem &amp; VFS</option>
+          <option value="hello">1. Hello, World!</option>
+          <option value="starter">2. Tour &amp; Stream Pipeline</option>
+          <option value="arrays">3. Functions &amp; Arrays</option>
+          <option value="pipes">4. Log Analysis (grep / awk)</option>
+          <option value="json">5. Structured JSON &amp; jq</option>
+          <option value="files">6. Virtual Filesystem &amp; VFS</option>
         </select>
       </div>
 
@@ -1624,6 +1625,8 @@
 
     // Preset Code Templates
     var PRESETS = {
+      hello: `#!/usr/bin/env bash
+echo "Hello, World!"`,
       starter: `#!/usr/bin/env bash
 # ==============================================================================
 # HexLean Bash Playground — In-Browser WebAssembly Runtime
@@ -1981,17 +1984,18 @@ grep -n "number [24]" *.log
     function loadSavedCode() {
       try {
         var savedCode = localStorage.getItem('hexlean_bash_code');
-        if (savedCode && savedCode.trim().length > 0) {
+        if (savedCode && savedCode.trim().length > 0 && savedCode.indexOf('HexLean Bash Playground — In-Browser WebAssembly Runtime') === -1) {
           editor.value = savedCode;
         } else {
-          editor.value = PRESETS.starter;
+          editor.value = PRESETS.hello;
+          if (presetSelect) presetSelect.value = 'hello';
         }
         var savedFilename = localStorage.getItem('hexlean_bash_filename');
         if (savedFilename && filenameInput) {
           filenameInput.value = savedFilename;
         }
       } catch(e) {
-        editor.value = PRESETS.starter;
+        editor.value = PRESETS.hello;
       }
       updateHighlight();
     }

@@ -1245,8 +1245,31 @@
       font-family: "IBM Plex Mono", monospace;
       color: var(--text-muted);
     }
-    .status-badge.success { color: #10B981; font-weight: 600; }
-    .status-badge.error { color: #EF4444; font-weight: 600; }
+    .bottom-middle {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .preset-label {
+      font-size: .78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .preset-select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .25rem .5rem;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--text);
+      font-family: inherit;
+      cursor: pointer;
+      outline: none;
+    }
+    .preset-select:hover {
+      border-color: var(--text-muted);
+    }
 
     .bottom-right {
       display: flex;
@@ -1765,6 +1788,18 @@
         <span class="status-badge" id="status-badge">Ready</span>
       </div>
 
+      <div class="bottom-middle">
+        <label for="preset-select" class="preset-label">Preset Examples:</label>
+        <select id="preset-select" class="preset-select" title="Load sample script">
+          <option value="hello_world">1. Hello, World!</option>
+          <option value="input_demo">2. Interactive Input Demo</option>
+          <option value="guessing_game">3. Number Guessing Game</option>
+          <option value="calculator">4. Shopping Cart &amp; Receipt Calculator</option>
+          <option value="functions">5. Functions &amp; Math Algorithms</option>
+          <option value="blank">6. Blank Script</option>
+        </select>
+      </div>
+
       <div class="bottom-right">
         <span class="shortcut-hint" title="Execute script (Ctrl+Enter or F5)">
           <span class="shortcut-action">Run:</span>
@@ -2038,12 +2073,31 @@
       });
     }
 
-    // --- Restore Starter Script ---
+    // --- Restore Starter Script & Presets ---
+    var presetSelect = document.getElementById('preset-select');
     var restoreStarterBtn = document.getElementById('restore-starter-btn');
+
+    if (presetSelect) {
+      presetSelect.addEventListener('change', function() {
+        var choice = this.value;
+        if (templates[choice]) {
+          if (editor.value.trim().length > 0 && !confirm('Load this example? Current editor contents will be replaced.')) {
+            return;
+          }
+          editor.value = templates[choice];
+          updateHighlight();
+          updateLineNumbers();
+          saveCode();
+        }
+      });
+    }
+
     if (restoreStarterBtn) {
       restoreStarterBtn.addEventListener('click', function(){
         if (confirm("Restore original Hello World starter script? Current editor contents will be replaced.")) {
           editor.value = templates.hello_world;
+          if (presetSelect) presetSelect.value = 'hello_world';
+          updateHighlight();
           updateLineNumbers();
           saveCode();
           closeSettings();
@@ -2066,6 +2120,7 @@
       editor.value = savedCode;
     } else {
       editor.value = templates.hello_world;
+      if (presetSelect) presetSelect.value = 'hello_world';
       try { localStorage.setItem(STORAGE_CODE_KEY, templates.hello_world); } catch(e){}
     }
 

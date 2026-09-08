@@ -1512,12 +1512,13 @@
       <div class="bottom-middle">
         <label for="preset-select" class="preset-label">Preset Examples:</label>
         <select id="preset-select" class="preset-select" title="Load sample script">
-          <option value="starter">1. Welcome &amp; C11 Basics</option>
-          <option value="pointers">2. Pointers &amp; Pass-by-Reference</option>
-          <option value="strings">3. Strings &amp; ASCII Breakdown</option>
-          <option value="structs">4. Structs &amp; Member Access</option>
-          <option value="memory">5. Dynamic Memory (malloc/free)</option>
-          <option value="fibonacci">6. Recursion (Fibonacci)</option>
+          <option value="hello">1. Hello, World!</option>
+          <option value="starter">2. Welcome &amp; C11 Basics</option>
+          <option value="pointers">3. Pointers &amp; Pass-by-Reference</option>
+          <option value="strings">4. Strings &amp; ASCII Breakdown</option>
+          <option value="structs">5. Structs &amp; Member Access</option>
+          <option value="memory">6. Dynamic Memory (malloc/free)</option>
+          <option value="fibonacci">7. Recursion (Fibonacci)</option>
         </select>
       </div>
 
@@ -1619,8 +1620,9 @@
     'use strict';
 
     // Preset Code Templates
-        var PRESETS = {
-    "starter": "#include <stdio.h>\n\nint main(void) {\n    printf(\"\u2699\ufe0f Welcome to HexLean C Playground!\\n\");\n    printf(\"Standard: ISO C11 (WebAssembly Picoc)\\n\");\n    printf(\"----------------------------------------\\n\\n\");\n\n    // 1. Basic types and formatted arithmetic\n    int a = 12;\n    int b = 30;\n    int sum = a + b;\n    printf(\"Arithmetic: %d + %d = %d\\n\", a, b, sum);\n\n    // 2. Arrays and iteration\n    int numbers[5] = {10, 20, 30, 40, 50};\n    printf(\"\\nArray contents:\\n\");\n    for (int i = 0; i < 5; i++) {\n        printf(\"  numbers[%d] = %d\\n\", i, numbers[i]);\n    }\n\n    // 3. String manipulation\n    char language[] = \"C Programming\";\n    printf(\"\\nLanguage: %s\\n\", language);\n\n    printf(\"\\n\u2728 Program finished with exit code 0.\\n\");\n    return 0;\n}",
+    var PRESETS = {
+      "hello": "#include <stdio.h>\n\nint main(void) {\n    printf(\"Hello, World!\\n\");\n    return 0;\n}",
+      "starter": "#include <stdio.h>\n\nint main(void) {\n    printf(\"⚙️ Welcome to HexLean C Playground!\\n\");\n    printf(\"Standard: ISO C11 (WebAssembly Picoc)\\n\");\n    printf(\"----------------------------------------\\n\\n\");\n\n    // 1. Basic types and formatted arithmetic\n    int a = 12;\n    int b = 30;\n    int sum = a + b;\n    printf(\"Arithmetic: %d + %d = %d\\n\", a, b, sum);\n\n    // 2. Arrays and iteration\n    int numbers[5] = {10, 20, 30, 40, 50};\n    printf(\"\\nArray contents:\\n\");\n    for (int i = 0; i < 5; i++) {\n        printf(\"  numbers[%d] = %d\\n\", i, numbers[i]);\n    }\n\n    // 3. String manipulation\n    char language[] = \"C Programming\";\n    printf(\"\\nLanguage: %s\\n\", language);\n\n    printf(\"\\n✨ Program finished with exit code 0.\\n\");\n    return 0;\n}",
     "pointers": "#include <stdio.h>\n\nvoid swap(int *a, int *b) {\n    int temp = *a;\n    *a = *b;\n    *b = temp;\n}\n\nint main(void) {\n    int x = 42;\n    int y = 99;\n    printf(\"=== Pointer Pass-by-Reference ===\\n\");\n    printf(\"Before swap: x=%d, y=%d\\n\", x, y);\n    swap(&x, &y);\n    printf(\"After swap:  x=%d, y=%d\\n\", x, y);\n\n    // Pointer arithmetic walk\n    int arr[4] = {100, 200, 300, 400};\n    int *ptr = arr;\n    printf(\"\\n=== Pointer Arithmetic Walk ===\\n\");\n    for (int i = 0; i < 4; i++) {\n        printf(\"  *(ptr + %d) = %d (address offset: %ld bytes)\\n\", \n               i, *(ptr + i), (long)(i * sizeof(int)));\n    }\n    return 0;\n}",
     "strings": "#include <stdio.h>\n#include <string.h>\n\nint main(void) {\n    char text[64] = \"HexLean: Natural Language\";\n    printf(\"=== String & ASCII Exploration ===\\n\");\n    printf(\"Full String: \\\"%s\\\"\\n\", text);\n    printf(\"String Length: %d bytes\\n\\n\", (int)strlen(text));\n\n    printf(\"Character Breakdown:\\n\");\n    for (int i = 0; text[i] != '\\0'; i++) {\n        printf(\"  [%2d] '%c' -> ASCII code %3d (hex: 0x%02X)\\n\",\n               i, text[i], (int)text[i], (unsigned char)text[i]);\n    }\n    return 0;\n}",
     "structs": "#include <stdio.h>\n\nstruct ServerNode {\n    int id;\n    int port;\n    int is_active;\n    char hostname[32];\n};\n\nvoid print_node(struct ServerNode *n) {\n    printf(\"Server Node #%d (%s):\\n\", n->id, n->hostname);\n    printf(\"  Port:   %d\\n\", n->port);\n    printf(\"  Status: %s\\n\", n->is_active ? \"ONLINE\" : \"STANDBY\");\n}\n\nint main(void) {\n    struct ServerNode s1;\n    s1.id = 101;\n    s1.port = 8080;\n    s1.is_active = 1;\n    snprintf(s1.hostname, sizeof(s1.hostname), \"edge-us-east-1\");\n\n    struct ServerNode s2;\n    s2.id = 102;\n    s2.port = 443;\n    s2.is_active = 0;\n    snprintf(s2.hostname, sizeof(s2.hostname), \"edge-eu-central\");\n\n    printf(\"=== Structs and Member Access ===\\n\");\n    print_node(&s1);\n    printf(\"\\n\");\n    print_node(&s2);\n    return 0;\n}",
@@ -1826,17 +1828,18 @@
     function loadSavedCode() {
       try {
         var savedCode = localStorage.getItem('hexlean_c_code');
-        if (savedCode && savedCode.trim().length > 0) {
+        if (savedCode && savedCode.trim().length > 0 && savedCode.indexOf('Welcome to HexLean C Playground!') === -1) {
           editor.value = savedCode;
         } else {
-          editor.value = PRESETS.starter;
+          editor.value = PRESETS.hello;
+          if (presetSelect) presetSelect.value = 'hello';
         }
         var savedFilename = localStorage.getItem('hexlean_c_filename');
         if (savedFilename && filenameInput) {
           filenameInput.value = savedFilename;
         }
       } catch(e) {
-        editor.value = PRESETS.starter;
+        editor.value = PRESETS.hello;
       }
       updateHighlight();
     }

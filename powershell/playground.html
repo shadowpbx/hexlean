@@ -1331,12 +1331,6 @@
           </svg>
           <input type="text" id="filename-input" class="filename-input" value="script.ps1" spellcheck="false" aria-label="Script Filename">
         </div>
-
-        <div class="font-zoom-ctrl" title="Editor Font Size">
-          <button class="font-zoom-btn" id="font-dec-btn" type="button" aria-label="Decrease Font Size">A−</button>
-          <button class="font-zoom-label" id="font-size-label" type="button" title="Click to reset font size (15px)">15px</button>
-          <button class="font-zoom-btn" id="font-inc-btn" type="button" aria-label="Increase Font Size">A+</button>
-        </div>
       </div>
 
       <div class="topbar-right">
@@ -2460,9 +2454,9 @@ Masked: api_key=[REDACTED] token=[REDACTED]`
       modalFontDecBtn.addEventListener('click', function() { setFontSize(currentFontSize - 1); });
       modalFontIncBtn.addEventListener('click', function() { setFontSize(currentFontSize + 1); });
 
-      fontDecBtn.addEventListener('click', function() { setFontSize(currentFontSize - 1); });
-      fontIncBtn.addEventListener('click', function() { setFontSize(currentFontSize + 1); });
-      fontSizeLabel.addEventListener('click', function() { setFontSize(15); });
+      if (fontDecBtn) fontDecBtn.addEventListener('click', function() { setFontSize(currentFontSize - 1); });
+      if (fontIncBtn) fontIncBtn.addEventListener('click', function() { setFontSize(currentFontSize + 1); });
+      if (fontSizeLabel) fontSizeLabel.addEventListener('click', function() { setFontSize(15); });
 
       wordWrapToggle.addEventListener('change', function() { setWordWrap(this.checked); });
 

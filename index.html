@@ -231,7 +231,13 @@
       transform: scale(1.2);
     }
 
-    .theme-toggle-btn {
+    .settings-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .topbar-settings-btn {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -243,38 +249,162 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.16s ease;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
       box-shadow: var(--shadow-sm);
       flex-shrink: 0;
       box-sizing: border-box;
     }
 
-    .theme-toggle-btn:hover {
-      color: var(--text);
+    .topbar-settings-btn svg {
+      stroke: currentColor;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), stroke 0.25s ease;
+    }
+
+    .topbar-settings-btn:hover {
+      color: var(--accent);
       border-color: var(--accent);
       background: var(--surface2);
+      box-shadow: 0 0 12px var(--accent-border);
       transform: translateY(-0.5px);
     }
 
-    .theme-toggle-btn:active {
-      transform: translateY(0);
+    .topbar-settings-btn:hover svg {
+      stroke: var(--accent);
+      transform: rotate(60deg) scale(1.08);
     }
 
-    .theme-icon-sun {
+    .topbar-settings-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+      box-shadow: 0 0 14px var(--accent-border);
+    }
+
+    .topbar-settings-btn.active svg {
+      transform: rotate(90deg) scale(1.08);
+      stroke: var(--accent);
+    }
+
+    /* Settings Popover */
+    .settings-popover {
       display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      padding: 1rem;
+      width: 260px;
+      max-width: calc(100vw - 2rem);
+      z-index: 2100;
+      box-sizing: border-box;
     }
 
-    .theme-icon-moon {
+    .settings-popover.open {
       display: block;
+      animation: popoverFadeIn 0.18s ease-out;
     }
 
-    [data-theme="dark"] .theme-icon-sun {
-      display: block;
-      color: #FBBF24;
+    @keyframes popoverFadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    [data-theme="dark"] .theme-icon-moon {
-      display: none;
+    .popover-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .popover-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .popover-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      cursor: pointer;
+      padding: 0.2rem;
+      border-radius: 4px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s ease;
+    }
+
+    .popover-close-btn:hover {
+      color: #EF4444;
+    }
+
+    .popover-group {
+      margin-bottom: 0.85rem;
+    }
+
+    .popover-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 0.45rem;
+    }
+
+    .theme-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4rem;
+    }
+
+    .theme-opt-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.45rem 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: all 0.15s ease;
+    }
+
+    .theme-opt-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .theme-opt-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .popover-footer {
+      padding-top: 0.65rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-align: center;
+      opacity: 0.8;
     }
 
     /* Hero Section */
@@ -663,22 +793,31 @@
             <polyline points="7 7 17 7 17 17"></polyline>
           </svg>
         </a>
-        <button id="theme-btn" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme (Light / Dark)">
-          <svg class="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-          </svg>
-          <svg class="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
-        </button>
+        <div class="settings-wrap">
+          <button id="settings-btn" class="topbar-settings-btn" aria-label="Open Preferences" title="Preferences" aria-expanded="false" aria-haspopup="dialog">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </button>
+          <!-- Settings Popover -->
+          <div id="settings-popover" class="settings-popover" role="dialog" aria-label="System Preferences">
+            <div class="popover-header">
+              <span class="popover-title">// PREFERENCES</span>
+              <button id="popover-close-btn" class="popover-close-btn" aria-label="Close Settings">✕</button>
+            </div>
+            <div class="popover-group">
+              <div class="popover-label">Theme Mode</div>
+              <div class="theme-options">
+                <button class="theme-opt-btn" data-set-theme="light" type="button" aria-pressed="false">☀️ Light</button>
+                <button class="theme-opt-btn" data-set-theme="dark" type="button" aria-pressed="false">🌙 Dark</button>
+              </div>
+            </div>
+            <div class="popover-footer">
+              HexLean Platform &bull; Systems &amp; Architecture
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -966,30 +1105,92 @@
   </footer>
 
   <script>
-    // Theme toggle matching the Python Book engine
-    const themeBtn = document.getElementById('theme-btn');
-    
+    // Settings Popover & Theme Management (matching HexDef preferences architecture)
+    const settingsBtn = document.getElementById('settings-btn');
+    const settingsPopover = document.getElementById('settings-popover');
+    const popoverCloseBtn = document.getElementById('popover-close-btn');
+
+    function toggleSettings(open) {
+      if (!settingsPopover) return;
+      const willOpen = (typeof open === 'boolean') ? open : !settingsPopover.classList.contains('open');
+      settingsPopover.classList.toggle('open', willOpen);
+      if (settingsBtn) {
+        settingsBtn.classList.toggle('active', willOpen);
+        settingsBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      }
+    }
+
+    if (settingsBtn) {
+      settingsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleSettings();
+      });
+    }
+
+    if (popoverCloseBtn) {
+      popoverCloseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleSettings(false);
+      });
+    }
+
+    if (settingsPopover) {
+      settingsPopover.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    }
+
+    document.addEventListener('click', () => {
+      if (settingsPopover && settingsPopover.classList.contains('open')) {
+        toggleSettings(false);
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && settingsPopover && settingsPopover.classList.contains('open')) {
+        toggleSettings(false);
+      }
+    });
+
+    function updateThemeOptButtons(theme) {
+      document.querySelectorAll('.theme-opt-btn').forEach(btn => {
+        const btnTheme = btn.getAttribute('data-set-theme');
+        const isActive = (btnTheme === theme);
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    }
+
     function applyTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('python_book_theme', theme);
+      updateThemeOptButtons(theme);
     }
+
+    document.querySelectorAll('.theme-opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetTheme = btn.getAttribute('data-set-theme');
+        if (targetTheme) {
+          applyTheme(targetTheme);
+        }
+      });
+    });
 
     const pTheme = new URLSearchParams(window.location.search).get('theme');
     const currentTheme = (pTheme === 'dark' || pTheme === 'light') ? pTheme : (localStorage.getItem('python_book_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
     applyTheme(currentTheme);
 
-    themeBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      applyTheme(isDark ? 'light' : 'dark');
-    });
-
-    // Localhost Dev Environment Marker
+    // Localhost Dev Environment Marker & Ecosystem Linking
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
       document.title = '[8080 • HEXLEAN] ' + document.title;
       const devBadge = document.createElement('div');
       devBadge.innerHTML = '● :8080 // HEXLEAN';
       devBadge.style.cssText = 'position:fixed;bottom:14px;right:14px;z-index:999999;background:rgba(15,118,110,0.92);color:#ffffff;font-family:IBM Plex Mono,monospace;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;box-shadow:0 4px 16px rgba(0,0,0,0.25);pointer-events:none;letter-spacing:0.06em;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.25);';
       document.body.appendChild(devBadge);
+
+      document.querySelectorAll('a[href^="https://hexdef.com"]').forEach(function(el) {
+        el.href = el.href.replace('https://hexdef.com', 'http://localhost:8000');
+      });
     }
   </script>
 </body>

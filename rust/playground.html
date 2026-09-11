@@ -1292,43 +1292,193 @@
       color: var(--accent);
     }
 
-    /* Mobile Tabs (Editor vs Terminal) */
+    /* Mobile Tab Switcher - Segmented Bar */
     .mobile-tab-switch {
       display: none;
-      background: var(--surface);
+      width: 100%;
+      background: var(--surface2);
       border-bottom: 1px solid var(--border);
-      padding: 0 .5rem;
-      gap: .35rem;
-      height: 38px;
+      padding: 6px 10px;
+      gap: 8px;
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
     }
+    [data-theme="light"] .mobile-tab-switch {
+      background: #F1F5F9;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+    [data-theme="dark"] .mobile-tab-switch {
+      background: #090E17;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
     .tab-btn {
       flex: 1;
+      height: 38px;
+      padding: 0 10px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: .45rem;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-family: inherit;
-      font-size: .84rem;
+      gap: 7px;
+      transition: all .18s cubic-bezier(0.16, 1, 0.3, 1);
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+      position: relative;
+    }
+    .tab-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Common Tab Elements */
+    .tab-btn .tab-icon-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .tab-btn .tab-label {
+      white-space: nowrap;
       font-weight: 600;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      padding: 0 .5rem;
-      transition: all .12s ease;
+      letter-spacing: -0.01em;
     }
-    .tab-btn.active {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
-    .tab-badge {
+    .tab-btn .tab-badge {
+      display: inline-flex;
+      align-items: center;
       font-family: "IBM Plex Mono", monospace;
-      font-size: .7rem;
-      padding: .1rem .35rem;
+      font-size: .68rem;
+      font-weight: 700;
+      padding: 1px 5px;
       border-radius: 4px;
+      line-height: 1.2;
+      flex-shrink: 0;
+      transition: all .16s ease;
+    }
+
+    /* Code Editor Tab - Track Accent */
+    .tab-btn-editor {
+      border-color: rgba(var(--accent-rgb, 15, 118, 110), 0.18);
+    }
+    .tab-btn-editor .tab-icon-editor {
+      color: var(--accent);
+    }
+    .tab-btn-editor .tab-badge-editor {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    [data-theme="dark"] .tab-btn-editor {
+      border-color: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    [data-theme="dark"] .tab-btn-editor .tab-icon-editor {
+      color: var(--accent);
+    }
+    [data-theme="dark"] .tab-btn-editor .tab-badge-editor {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    /* Code Editor Tab ACTIVE */
+    .tab-btn-editor.active {
+      background: var(--bg);
+      color: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+    .tab-btn-editor.active .tab-badge-editor {
+      background: var(--accent);
+      color: #FFFFFF;
+    }
+    [data-theme="dark"] .tab-btn-editor.active {
       background: var(--surface2);
-      color: var(--text-soft);
+      color: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    }
+    [data-theme="dark"] .tab-btn-editor.active .tab-badge-editor {
+      background: var(--accent);
+      color: #FFFFFF;
+    }
+
+    /* Terminal Tab - Obsidian Console & Emerald Phosphor Identity */
+    .tab-btn-term {
+      border-color: rgba(16, 185, 129, 0.18);
+    }
+    .tab-btn-term .tab-icon-term {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .tab-btn-term .term-pulse-led {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      display: inline-block;
+      box-shadow: 0 0 4px rgba(16, 185, 129, 0.7);
+      animation: term-led-pulse 2s ease-in-out infinite;
+    }
+    .tab-btn-term .term-prompt-arrow {
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 700;
+      font-size: .8rem;
+      color: #10B981;
+    }
+    .tab-btn-term .tab-badge-term {
+      background: rgba(16, 185, 129, 0.1);
+      color: #059669;
+    }
+    [data-theme="dark"] .tab-btn-term {
+      border-color: rgba(52, 211, 153, 0.15);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    [data-theme="dark"] .tab-btn-term .tab-badge-term {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+    }
+
+    /* Terminal Tab ACTIVE */
+    .tab-btn-term.active {
+      background: #0F172A;
+      color: #34D399;
+      border-color: #1E293B;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.35), 0 0 10px rgba(52, 211, 153, 0.25);
+    }
+    .tab-btn-term.active .term-prompt-arrow {
+      color: #34D399;
+    }
+    .tab-btn-term.active .tab-badge-term {
+      background: rgba(52, 211, 153, 0.2);
+      color: #34D399;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+    }
+    [data-theme="dark"] .tab-btn-term.active {
+      background: #030712;
+      color: #34D399;
+      border-color: rgba(52, 211, 153, 0.55);
+      box-shadow: 0 2px 14px rgba(5, 150, 105, 0.4), inset 0 1px 0 rgba(52, 211, 153, 0.3);
+    }
+    [data-theme="dark"] .tab-btn-term.active .tab-badge-term {
+      background: rgba(52, 211, 153, 0.25);
+      color: #A7F3D0;
+      border: 1px solid rgba(52, 211, 153, 0.45);
+    }
+
+    @keyframes term-led-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 5px #10B981; }
+      50% { opacity: 0.45; transform: scale(0.85); box-shadow: 0 0 1px #10B981; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tab-btn-term .term-pulse-led { animation: none !important; }
     }
 
     @media (max-width: 768px) {
@@ -1431,13 +1581,20 @@
 
     <!-- Mobile View Switcher -->
     <div class="mobile-tab-switch" role="tablist" aria-label="Editor and Terminal Views">
-      <button class="tab-btn active" id="tab-editor-btn" role="tab" aria-selected="true" aria-controls="editor-pane" type="button">
-        <span>⚡ Code Editor</span>
-        <span class="tab-badge">.rs</span>
+      <button class="tab-btn tab-btn-editor active" id="tab-editor-btn" role="tab" aria-selected="true" aria-controls="editor-pane" type="button">
+        <span class="tab-icon-wrap tab-icon-editor">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        </span>
+        <span class="tab-label">Code Editor</span>
+        <span class="tab-badge tab-badge-editor">.rs</span>
       </button>
-      <button class="tab-btn" id="tab-terminal-btn" role="tab" aria-selected="false" aria-controls="terminal-pane" type="button">
-        <span>❯ Console</span>
-        <span class="tab-badge" id="mobile-term-badge">Ready</span>
+      <button class="tab-btn tab-btn-term" id="tab-terminal-btn" role="tab" aria-selected="false" aria-controls="terminal-pane" type="button">
+        <span class="tab-icon-wrap tab-icon-term">
+          <span class="term-pulse-led"></span>
+          <span class="term-prompt-arrow">❯</span>
+        </span>
+        <span class="tab-label">Terminal</span>
+        <span class="tab-badge tab-badge-term" id="mobile-term-badge">Ready</span>
       </button>
     </div>
 

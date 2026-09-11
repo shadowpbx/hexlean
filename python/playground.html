@@ -1609,23 +1609,39 @@
         font-size: .78rem;
         padding: 0 .5rem;
       }
-      .topbar-middle { display: flex !important; }
+      .topbar-platform-title { display: none !important; }
+      .brand-lang { display: none !important; }
+      .brand-title, .brand-sub {
+        display: inline !important;
+        font-size: .84rem !important;
+        font-weight: 700 !important;
+        font-family: "Fraunces", Georgia, serif !important;
+        white-space: nowrap !important;
+      }
+      .topbar-left { gap: .3rem !important; flex-shrink: 0 !important; }
+      .topbar-middle {
+        display: flex !important;
+        flex: 1 !important;
+        justify-content: center !important;
+        min-width: 0 !important;
+      }
       .filename-box {
         display: flex !important;
-        padding: .2rem .45rem;
-        max-width: 110px;
+        padding: .2rem .35rem !important;
+        max-width: 90px !important;
       }
       .filename-input {
-        width: 68px;
-        font-size: .78rem;
+        width: 55px !important;
+        font-size: .75rem !important;
       }
+      .topbar-right { gap: .35rem !important; flex-shrink: 0 !important; }
       .attribution-text, .shortcut-hint {
         display: none !important;
       }
     }
     @media (max-width: 480px) {
       .topbar-platform-title { display: none; }
-      .brand-title { display: none; }
+      .brand-lang { display: none !important; }
       .pane-header {
         padding: 0 .55rem;
         gap: .35rem;
@@ -1645,15 +1661,21 @@
     }
     @media (max-width: 440px) {
       .filename-box {
-        padding: .18rem .35rem;
+        padding: .18rem .3rem !important;
+        max-width: 86px !important;
       }
       .filename-input {
-        width: 60px;
-        font-size: .75rem;
+        width: 52px !important;
+        font-size: .73rem !important;
       }
     }
     @media (max-width: 360px) {
       .tab-btn .tab-badge { display: none; }
+      .brand-sub { font-size: .78rem !important; }
+      .topbar-left { gap: .2rem !important; }
+      .filename-box { max-width: 80px !important; padding: .15rem .25rem !important; }
+      .filename-input { width: 48px !important; font-size: .7rem !important; }
+      .topbar-right { gap: .25rem !important; }
       .preset-select {
         max-width: 155px;
       }
@@ -1792,7 +1814,7 @@
               <path fill="url(#py-grad-b-pg)" d="M91.68 28.38v10.97c0 8.5-7.2 15.65-15.42 15.65H51.59c-6.76 0-12.35 5.78-12.35 12.55v23.51c0 6.69 5.82 10.63 12.35 12.55 7.82 2.3 15.31 2.71 24.66 0 6.22-1.8 12.35-5.42 12.35-12.55V86.1H63.94v-3.14h37.01c7.18 0 9.85-5 12.35-12.52 2.58-7.73 2.47-15.17 0-25.1-1.77-7.14-5.16-12.52-12.35-12.52h-9.27zM77.81 87.93a4.69 4.69 0 1 1 0 9.38 4.69 4.69 0 0 1 0-9.38z" transform="translate(0 10.26)"/>
             </svg>
           </span>
-          <span class="brand-title" style="font-size: 1.05rem;">Python Playground</span>
+          <span class="brand-title" style="font-size: 1.05rem;"><span class="brand-lang">Python</span> <span class="brand-sub">Playground</span></span>
         </a>
       </div>
 

@@ -484,7 +484,31 @@
       .topbar-hexdef-pill { padding: 0 .55rem !important; font-size: .82rem; }
     }
     @media (max-width: 768px) {
-      .topbar-middle { display: none !important; }
+      .topbar-platform-title { display: none !important; }
+      .brand-lang { display: none !important; }
+      .brand-title, .brand-sub {
+        display: inline !important;
+        font-size: .84rem !important;
+        font-weight: 700 !important;
+        font-family: "Fraunces", Georgia, serif !important;
+        white-space: nowrap !important;
+      }
+      .topbar-left { gap: .3rem !important; flex-shrink: 0 !important; }
+      .topbar-middle {
+        display: flex !important;
+        flex: 1 !important;
+        justify-content: center !important;
+        min-width: 0 !important;
+      }
+      .filename-box {
+        display: flex !important;
+        padding: .2rem .35rem !important;
+        max-width: 90px !important;
+      }
+      .filename-input {
+        width: 55px !important;
+        font-size: .75rem !important;
+      }
       .textbook-btn,
       .topbar-action-btn,
       .topbar-hexdef-pill {
@@ -500,11 +524,50 @@
       .topbar-hexdef-pill .hexdef-ext-arrow {
         display: none !important;
       }
+      .topbar-right { gap: .35rem !important; flex-shrink: 0 !important; }
     }
     @media (max-width: 600px) {
-      .topbar-platform-link, .topbar-sep { display: none !important; }
       #terminal-pane .pane-title-group span { display: none; }
       #editor-pane .pane-title-group span { font-size: .8rem; }
+    }
+    @media (max-width: 480px) {
+      .pane-header {
+        padding: 0 .55rem;
+        gap: .35rem;
+      }
+      .pane-title-group {
+        font-size: .8rem;
+        gap: .35rem;
+      }
+      .mac-btn {
+        padding: .26rem .45rem;
+        font-size: .78rem;
+      }
+      .preset-select {
+        max-width: 180px;
+        font-size: .75rem;
+      }
+    }
+    @media (max-width: 440px) {
+      .filename-box {
+        padding: .18rem .3rem !important;
+        max-width: 86px !important;
+      }
+      .filename-input {
+        width: 52px !important;
+        font-size: .73rem !important;
+      }
+    }
+    @media (max-width: 360px) {
+      .tab-btn .tab-badge { display: none; }
+      .brand-sub { font-size: .78rem !important; }
+      .topbar-left { gap: .2rem !important; }
+      .filename-box { max-width: 80px !important; padding: .15rem .25rem !important; }
+      .filename-input { width: 48px !important; font-size: .7rem !important; }
+      .topbar-right { gap: .25rem !important; }
+      .preset-select {
+        max-width: 155px;
+      }
     }
 
     /* Settings Modal Dialog */
@@ -1285,7 +1348,23 @@
       #editor-pane.active, #terminal-pane.active {
         display: flex;
       }
-      .bottom-middle, .attribution-text, .shortcut-hint {
+      #status-badge { display: none !important; }
+      .bottom-middle {
+        display: flex !important;
+        flex: 1;
+        justify-content: flex-end;
+        min-width: 0;
+      }
+      .preset-label { display: none !important; }
+      .preset-select {
+        height: 32px;
+        max-width: 210px;
+        width: 100%;
+        text-overflow: ellipsis;
+        font-size: .78rem;
+        padding: 0 .5rem;
+      }
+      .attribution-text, .shortcut-hint {
         display: none !important;
       }
     }
@@ -1298,7 +1377,7 @@
       <div class="topbar-left">
         <a href="/" class="topbar-platform-link" title="HexLean Platform Home">
           <span class="topbar-platform-icon">⚡</span>
-          <span class="brand-title">HexLean</span>
+          <span class="topbar-platform-title">HexLean</span>
         </a>
         <span class="topbar-sep">/</span>
         <a href="/rust/index.html" class="brand" title="Rust Track Home">
@@ -1309,7 +1388,7 @@
   </g>
 </svg>
           </span>
-          <span class="brand-title" style="font-size: 1.05rem;">Rust Playground</span>
+          <span class="brand-title" style="font-size: 1.05rem;"><span class="brand-lang">Rust</span> <span class="brand-sub">Playground</span></span>
         </a>
       </div>
 

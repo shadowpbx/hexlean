@@ -484,7 +484,31 @@
       .topbar-hexdef-pill { padding: 0 .55rem !important; font-size: .82rem; }
     }
     @media (max-width: 768px) {
-      .topbar-middle { display: none !important; }
+      .topbar-platform-title { display: none !important; }
+      .brand-lang { display: none !important; }
+      .brand-title, .brand-sub {
+        display: inline !important;
+        font-size: .84rem !important;
+        font-weight: 700 !important;
+        font-family: "Fraunces", Georgia, serif !important;
+        white-space: nowrap !important;
+      }
+      .topbar-left { gap: .3rem !important; flex-shrink: 0 !important; }
+      .topbar-middle {
+        display: flex !important;
+        flex: 1 !important;
+        justify-content: center !important;
+        min-width: 0 !important;
+      }
+      .filename-box {
+        display: flex !important;
+        padding: .2rem .35rem !important;
+        max-width: 90px !important;
+      }
+      .filename-input {
+        width: 55px !important;
+        font-size: .75rem !important;
+      }
       .textbook-btn,
       .topbar-action-btn,
       .topbar-hexdef-pill {
@@ -500,11 +524,50 @@
       .topbar-hexdef-pill .hexdef-ext-arrow {
         display: none !important;
       }
+      .topbar-right { gap: .35rem !important; flex-shrink: 0 !important; }
     }
     @media (max-width: 600px) {
-      .topbar-platform-link, .topbar-sep { display: none !important; }
       #terminal-pane .pane-title-group span { display: none; }
       #editor-pane .pane-title-group span { font-size: .8rem; }
+    }
+    @media (max-width: 480px) {
+      .pane-header {
+        padding: 0 .55rem;
+        gap: .35rem;
+      }
+      .pane-title-group {
+        font-size: .8rem;
+        gap: .35rem;
+      }
+      .mac-btn {
+        padding: .26rem .45rem;
+        font-size: .78rem;
+      }
+      .preset-select {
+        max-width: 180px;
+        font-size: .75rem;
+      }
+    }
+    @media (max-width: 440px) {
+      .filename-box {
+        padding: .18rem .3rem !important;
+        max-width: 86px !important;
+      }
+      .filename-input {
+        width: 52px !important;
+        font-size: .73rem !important;
+      }
+    }
+    @media (max-width: 360px) {
+      .tab-btn .tab-badge { display: none; }
+      .brand-sub { font-size: .78rem !important; }
+      .topbar-left { gap: .2rem !important; }
+      .filename-box { max-width: 80px !important; padding: .15rem .25rem !important; }
+      .filename-input { width: 48px !important; font-size: .7rem !important; }
+      .topbar-right { gap: .25rem !important; }
+      .preset-select {
+        max-width: 155px;
+      }
     }
 
     /* Settings Modal Dialog */
@@ -1285,7 +1348,23 @@
       #editor-pane.active, #terminal-pane.active {
         display: flex;
       }
-      .bottom-middle, .attribution-text, .shortcut-hint {
+      #status-badge { display: none !important; }
+      .bottom-middle {
+        display: flex !important;
+        flex: 1;
+        justify-content: flex-end;
+        min-width: 0;
+      }
+      .preset-label { display: none !important; }
+      .preset-select {
+        height: 32px;
+        max-width: 210px;
+        width: 100%;
+        text-overflow: ellipsis;
+        font-size: .78rem;
+        padding: 0 .5rem;
+      }
+      .attribution-text, .shortcut-hint {
         display: none !important;
       }
     }
@@ -1298,7 +1377,7 @@
       <div class="topbar-left">
         <a href="/" class="topbar-platform-link" title="HexLean Platform Home">
           <span class="topbar-platform-icon">⚡</span>
-          <span class="brand-title">HexLean</span>
+          <span class="topbar-platform-title">HexLean</span>
         </a>
         <span class="topbar-sep">/</span>
         <a href="/javascript/index.html" class="brand" title="JavaScript Track Home">
@@ -1308,7 +1387,7 @@
   <path fill="#000000" d="M74.8 91.8c2.4 4 5.7 6.9 11.5 6.9 5.8 0 9.5-2.8 9.5-6.8 0-4.7-3.8-6.4-10.2-9.2l-3.5-1.5c-10.1-4.3-16.7-9.7-16.7-20.9 0-10.4 8.1-18.4 20.8-18.4 9.1 0 15.6 3.2 20.2 11.3l-9.1 5.9c-2-3.6-4.6-5.1-8.7-5.1-4.2 0-7.2 2.7-7.2 6.2 0 4.1 2.6 5.8 8.8 8.5l3.5 1.5c12.3 5.3 18.3 10.5 18.3 21.7 0 12.5-9.8 19.5-23.7 19.5-13.1 0-21.3-6.2-25.1-14.7l11.6-8zm-41.2-2.1c2 3.4 4.5 6.1 8.7 6.1 4.5 0 7.4-1.8 7.4-8.8V42.5h14.3v46.9c0 14.8-8.7 21.4-21.4 21.4-11.4 0-18.1-5.8-21.6-14.4l12.6-6.7z"/>
 </svg>
           </span>
-          <span class="brand-title" style="font-size: 1.05rem;">JavaScript Playground</span>
+          <span class="brand-title" style="font-size: 1.05rem;"><span class="brand-lang">JavaScript</span> <span class="brand-sub">Playground</span></span>
         </a>
       </div>
 

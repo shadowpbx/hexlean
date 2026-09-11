@@ -502,7 +502,31 @@
       .topbar-hexdef-pill { padding: 0 .55rem !important; font-size: .82rem; }
     }
     @media (max-width: 768px) {
-      .topbar-middle { display: none !important; }
+      .topbar-platform-title { display: none !important; }
+      .brand-lang { display: none !important; }
+      .brand-title, .brand-sub {
+        display: inline !important;
+        font-size: .84rem !important;
+        font-weight: 700 !important;
+        font-family: "Fraunces", Georgia, serif !important;
+        white-space: nowrap !important;
+      }
+      .topbar-left { gap: .3rem !important; flex-shrink: 0 !important; }
+      .topbar-middle {
+        display: flex !important;
+        flex: 1 !important;
+        justify-content: center !important;
+        min-width: 0 !important;
+      }
+      .filename-box {
+        display: flex !important;
+        padding: .2rem .35rem !important;
+        max-width: 90px !important;
+      }
+      .filename-input {
+        width: 55px !important;
+        font-size: .75rem !important;
+      }
       .textbook-btn,
       .topbar-action-btn,
       .topbar-hexdef-pill {
@@ -518,11 +542,50 @@
       .topbar-hexdef-pill .hexdef-ext-arrow {
         display: none !important;
       }
+      .topbar-right { gap: .35rem !important; flex-shrink: 0 !important; }
     }
     @media (max-width: 600px) {
-      .topbar-platform-link, .topbar-sep { display: none !important; }
       #terminal-pane .pane-title-group span { display: none; }
       #editor-pane .pane-title-group span { font-size: .8rem; }
+    }
+    @media (max-width: 480px) {
+      .pane-header {
+        padding: 0 .55rem;
+        gap: .35rem;
+      }
+      .pane-title-group {
+        font-size: .8rem;
+        gap: .35rem;
+      }
+      .mac-btn {
+        padding: .26rem .45rem;
+        font-size: .78rem;
+      }
+      .preset-select {
+        max-width: 180px;
+        font-size: .75rem;
+      }
+    }
+    @media (max-width: 440px) {
+      .filename-box {
+        padding: .18rem .3rem !important;
+        max-width: 86px !important;
+      }
+      .filename-input {
+        width: 52px !important;
+        font-size: .73rem !important;
+      }
+    }
+    @media (max-width: 360px) {
+      .tab-btn .tab-badge { display: none; }
+      .brand-sub { font-size: .78rem !important; }
+      .topbar-left { gap: .2rem !important; }
+      .filename-box { max-width: 80px !important; padding: .15rem .25rem !important; }
+      .filename-input { width: 48px !important; font-size: .7rem !important; }
+      .topbar-right { gap: .25rem !important; }
+      .preset-select {
+        max-width: 155px;
+      }
     }
 
     /* Settings Modal Dialog */
@@ -1331,7 +1394,23 @@
       #editor-pane.active, #terminal-pane.active {
         display: flex;
       }
-      .bottom-middle, .attribution-text, .shortcut-hint {
+      #status-badge { display: none !important; }
+      .bottom-middle {
+        display: flex !important;
+        flex: 1;
+        justify-content: flex-end;
+        min-width: 0;
+      }
+      .preset-label { display: none !important; }
+      .preset-select {
+        height: 32px;
+        max-width: 210px;
+        width: 100%;
+        text-overflow: ellipsis;
+        font-size: .78rem;
+        padding: 0 .5rem;
+      }
+      .attribution-text, .shortcut-hint {
         display: none !important;
       }
     }
@@ -1344,7 +1423,7 @@
       <div class="topbar-left">
         <a href="/" class="topbar-platform-link" title="HexLean Platform Home">
           <span class="topbar-platform-icon">⚡</span>
-          <span class="brand-title">HexLean</span>
+          <span class="topbar-platform-title">HexLean</span>
         </a>
         <span class="topbar-sep">/</span>
         <a href="/bash/index.html" class="brand" title="Bash Track Home">
@@ -1363,7 +1442,7 @@
               <path fill="#FFFFFF" d="M89.4,81.1c0.3-0.2,0.5,0,0.6,0.4v3.2c1.3-0.5,2.5-0.7,3.6-0.4c0.2,0.1,0.3,0.4,0.2,0.7l-0.7,2.8 c-0.1,0.2-0.2,0.4-0.3,0.6c-0.1,0.1-0.1,0.1-0.2,0.1s-0.2,0.1-0.3,0c-0.5-0.1-1.6-0.4-3.4,0.6c-1.9,1-2.6,2.6-2.5,3.8 c0,1.5,0.8,1.9,3.3,1.9c3.4,0.1,4.9,1.6,5,5c0,3.4-1.8,7.1-4.6,9.3l0.1,3.2c0,0.4-0.2,0.8-0.5,1l-1.9,1.1c-0.3,0.2-0.5,0-0.6-0.4 v-3.1c-1.6,0.7-3.2,0.8-4.3,0.4c-0.2-0.1-0.3-0.4-0.2-0.7l0.7-2.9c0.1-0.2,0.2-0.5,0.3-0.6c0.1-0.1,0.1-0.1,0.2-0.1 c0.1-0.1,0.2-0.1,0.3,0c1.1,0.4,2.6,0.2,3.9-0.5c1.8-0.9,2.9-2.7,2.9-4.5c0-1.6-0.9-2.3-3-2.3c-2.7,0-5.2-0.5-5.3-4.5 c0-3.3,1.7-6.7,4.4-8.8v-3.2c0-0.4,0.2-0.8,0.5-1L89.4,81.1z"/>
             </svg>
           </span>
-          <span class="brand-title" style="font-size: 1.05rem;">Bash Playground</span>
+          <span class="brand-title" style="font-size: 1.05rem;"><span class="brand-lang">Bash</span> <span class="brand-sub">Playground</span></span>
         </a>
       </div>
 

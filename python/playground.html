@@ -1593,7 +1593,33 @@
       #editor-pane.active, #terminal-pane.active {
         display: flex;
       }
-      .bottom-middle, .attribution-text, .shortcut-hint {
+      #status-badge { display: none !important; }
+      .bottom-middle {
+        display: flex !important;
+        flex: 1;
+        justify-content: flex-end;
+        min-width: 0;
+      }
+      .preset-label { display: none !important; }
+      .preset-select {
+        height: 32px;
+        max-width: 210px;
+        width: 100%;
+        text-overflow: ellipsis;
+        font-size: .78rem;
+        padding: 0 .5rem;
+      }
+      .topbar-middle { display: flex !important; }
+      .filename-box {
+        display: flex !important;
+        padding: .2rem .45rem;
+        max-width: 110px;
+      }
+      .filename-input {
+        width: 68px;
+        font-size: .78rem;
+      }
+      .attribution-text, .shortcut-hint {
         display: none !important;
       }
     }
@@ -1612,12 +1638,25 @@
         padding: .26rem .45rem;
         font-size: .78rem;
       }
+      .preset-select {
+        max-width: 180px;
+        font-size: .75rem;
+      }
     }
     @media (max-width: 440px) {
-      .filename-box { display: none; }
+      .filename-box {
+        padding: .18rem .35rem;
+      }
+      .filename-input {
+        width: 60px;
+        font-size: .75rem;
+      }
     }
     @media (max-width: 360px) {
       .tab-btn .tab-badge { display: none; }
+      .preset-select {
+        max-width: 155px;
+      }
     }
 
     .spinner {

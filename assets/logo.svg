@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none" width="128" height="128" aria-label="HexLean Logo">
+    <defs>
+        <linearGradient id="hexleanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0d9488"/>
+            <stop offset="100%" stop-color="#042f2e"/>
+        </linearGradient>
+        <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#a7f3d0"/>
+        </linearGradient>
+    </defs>
+    <!-- Rounded 6-Axis Hexagon -->
+    <path d="M64 8 L114 36 L114 92 L64 120 L14 92 L14 36 Z" fill="url(#hexleanGrad)" stroke="#10b981" stroke-width="4" stroke-linejoin="round"/>
+    <!-- Facet Highlight (Right Half) -->
+    <path d="M64 8 L114 36 L114 92 L64 120 Z" fill="#10b981" fill-opacity="0.18"/>
+    <!-- Energy Bolt (Scaled & Centered) -->
+    <polygon points="68,24 34,68 64,68 60,104 94,60 64,60" fill="url(#boltGrad)"/>
+</svg>

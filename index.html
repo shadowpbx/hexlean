@@ -108,15 +108,18 @@
     }
 
     .brand-icon {
-      font-size: 1.35rem;
-      background: var(--accent-soft);
-      border: 1px solid var(--accent-border);
-      width: 38px;
-      height: 38px;
-      display: flex;
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      border-radius: 8px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 8px rgba(16, 185, 129, 0.22));
+    }
+    .brand-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     .brand-title {
@@ -785,16 +788,14 @@
   <header>
     <div class="wrap nav-bar">
       <a href="/" class="brand">
-        <span class="brand-icon">⚡</span>
+        <span class="brand-icon"><svg class="hexlean-hex-bolt" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="HexLean Logo"><defs><linearGradient id="hlGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0d9488"/><stop offset="100%" stop-color="#042f2e"/></linearGradient><linearGradient id="hlBolt" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#a7f3d0"/></linearGradient></defs><path d="M64 8 L114 36 L114 92 L64 120 L14 92 L14 36 Z" fill="url(#hlGrad)" stroke="#10b981" stroke-width="4" stroke-linejoin="round"/><path d="M64 8 L114 36 L114 92 L64 120 Z" fill="#10b981" fill-opacity="0.18"/><polygon points="68,24 34,68 64,68 60,104 94,60 64,60" fill="url(#hlBolt)"/></svg></span>
         <span class="brand-title">HexLean</span>
         <span class="brand-badge">Platform</span>
       </a>
 
       <div class="nav-actions">
         <a href="https://hexdef.com" target="_blank" rel="noopener" class="nav-hexdef-pill" title="Created by Tanvir Hussain • Visit HexDef Systems Architecture &amp; Security (hexdef.com)">
-          <svg class="hexdef-shield-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-          </svg>
+          <svg class="hexdef-shield-icon" width="13" height="13" viewBox="0 0 128 128" fill="none" aria-hidden="true"><path d="M64 10 L112 30 L112 74 C112 98 64 118 64 118 C64 118 16 98 16 74 L16 30 Z" fill="currentColor" fill-opacity="0.25" stroke="currentColor" stroke-width="8" stroke-linejoin="round"/><path d="M64 10 L112 30 L112 74 C112 98 64 118 64 118 Z" fill="currentColor" fill-opacity="0.2"/><line x1="64" y1="10" x2="64" y2="118" stroke="currentColor" stroke-width="8"/></svg>
           <span class="hexdef-pill-label">HexDef</span>
           <svg class="hexdef-ext-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="7" y1="17" x2="17" y2="7"></line>
